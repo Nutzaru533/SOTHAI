@@ -1,0 +1,64 @@
+{
+  "id": "cdea56e9-bb1b-45e3-9174-1dbc71b600f8",
+  "name": "TH_Ecom_Interface",
+  "publisher": "Sony",
+  "version": "1.0.0.0",
+  "brief": "",
+  "description": "",
+  "privacyStatement": "",
+  "EULA": "",
+  "help": "",
+  "url": "",
+  "logo": "",
+  "dependencies": [
+    {
+    "id": "4dfe05ce-a809-4c13-a62f-9baa0d3d0a6f",
+    "publisher": "Sony",
+    "name": "Ecom_Interface",
+    "version": "2.0.0.0"
+    },
+    {
+      "id": "a7cfe777-16c7-4f20-9320-668c50da2e2e",
+      "publisher": "ARSHU CONSULTANCY PTE. LTD.",
+      "name": "ARSHU LAZADA Connector",
+      "version": "16.0.0.45"
+    },
+    {
+      "id": "05f2158c-6d88-4372-983b-f02f4b8a8326",
+      "publisher": "ARSHU CONSULTANCY PTE. LTD.",
+      "name": "ARSHU SHOPIFY Connector",
+      "version": "16.0.0.21"
+    },
+    {
+      "id": "0ea2f0cc-4933-4087-b4ee-6fd96f3957a6",
+      "publisher": "ARSHU CONSULTANCY PTE. LTD.",
+      "name": "JDT Connector",
+      "version": "17.0.0.0"
+    },
+    {
+      "id": "bf3291c5-ce90-4fee-9de9-5d999a7b470b",
+      "publisher": "ARSHU CONSULTANCY PTE. LTD.",
+      "name": "Shopee Connector",
+      "version": "17.0.0.0"
+    },
+    {
+      "id": "5ecfc871-5d82-43f1-9c54-59685e82318d",
+      "publisher": "LS Retail",
+      "name": "LS Central",
+      "version": "17.2.2.0"
+    }
+
+  ],
+  "screenshots": [],
+  "platform": "17.0.0.0",
+  "application": "17.0.0.0",
+  "idRanges": [
+    {
+      "from": 60000,
+      "to": 60100
+    }
+  ],
+  "contextSensitiveHelpUrl": "https://ALProject9.com/help/",
+  "showMyCode": true,
+  "runtime": "6.0"
+}
