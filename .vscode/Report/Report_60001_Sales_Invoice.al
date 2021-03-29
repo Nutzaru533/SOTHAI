@@ -301,21 +301,22 @@ report 60001 "TH Sales Invoice"
                         else
                             SubTotal := (UnitPrice * VirtualQty) - "INT_Rebate Amount_SNY";
                     end;
+                    if "No." <> '' then
+                        countLine += 1;
                 end;
             }
             dataitem(Integer; integer)
             {
                 //DataItemTableView = where(number = filter(1));
                 DataItemTableView = SORTING(Number);
+                DataItemLinkReference = header;
                 column(Number; number) { }
                 trigger OnPreDataItem()
                 var
-                    myInt: Integer;
                 begin
                     //fixline := 13;
                     //countLine := fixline - LineNo;
                     //SetRange(Number, countLine);
-                    countLine := LineNo;
                     IF countLine > 13 THEN
                         countLine := (27 - countLine)
                     ELSE
@@ -328,6 +329,7 @@ report 60001 "TH Sales Invoice"
                 TotalSalesLine: Record "Sales Line";
             begin
                 Clear(LineNo);
+                Clear(countLine);
                 Clear(SubTotal);
                 Clear(Deliveryexist);
                 Clear(TotalRebateAmount);
