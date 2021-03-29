@@ -18,16 +18,16 @@
     "version": "2.0.0.0"
     },
     {
+      "id": "d212ff76-7041-4875-abcc-5545f32e219e",
+      "name": "Web Service",
+      "publisher": "Sony",
+      "version": "2.0.0.0"
+    },
+    {
       "id": "a7cfe777-16c7-4f20-9320-668c50da2e2e",
       "publisher": "ARSHU CONSULTANCY PTE. LTD.",
       "name": "ARSHU LAZADA Connector",
-      "version": "16.0.0.45"
-    },
-    {
-      "id": "05f2158c-6d88-4372-983b-f02f4b8a8326",
-      "publisher": "ARSHU CONSULTANCY PTE. LTD.",
-      "name": "ARSHU SHOPIFY Connector",
-      "version": "16.0.0.21"
+      "version": "16.0.0.46"
     },
     {
       "id": "0ea2f0cc-4933-4087-b4ee-6fd96f3957a6",
