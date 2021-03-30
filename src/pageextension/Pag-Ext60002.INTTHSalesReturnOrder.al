@@ -65,6 +65,30 @@ pageextension 60002 "INT_TH_Sales_Return_Order" extends "Sales Return Order"
                 }
             }
 
+
+        }
+        addbefore(INT_ProcessOrder_SNY)
+        {
+            action(PrintCreditNote)
+            {
+                Caption = 'Credit Note/Tax Invoice';
+                ApplicationArea = All;
+                Image = PrintDocument;
+                Promoted = true;
+                PromotedCategory = Process;
+
+                trigger OnAction()
+                var
+                    EcomInterface: Codeunit INT_EcomInterface_SNY;
+                    SalesHeaderReport: Record "Sales Header";
+                begin
+                    SalesHeaderReport.reset;
+                    SalesHeaderReport.SetRange("Document Type", "Document Type");
+                    SalesHeaderReport.SetRange("No.", "No.");
+                    if SalesHeaderReport.findfirst() then
+                        Report.RunModal(60002, true, false, SalesHeaderReport);
+                end;
+            }
         }
         modify("INT_SyncToSAP_SNY")
         {

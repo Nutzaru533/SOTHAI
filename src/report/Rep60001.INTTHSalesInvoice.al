@@ -156,6 +156,7 @@ report 60001 "INT_TH_Sales_Invoice"
             { }
             column(TotalDeliveryCharges; TotalDeliveryCharges)
             { }
+            column(texamtth; texamtth) { }
             dataitem(Line; "Sales Line")
             {
                 DataItemLink = "Document Type" = FIELD("Document Type"), "Document No." = FIELD("No.");
@@ -210,7 +211,7 @@ report 60001 "INT_TH_Sales_Invoice"
                 column(LineDeliveryTime; LineDeliveryTime)
                 {
                 }
-                column(texamtth; texamtth) { }
+
 
                 trigger OnPreDataItem()
                 var
@@ -362,9 +363,6 @@ report 60001 "INT_TH_Sales_Invoice"
                 SalesbeforeGST := Round((TotalSalesValue / 1.07), 0.01, '=');
                 GSTValue := Round((TotalSalesValue - SalesbeforeGST), 0.01, '=');
 
-                //TH Tex Amount
-                texamtth := TH_Even_Sub.FormatNoThaiText(TotalSalesValue);
-                //TH Tex Amount
 
                 if Discount_Target = 'all' then
                     DiscountExist := true;
@@ -400,7 +398,10 @@ report 60001 "INT_TH_Sales_Invoice"
                     if Branch = '00000' then
                         Branch := 'สำนักงานใหญ่'
                     else
-                        Branch := 'สำนักงานใหญ่'
+                        Branch := 'สำนักงานใหญ่';
+                //TH Tex Amount
+                texamtth := TH_Even_Sub.FormatNoThaiText(TotalSalesValue);
+                //TH Tex Amount
             end;
 
         }

@@ -899,6 +899,7 @@
                               <Width>1pt</Width>
                             </TopBorder>
                             <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingTop>1pt</PaddingTop>
                           </Style>
                         </Textbox>
                         <ColSpan>2</ColSpan>
@@ -944,6 +945,7 @@
                               <Width>1pt</Width>
                             </RightBorder>
                             <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>1pt</PaddingTop>
                           </Style>
                         </Textbox>
                         <ColSpan>2</ColSpan>
@@ -1144,6 +1146,7 @@
                               <Width>1pt</Width>
                             </LeftBorder>
                             <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingTop>1pt</PaddingTop>
                           </Style>
                         </Textbox>
                       </CellContents>
@@ -1175,6 +1178,7 @@
                               <Style>None</Style>
                             </Border>
                             <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>1pt</PaddingTop>
                           </Style>
                         </Textbox>
                       </CellContents>
@@ -1231,6 +1235,7 @@
                               <Width>1pt</Width>
                             </LeftBorder>
                             <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingTop>1pt</PaddingTop>
                           </Style>
                         </Textbox>
                       </CellContents>
@@ -1269,6 +1274,7 @@
                             </RightBorder>
                             <VerticalAlign>Middle</VerticalAlign>
                             <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>1pt</PaddingTop>
                           </Style>
                         </Textbox>
                         <ColSpan>2</ColSpan>
@@ -1794,21 +1800,21 @@
             </Style>
           </Textbox>
         </ReportItems>
-        <Height>4.16056in</Height>
+        <Height>4.27723in</Height>
         <Style />
       </Body>
       <Width>8.12917in</Width>
       <Page>
         <PageHeader>
-          <Height>4.59444in</Height>
+          <Height>4.68611in</Height>
           <PrintOnFirstPage>true</PrintOnFirstPage>
           <PrintOnLastPage>true</PrintOnLastPage>
           <ReportItems>
             <Rectangle Name="Rectangle2">
               <KeepTogether>true</KeepTogether>
-              <Top>3.46528in</Top>
+              <Top>3.45417in</Top>
               <Left>0.15in</Left>
-              <Height>0.9736in</Height>
+              <Height>1.03193in</Height>
               <Width>7.94166in</Width>
               <Style>
                 <Border>
@@ -1847,7 +1853,7 @@
                           <Value>=Globals!PageNumber</Value>
                           <Style>
                             <FontFamily>AngsanaUPC</FontFamily>
-                            <FontSize>11pt</FontSize>
+                            <FontSize>12pt</FontSize>
                             <FontWeight>Normal</FontWeight>
                           </Style>
                         </TextRun>
@@ -1862,6 +1868,37 @@
                   <Left>7.49306in</Left>
                   <Height>0.2in</Height>
                   <Width>0.36389in</Width>
+                  <Style>
+                    <Border>
+                      <Style>None</Style>
+                    </Border>
+                  </Style>
+                </Textbox>
+                <Textbox Name="Textbox24">
+                  <KeepTogether>true</KeepTogether>
+                  <Paragraphs>
+                    <Paragraph>
+                      <TextRuns>
+                        <TextRun>
+                          <Value>=First(Fields!HeaderDocNo.Value, "DataSet_Result")</Value>
+                          <Style>
+                            <FontFamily>AngsanaUPC</FontFamily>
+                            <FontSize>12pt</FontSize>
+                            <FontWeight>Normal</FontWeight>
+                          </Style>
+                        </TextRun>
+                      </TextRuns>
+                      <Style>
+                        <TextAlign>Left</TextAlign>
+                      </Style>
+                    </Paragraph>
+                  </Paragraphs>
+                  <rd:DefaultName>Textbox1</rd:DefaultName>
+                  <Top>0.09306in</Top>
+                  <Left>4.09306in</Left>
+                  <Height>0.2in</Height>
+                  <Width>2.78055in</Width>
+                  <ZIndex>1</ZIndex>
                   <Style>
                     <Border>
                       <Style>None</Style>
@@ -2647,37 +2684,6 @@
                 </Border>
               </Style>
             </Textbox>
-            <Textbox Name="Textbox24">
-              <KeepTogether>true</KeepTogether>
-              <Paragraphs>
-                <Paragraph>
-                  <TextRuns>
-                    <TextRun>
-                      <Value>=First(Fields!HeaderDocNo.Value, "DataSet_Result")</Value>
-                      <Style>
-                        <FontFamily>AngsanaUPC</FontFamily>
-                        <FontSize>12pt</FontSize>
-                        <FontWeight>Normal</FontWeight>
-                      </Style>
-                    </TextRun>
-                  </TextRuns>
-                  <Style>
-                    <TextAlign>Left</TextAlign>
-                  </Style>
-                </Paragraph>
-              </Paragraphs>
-              <rd:DefaultName>Textbox1</rd:DefaultName>
-              <Top>2.12222in</Top>
-              <Left>4.24306in</Left>
-              <Height>0.2in</Height>
-              <Width>2.78055in</Width>
-              <ZIndex>25</ZIndex>
-              <Style>
-                <Border>
-                  <Style>None</Style>
-                </Border>
-              </Style>
-            </Textbox>
             <Textbox Name="Textbox26">
               <KeepTogether>true</KeepTogether>
               <Paragraphs>
@@ -2702,7 +2708,7 @@
               <Left>0.47361in</Left>
               <Height>0.2in</Height>
               <Width>4.58888in</Width>
-              <ZIndex>26</ZIndex>
+              <ZIndex>25</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -2730,11 +2736,11 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox1</rd:DefaultName>
-              <Top>2.36389in</Top>
+              <Top>2.35in</Top>
               <Left>4.27916in</Left>
               <Height>0.2in</Height>
               <Width>0.975in</Width>
-              <ZIndex>27</ZIndex>
+              <ZIndex>26</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -2765,7 +2771,7 @@
               <Left>5.675in</Left>
               <Height>0.2in</Height>
               <Width>1.7in</Width>
-              <ZIndex>28</ZIndex>
+              <ZIndex>27</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -2796,7 +2802,7 @@
               <Left>5.675in</Left>
               <Height>0.2in</Height>
               <Width>1.10833in</Width>
-              <ZIndex>29</ZIndex>
+              <ZIndex>28</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -2827,7 +2833,7 @@
               <Left>6.68611in</Left>
               <Height>0.2in</Height>
               <Width>1.28056in</Width>
-              <ZIndex>30</ZIndex>
+              <ZIndex>29</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -2858,7 +2864,7 @@
               <Left>0.46944in</Left>
               <Height>0.2in</Height>
               <Width>7.49723in</Width>
-              <ZIndex>31</ZIndex>
+              <ZIndex>30</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -2889,7 +2895,7 @@
               <Left>0.44167in</Left>
               <Height>0.2in</Height>
               <Width>1.37223in</Width>
-              <ZIndex>32</ZIndex>
+              <ZIndex>31</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -2920,7 +2926,7 @@
               <Left>5.875in</Left>
               <Height>0.2in</Height>
               <Width>1.14861in</Width>
-              <ZIndex>33</ZIndex>
+              <ZIndex>32</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -2951,7 +2957,7 @@
               <Left>0.2in</Left>
               <Height>0.2in</Height>
               <Width>1.4in</Width>
-              <ZIndex>34</ZIndex>
+              <ZIndex>33</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -2982,7 +2988,7 @@
               <Left>0.19583in</Left>
               <Height>0.2in</Height>
               <Width>0.24167in</Width>
-              <ZIndex>35</ZIndex>
+              <ZIndex>34</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -3013,7 +3019,7 @@
               <Left>0.19583in</Left>
               <Height>0.2in</Height>
               <Width>0.24167in</Width>
-              <ZIndex>36</ZIndex>
+              <ZIndex>35</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -3044,7 +3050,7 @@
               <Left>0.46944in</Left>
               <Height>0.2in</Height>
               <Width>4.58888in</Width>
-              <ZIndex>37</ZIndex>
+              <ZIndex>36</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -3075,7 +3081,7 @@
               <Left>0.46527in</Left>
               <Height>0.2in</Height>
               <Width>7.49723in</Width>
-              <ZIndex>38</ZIndex>
+              <ZIndex>37</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -3106,7 +3112,7 @@
               <Left>0.45417in</Left>
               <Height>0.2in</Height>
               <Width>1.35556in</Width>
-              <ZIndex>39</ZIndex>
+              <ZIndex>38</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -3137,7 +3143,7 @@
               <Left>0.19583in</Left>
               <Height>0.2in</Height>
               <Width>0.24167in</Width>
-              <ZIndex>40</ZIndex>
+              <ZIndex>39</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -3409,6 +3415,9 @@ End Function
         <Field Name="TotalDeliveryChargesFormat">
           <DataField>TotalDeliveryChargesFormat</DataField>
         </Field>
+        <Field Name="texamtth">
+          <DataField>texamtth</DataField>
+        </Field>
         <Field Name="LineNo">
           <DataField>LineNo</DataField>
         </Field>
@@ -3465,9 +3474,6 @@ End Function
         </Field>
         <Field Name="LineDeliveryTime">
           <DataField>LineDeliveryTime</DataField>
-        </Field>
-        <Field Name="texamtth">
-          <DataField>texamtth</DataField>
         </Field>
         <Field Name="Number">
           <DataField>Number</DataField>

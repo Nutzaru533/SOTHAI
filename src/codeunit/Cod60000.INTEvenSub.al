@@ -87,6 +87,7 @@ codeunit 60000 "INT_Even_Sub"
             UNTIL l = 0;
             WHTAmtThaiText := WHTAmtThaiText + 'สตางค์';
         END;
+        exit(WHTAmtThaiText);
     end;
 
     procedure FormatDigitThai(adigit: Text[1]; pos: Integer; dflag: Boolean): Text[100]

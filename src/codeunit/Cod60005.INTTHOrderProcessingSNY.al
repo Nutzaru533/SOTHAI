@@ -2197,7 +2197,22 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
             CheckInventory();
             Commit();
         end;
-
+        //calculatediscount 
+        if SalesHeader."Seller Voucher Amount" <> 0 then begin
+            INT_salesline3.reset;
+            INT_salesline3.SetRange("Document Type", SalesHeader."Document Type");
+            INT_salesline3.SetRange("Document No.", SalesHeader."No.");
+            INT_salesline3.SetRange(Type, INT_salesline3.Type::Item);
+            INT_salesline3.SetFilter(Quantity, '>%1', 0);
+            if INT_salesline3.FindFirst then begin
+                if INT_item.get(INT_salesline3."No.") then begin
+                    if not INT_item."TH Exclude Discount" then begin
+                        INT_salesline3.validate("Line Discount Amount", SalesHeader."Seller Voucher Amount");
+                    end;
+                end;
+            end
+        end;
+        //calculatediscount
         if (SalesHeader.INT_InternalProcessing_SNY = SalesHeader.INT_InternalProcessing_SNY::"Inventory Checked")
          and (not SalesHeader.INT_DelConfirmed_SNY) then begin
             DeliveryConfirm2(false);

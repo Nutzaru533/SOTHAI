@@ -23,7 +23,6 @@ pageextension 60003 "INT_TH_Sales_Order" extends "Sales Order"
                 var
                     EcomInterface: Codeunit INT_EcomInterface_SNY;
                     SalesHeaderReport: Record "Sales Header";
-                    SalesInvoiceReport: Report "INT_Sales Invoice_SNY";
                 begin
                     SalesHeaderReport.reset;
                     SalesHeaderReport.SetRange("Document Type", "Document Type");

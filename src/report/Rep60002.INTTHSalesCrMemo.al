@@ -12,7 +12,7 @@ report 60002 "INT_TH_SalesCr.Memo"
     {
         dataitem(Header; "Sales Header")
         {
-            DataItemTableView = SORTING("Document Type", "No.") where("Document Type" = const(Order));
+            DataItemTableView = SORTING("Document Type", "No.") where("Document Type" = const("Return Order"));
             RequestFilterFields = "Document Type", "No.";
             column(HeaderDocType; "Document Type")
             {
@@ -156,6 +156,13 @@ report 60002 "INT_TH_SalesCr.Memo"
             { }
             column(TotalDeliveryCharges; TotalDeliveryCharges)
             { }
+            column(texamtth; texamtth) { }
+            column(Applies_to_ID; "Applies-to ID") { }
+            column(originnalinvamt; originnalinvamt) { }
+            column(currectamt; currectamt) { }
+            column(difamt; difamt) { }
+            column(vatdif; vatdif) { }
+            column(totalcramt; totalcramt) { }
             dataitem(Line; "Sales Line")
             {
                 DataItemLink = "Document Type" = FIELD("Document Type"), "Document No." = FIELD("No.");
@@ -210,6 +217,8 @@ report 60002 "INT_TH_SalesCr.Memo"
                 column(LineDeliveryTime; LineDeliveryTime)
                 {
                 }
+
+
 
                 trigger OnPreDataItem()
                 var
@@ -317,10 +326,10 @@ report 60002 "INT_TH_SalesCr.Memo"
                     //fixline := 13;
                     //countLine := fixline - LineNo;
                     //SetRange(Number, countLine);
-                    IF countLine > 13 THEN
+                    IF countLine > 8 THEN
                         countLine := (27 - countLine)
                     ELSE
-                        countLine := 13 - countLine;
+                        countLine := 8 - countLine;
                     SETRANGE(Number, 1, countLine);
                 end;
             }
@@ -361,6 +370,7 @@ report 60002 "INT_TH_SalesCr.Memo"
                 SalesbeforeGST := Round((TotalSalesValue / 1.07), 0.01, '=');
                 GSTValue := Round((TotalSalesValue - SalesbeforeGST), 0.01, '=');
 
+
                 if Discount_Target = 'all' then
                     DiscountExist := true;
 
@@ -395,7 +405,24 @@ report 60002 "INT_TH_SalesCr.Memo"
                     if Branch = '00000' then
                         Branch := 'สำนักงานใหญ่'
                     else
-                        Branch := 'สำนักงานใหญ่'
+                        Branch := 'สำนักงานใหญ่';
+                //TH Tex Amount
+                texamtth := TH_Even_Sub.FormatNoThaiText(TotalSalesValue);
+                //TH Tex Amount
+
+                //Calculate CREDIT MEMO
+                salesH3.reset;
+                salesH3.SetRange("Document Type", salesH3."Document Type"::Order);
+                salesH3.SetRange("No.", "Applies-to ID");
+                if salesH3.Find('-') then begin
+                    salesH3.CalcFields("Amount Including VAT");
+                    originnalinvamt := salesH3."Amount Including VAT";
+                    currectamt := TotalSalesValue;
+                    difamt := abs(TotalSalesValue - originnalinvamt);
+                    vatdif := round((difamt * 7) / 100);
+                    totalcramt := difamt + vatdif;
+                end;
+                //Calculate CREDIT MEMO
             end;
 
         }
@@ -469,6 +496,15 @@ report 60002 "INT_TH_SalesCr.Memo"
         shipcity: text[50];
         shippostcode: text[50];
         countLine: Integer;
-        branch: Text[50];
+        Branch: text[50];
+        TH_Even_Sub: Codeunit "INT_Even_Sub";
+        texamtth: Text[200];
+
+        originnalinvamt: Decimal;
+        currectamt: Decimal;
+        difamt: Decimal;
+        vatdif: Decimal;
+        totalcramt: Decimal;
+        salesH3: Record "Sales Header";
 
 }
