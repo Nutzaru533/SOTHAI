@@ -1,4 +1,4 @@
-tableextension 60001 "TH Item" extends item
+tableextension 60001 "INT_TH_Item" extends item
 {
     fields
     {

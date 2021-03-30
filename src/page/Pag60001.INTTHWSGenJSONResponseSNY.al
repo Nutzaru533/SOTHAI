@@ -1,4 +1,4 @@
-page 60001 "TH_WS_Gen JSON Response_SNY"
+page 60001 "INT_TH_WS_GenJSON Response_SNY"
 {
     Caption = 'Generate JSON Response TH';
     PageType = Card;
@@ -46,7 +46,7 @@ page 60001 "TH_WS_Gen JSON Response_SNY"
 
                 trigger OnAction()
                 var
-                    IntegrationMgmt: Codeunit "TH_WS_Integration Mgmt._SNY";
+                    IntegrationMgmt: Codeunit "INT_WS_Integration Mgmt._SNY";
                 begin
                     if RequestJSON = '' then exit;
                     ResponseJSON := IntegrationMgmt.Request(RequestJSON);

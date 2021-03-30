@@ -1,5 +1,5 @@
 
-report 60002 "TH Sales Cr. Memo"
+report 60002 "INT_TH_SalesCr.Memo"
 {
     RDLCLayout = './ReportDesign/TH_Sales_Cr_Memo.rdl';
     Caption = 'Sales Credit Memo';
@@ -12,14 +12,14 @@ report 60002 "TH Sales Cr. Memo"
     {
         dataitem(Header; "Sales Header")
         {
-            DataItemTableView = SORTING("Document Type", "No.") where("Document Type" = const("Credit Memo"));
+            DataItemTableView = SORTING("Document Type", "No.") where("Document Type" = const(Order));
             RequestFilterFields = "Document Type", "No.";
-            column(HeaderDocType;
-            "Document Type")
+            column(HeaderDocType; "Document Type")
             {
             }
-            column(HeaderDocNo;
-            "External Document No.")
+            column(DocNo; "No.") { }
+            column(MarketPlace; INT_MarketPlace_SNY) { }
+            column(HeaderDocNo; "External Document No.")
             {
             }
             column(DocDate; "Order Date")
@@ -43,35 +43,31 @@ report 60002 "TH Sales Cr. Memo"
             column(ShiptoContact; "Sell-to Phone No.")
             {
             }
-
             column(Deliveryexist; Deliveryexist)
             {
             }
             column(ShopifyPaymentMethod; "Shopify Payment Method")
             {
             }
-            column(CompName;
-            CompanyInfo.Name)
+            column(CompName; CompanyInfo.Name)
             {
             }
-            column(CompName2;
-            CompanyInfo."Contact Person")
+            column(CompName2; CompanyInfo."Contact Person")
             {
             }
-            column(CompAddress;
-            CompanyInfo.Address)
+            column(CompAddress; CompanyInfo.Address)
             {
             }
-            column(CompAddress2;
-            CompanyInfo."Address 2")
+            column(CompAddress2; CompanyInfo."Address 2")
             {
             }
-            column(PostCode;
-            CompanyInfo."Post Code")
+            column(PostCode; CompanyInfo."Post Code")
             {
             }
-            column(PhoneNo;
-            CompanyInfo."Phone No.")
+            column(PhoneNo; CompanyInfo."Phone No.")
+            {
+            }
+            column(faxNo; CompanyInfo."Fax No.")
             {
             }
             column(CoRegNo; CompanyInfo."Co Reg. No.")
@@ -121,6 +117,20 @@ report 60002 "TH Sales Cr. Memo"
             { }
             column(Website; CompanyInfo.Website)
             { }
+            column(Sell_to_Customer_Name; "Sell-to Customer Name") { }
+            column(Sell_to_Address; "Sell-to Address") { }
+            column(Sell_to_Address_2; "Sell-to Address 2") { }
+            column(Sell_to_City; "Sell-to City") { }
+            column(Sell_to_County; "Sell-to County") { }
+            column(Sell_to_Post_Code; "Sell-to Post Code") { }
+            column(Sell_to_Phone_No_; "Sell-to Phone No.") { }
+            column(Branch; Branch) { }
+            column(shipName; shipName) { }
+            column(shipadd1; shipadd1) { }
+            column(shipadd2; shipadd2) { }
+            column(shipcity; shipcity) { }
+            column(shippostcode; shippostcode) { }
+            column(VAT_Registration_No_; "VAT Registration No.") { }
             column(TotalSalesValue; TotalSalesValue)
             {
                 DecimalPlaces = 2 : 2;
@@ -146,15 +156,13 @@ report 60002 "TH Sales Cr. Memo"
             { }
             column(TotalDeliveryCharges; TotalDeliveryCharges)
             { }
-
             dataitem(Line; "Sales Line")
             {
                 DataItemLink = "Document Type" = FIELD("Document Type"), "Document No." = FIELD("No.");
                 DataItemLinkReference = Header;
                 DataItemTableView = SORTING("Document Type", "Document No.", "Line No.") where(Type = const(Item));
 
-                column(LineNo;
-                Line."Line No.")
+                column(LineNo; Line."Line No.")
                 {
                 }
                 column(LineInfo;
@@ -202,6 +210,7 @@ report 60002 "TH Sales Cr. Memo"
                 column(LineDeliveryTime; LineDeliveryTime)
                 {
                 }
+
                 trigger OnPreDataItem()
                 var
                 begin
@@ -292,6 +301,27 @@ report 60002 "TH Sales Cr. Memo"
                         else
                             SubTotal := (UnitPrice * VirtualQty) - "INT_Rebate Amount_SNY";
                     end;
+                    if "No." <> '' then
+                        countLine += 1;
+                end;
+            }
+            dataitem(Integer; integer)
+            {
+                //DataItemTableView = where(number = filter(1));
+                DataItemTableView = SORTING(Number);
+                DataItemLinkReference = header;
+                column(Number; number) { }
+                trigger OnPreDataItem()
+                var
+                begin
+                    //fixline := 13;
+                    //countLine := fixline - LineNo;
+                    //SetRange(Number, countLine);
+                    IF countLine > 13 THEN
+                        countLine := (27 - countLine)
+                    ELSE
+                        countLine := 13 - countLine;
+                    SETRANGE(Number, 1, countLine);
                 end;
             }
             trigger OnAfterGetRecord()
@@ -299,6 +329,7 @@ report 60002 "TH Sales Cr. Memo"
                 TotalSalesLine: Record "Sales Line";
             begin
                 Clear(LineNo);
+                Clear(countLine);
                 Clear(SubTotal);
                 Clear(Deliveryexist);
                 Clear(TotalRebateAmount);
@@ -344,6 +375,27 @@ report 60002 "TH Sales Cr. Memo"
                     until TotalSalesLine.Next() = 0;
                 TotalDeliveryCharges := Round(TotalDeliveryCharges, 0.01, '=');
 
+                if "Ship-to Name" <> '' then begin
+                    shipName := "Ship-to Name";
+                    shipadd1 := "Ship-to Address";
+                    shipadd2 := "Ship-to Address 2";
+                    shipcity := "Ship-to City";
+                    shippostcode := "Ship-to Post Code";
+                end else begin
+                    shipName := "Sell-to Customer Name";
+                    shipadd1 := "Sell-to Address";
+                    shipadd2 := "Sell-to Address 2";
+                    shipcity := "Sell-to City";
+                    shippostcode := "Sell-to Post Code";
+                end;
+
+                if Branch <> '' then
+                    Branch := 'สาขาที่ : ' + Branch
+                else
+                    if Branch = '00000' then
+                        Branch := 'สำนักงานใหญ่'
+                    else
+                        Branch := 'สำนักงานใหญ่'
             end;
 
         }
@@ -411,4 +463,12 @@ report 60002 "TH Sales Cr. Memo"
         DeliveryChargesExist: Boolean;
         TotalDeliveryCharges: Decimal;
         RepQuantity: Decimal;
+        shipName: text[50];
+        shipadd1: text[50];
+        shipadd2: text[50];
+        shipcity: text[50];
+        shippostcode: text[50];
+        countLine: Integer;
+        branch: Text[50];
+
 }

@@ -1,4 +1,4 @@
-pageextension 60003 MyExtension extends "Sales Order"
+pageextension 60003 "INT_TH_Sales_Order" extends "Sales Order"
 {
     layout
     {
@@ -49,8 +49,27 @@ pageextension 60003 MyExtension extends "Sales Order"
                 var
                     //OrderProcessing: Codeunit "INT_OrderProcesssSch._SNY";
                     SalesHeader: Record "Sales Header";
-                    OrderProcessing: Codeunit TH_INT_OrderProcessing_SNY;
+                    OrderProcessing: Codeunit "INT_TH_OrderProcessing_SNY";
+                    salesline: Record "Sales Line";
+                    item: Record item;
                 begin
+                    //calculate
+                    salesline.reset;
+                    salesline.SetRange("Document Type", "Document Type");
+                    salesline.SetRange("Document No.", "No.");
+                    salesline.SetFilter(Quantity, '>%1', 0);
+                    salesline.SetFilter("Unit Price", '>%1', 0);
+                    salesline.SetRange(Type, salesline.type::Item);
+                    if salesline.Find('-') then
+                        repeat
+                            if item.get(salesline."No.") then begin
+                                if not item."TH Exclude Discount" then begin
+                                    salesline.Validate("Line Discount Amount", "Seller Voucher Amount");
+                                    salesline.Modify();
+                                end
+                            end
+                        until salesline.Next = 0;
+                    //calculate
                     SalesHeader.Reset();
                     SalesHeader.SetRange("Document Type", rec."Document Type");
                     SalesHeader.SetRange("No.", rec."No.");
@@ -74,7 +93,7 @@ pageextension 60003 MyExtension extends "Sales Order"
 
                 trigger OnAction()
                 var
-                    OrderProcessing: Codeunit TH_INT_OrderProcessing_SNY;
+                    OrderProcessing: Codeunit "INT_TH_OrderProcessing_SNY";
                     SalesHeader: Record "Sales Header";
                     MarketPlace: Record INT_MarketPlaces_SNY;
                 begin
@@ -104,7 +123,7 @@ pageextension 60003 MyExtension extends "Sales Order"
                 Caption = 'Confirm Collect';
                 trigger OnAction()
                 var
-                    OrderProcessing: Codeunit TH_INT_OrderProcessing_SNY;
+                    OrderProcessing: Codeunit "INT_TH_OrderProcessing_SNY";
                     SalesHeader: Record "Sales Header";
                     MarketPlace: Record INT_MarketPlaces_SNY;
                 begin
@@ -137,7 +156,7 @@ pageextension 60003 MyExtension extends "Sales Order"
                 var
                     //OrderProcessing: Codeunit "INT_OrderProcesssSch._SNY";
                     SalesHeader: Record "Sales Header";
-                    OrderProcessing: Codeunit TH_INT_OrderProcessing_SNY;
+                    OrderProcessing: Codeunit "INT_TH_OrderProcessing_SNY";
                     MarketPlace: Record INT_MarketPlaces_SNY;
                 begin
                     SalesHeader.Reset();

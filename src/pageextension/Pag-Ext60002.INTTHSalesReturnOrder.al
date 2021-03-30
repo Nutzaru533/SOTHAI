@@ -1,4 +1,4 @@
-pageextension 60002 "TH Sales Return Order" extends "Sales Return Order"
+pageextension 60002 "INT_TH_Sales_Return_Order" extends "Sales Return Order"
 {
     layout
     {

@@ -1,4 +1,4 @@
-codeunit 60002 "TH_WS_Integration Methods_SNY"
+codeunit 60002 "INT_WS_Integration Methods_SNY"
 {
     trigger OnRun()
     begin

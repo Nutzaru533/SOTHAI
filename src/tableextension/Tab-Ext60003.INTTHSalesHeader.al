@@ -1,4 +1,4 @@
-tableextension 60003 "TH Sales Header" extends "Sales Header"
+tableextension 60003 "INT_TH_Sales_Header" extends "Sales Header"
 {
     fields
     {

@@ -36,7 +36,7 @@
               </TablixColumns>
               <TablixRows>
                 <TablixRow>
-                  <Height>0.625in</Height>
+                  <Height>0.71667in</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -49,7 +49,7 @@
                                   <Value>รายการสินค้า</Value>
                                   <Style>
                                     <FontFamily>Angsana New</FontFamily>
-                                    <FontSize>11pt</FontSize>
+                                    <FontSize>12pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -64,7 +64,7 @@
                                   <Value>Description</Value>
                                   <Style>
                                     <FontFamily>Angsana New</FontFamily>
-                                    <FontSize>11pt</FontSize>
+                                    <FontSize>12pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -77,8 +77,23 @@
                           <rd:DefaultName>Textbox42</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Style>Solid</Style>
+                              <Style>None</Style>
                             </Border>
+                            <TopBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>1pt</Width>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>1pt</Width>
+                            </BottomBorder>
+                            <LeftBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>1pt</Width>
+                            </LeftBorder>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -98,7 +113,7 @@
                                   <Value>จำนวน</Value>
                                   <Style>
                                     <FontFamily>Angsana New</FontFamily>
-                                    <FontSize>11pt</FontSize>
+                                    <FontSize>12pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -113,7 +128,7 @@
                                   <Value>Qty</Value>
                                   <Style>
                                     <FontFamily>Angsana New</FontFamily>
-                                    <FontSize>11pt</FontSize>
+                                    <FontSize>12pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -126,8 +141,23 @@
                           <rd:DefaultName>Textbox50</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Style>Solid</Style>
+                              <Style>None</Style>
                             </Border>
+                            <TopBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>1pt</Width>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>1pt</Width>
+                            </BottomBorder>
+                            <LeftBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>1pt</Width>
+                            </LeftBorder>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -148,7 +178,7 @@
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Angsana New</FontFamily>
-                                    <FontSize>11pt</FontSize>
+                                    <FontSize>12pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                     <TextDecoration>None</TextDecoration>
                                     <Color>#000000</Color>
@@ -166,7 +196,7 @@
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Angsana New</FontFamily>
-                                    <FontSize>11pt</FontSize>
+                                    <FontSize>12pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                     <TextDecoration>None</TextDecoration>
                                     <Color>#000000</Color>
@@ -185,7 +215,7 @@
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Angsana New</FontFamily>
-                                    <FontSize>11pt</FontSize>
+                                    <FontSize>12pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                     <TextDecoration>None</TextDecoration>
                                     <Color>#000000</Color>
@@ -201,8 +231,23 @@
                           <rd:DefaultName>Textbox48</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Style>Solid</Style>
+                              <Style>None</Style>
                             </Border>
+                            <TopBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>1pt</Width>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>1pt</Width>
+                            </BottomBorder>
+                            <LeftBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>1pt</Width>
+                            </LeftBorder>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -223,7 +268,7 @@
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Angsana New</FontFamily>
-                                    <FontSize>11pt</FontSize>
+                                    <FontSize>12pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                     <TextDecoration>None</TextDecoration>
                                     <Color>#000000</Color>
@@ -241,7 +286,7 @@
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Angsana New</FontFamily>
-                                    <FontSize>11pt</FontSize>
+                                    <FontSize>12pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                     <TextDecoration>None</TextDecoration>
                                     <Color>#000000</Color>
@@ -259,7 +304,7 @@
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Angsana New</FontFamily>
-                                    <FontSize>11pt</FontSize>
+                                    <FontSize>12pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                     <TextDecoration>None</TextDecoration>
                                     <Color>#000000</Color>
@@ -274,8 +319,23 @@
                           <rd:DefaultName>Textbox44</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Style>Solid</Style>
+                              <Style>None</Style>
                             </Border>
+                            <TopBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>1pt</Width>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>1pt</Width>
+                            </BottomBorder>
+                            <LeftBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>1pt</Width>
+                            </LeftBorder>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -296,7 +356,7 @@
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Angsana New</FontFamily>
-                                    <FontSize>11pt</FontSize>
+                                    <FontSize>12pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                     <TextDecoration>None</TextDecoration>
                                     <Color>#000000</Color>
@@ -314,7 +374,7 @@
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Angsana New</FontFamily>
-                                    <FontSize>11pt</FontSize>
+                                    <FontSize>12pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                     <TextDecoration>None</TextDecoration>
                                     <Color>#000000</Color>
@@ -334,7 +394,7 @@
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Angsana New</FontFamily>
-                                    <FontSize>11pt</FontSize>
+                                    <FontSize>12pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                     <TextDecoration>None</TextDecoration>
                                     <Color>#000000</Color>
@@ -351,8 +411,28 @@
                           <rd:DefaultName>Textbox46</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Style>Solid</Style>
+                              <Style>None</Style>
                             </Border>
+                            <TopBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>1pt</Width>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>1pt</Width>
+                            </BottomBorder>
+                            <LeftBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>1pt</Width>
+                            </LeftBorder>
+                            <RightBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>1pt</Width>
+                            </RightBorder>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -377,7 +457,7 @@
                                   <Value>=Fields!Description.Value</Value>
                                   <Style>
                                     <FontFamily>Angsana New</FontFamily>
-                                    <FontSize>11pt</FontSize>
+                                    <FontSize>12pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -411,7 +491,7 @@
                                   <Value>=Fields!QtytoInvoice.Value</Value>
                                   <Style>
                                     <FontFamily>Angsana New</FontFamily>
-                                    <FontSize>11pt</FontSize>
+                                    <FontSize>12pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -446,7 +526,7 @@
                                   <Value>=Fields!UnitPrice.Value</Value>
                                   <Style>
                                     <FontFamily>Angsana New</FontFamily>
-                                    <FontSize>11pt</FontSize>
+                                    <FontSize>12pt</FontSize>
                                     <Format>#,0.00;(#,0.00);''</Format>
                                   </Style>
                                 </TextRun>
@@ -482,7 +562,7 @@
                                   <Value>=Fields!LineDiscountAmount.Value</Value>
                                   <Style>
                                     <FontFamily>Angsana New</FontFamily>
-                                    <FontSize>11pt</FontSize>
+                                    <FontSize>12pt</FontSize>
                                     <Format>#,0.00;(#,0.00);''</Format>
                                   </Style>
                                 </TextRun>
@@ -502,11 +582,6 @@
                               <Style>Solid</Style>
                               <Width>1pt</Width>
                             </LeftBorder>
-                            <RightBorder>
-                              <Color>Black</Color>
-                              <Style>Solid</Style>
-                              <Width>1pt</Width>
-                            </RightBorder>
                             <PaddingRight>2pt</PaddingRight>
                           </Style>
                         </Textbox>
@@ -523,7 +598,7 @@
                                   <Value>=Fields!SubTotal.Value</Value>
                                   <Style>
                                     <FontFamily>Angsana New</FontFamily>
-                                    <FontSize>11pt</FontSize>
+                                    <FontSize>12pt</FontSize>
                                     <Format>#,0.00;(#,0.00);''</Format>
                                   </Style>
                                 </TextRun>
@@ -538,6 +613,11 @@
                             <Border>
                               <Style>None</Style>
                             </Border>
+                            <LeftBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>1pt</Width>
+                            </LeftBorder>
                             <RightBorder>
                               <Color>Black</Color>
                               <Style>Solid</Style>
@@ -565,7 +645,7 @@
                                   <Value />
                                   <Style>
                                     <FontFamily>Angsana New</FontFamily>
-                                    <FontSize>11pt</FontSize>
+                                    <FontSize>12pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -582,11 +662,6 @@
                               <Style>Solid</Style>
                               <Width>1pt</Width>
                             </LeftBorder>
-                            <RightBorder>
-                              <Color>Black</Color>
-                              <Style>Solid</Style>
-                              <Width>1pt</Width>
-                            </RightBorder>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                           </Style>
@@ -605,7 +680,7 @@
                                   <Value />
                                   <Style>
                                     <FontFamily>Angsana New</FontFamily>
-                                    <FontSize>11pt</FontSize>
+                                    <FontSize>12pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -619,11 +694,11 @@
                             <Border>
                               <Style>None</Style>
                             </Border>
-                            <RightBorder>
+                            <LeftBorder>
                               <Color>Black</Color>
                               <Style>Solid</Style>
                               <Width>1pt</Width>
-                            </RightBorder>
+                            </LeftBorder>
                             <PaddingRight>2pt</PaddingRight>
                           </Style>
                         </Textbox>
@@ -641,7 +716,7 @@
                                   <Value />
                                   <Style>
                                     <FontFamily>Angsana New</FontFamily>
-                                    <FontSize>11pt</FontSize>
+                                    <FontSize>12pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -655,11 +730,11 @@
                             <Border>
                               <Style>None</Style>
                             </Border>
-                            <RightBorder>
+                            <LeftBorder>
                               <Color>Black</Color>
                               <Style>Solid</Style>
                               <Width>1pt</Width>
-                            </RightBorder>
+                            </LeftBorder>
                             <PaddingRight>2pt</PaddingRight>
                           </Style>
                         </Textbox>
@@ -677,7 +752,7 @@
                                   <Value />
                                   <Style>
                                     <FontFamily>Angsana New</FontFamily>
-                                    <FontSize>11pt</FontSize>
+                                    <FontSize>12pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -691,11 +766,11 @@
                             <Border>
                               <Style>None</Style>
                             </Border>
-                            <RightBorder>
+                            <LeftBorder>
                               <Color>Black</Color>
                               <Style>Solid</Style>
                               <Width>1pt</Width>
-                            </RightBorder>
+                            </LeftBorder>
                             <PaddingRight>2pt</PaddingRight>
                           </Style>
                         </Textbox>
@@ -713,7 +788,7 @@
                                   <Value />
                                   <Style>
                                     <FontFamily>Angsana New</FontFamily>
-                                    <FontSize>11pt</FontSize>
+                                    <FontSize>12pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -727,6 +802,11 @@
                             <Border>
                               <Style>None</Style>
                             </Border>
+                            <LeftBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>1pt</Width>
+                            </LeftBorder>
                             <RightBorder>
                               <Color>Black</Color>
                               <Style>Solid</Style>
@@ -740,7 +820,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.18333in</Height>
+                  <Height>0.21666in</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -754,7 +834,7 @@
                                   <Value />
                                   <Style>
                                     <FontFamily>Angsana New</FontFamily>
-                                    <FontSize>11pt</FontSize>
+                                    <FontSize>12pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -796,7 +876,7 @@
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Angsana New</FontFamily>
-                                    <FontSize>11pt</FontSize>
+                                    <FontSize>12pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                     <TextDecoration>None</TextDecoration>
                                     <Color>#000000</Color>
@@ -837,7 +917,8 @@
                                   <Value>=Fields!TotalSalesValue.Value</Value>
                                   <Style>
                                     <FontFamily>Angsana New</FontFamily>
-                                    <FontSize>11pt</FontSize>
+                                    <FontSize>12pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
                                     <Format>#,0.00;(#,0.00);''</Format>
                                   </Style>
                                 </TextRun>
@@ -872,7 +953,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.18333in</Height>
+                  <Height>0.2in</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -886,7 +967,7 @@
                                   <Value />
                                   <Style>
                                     <FontFamily>Angsana New</FontFamily>
-                                    <FontSize>11pt</FontSize>
+                                    <FontSize>12pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -923,7 +1004,7 @@
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Angsana New</FontFamily>
-                                    <FontSize>11pt</FontSize>
+                                    <FontSize>12pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                     <TextDecoration>None</TextDecoration>
                                     <Color>#000000</Color>
@@ -959,7 +1040,7 @@
                                   <Value />
                                   <Style>
                                     <FontFamily>Angsana New</FontFamily>
-                                    <FontSize>11pt</FontSize>
+                                    <FontSize>12pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -987,7 +1068,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.20833in</Height>
+                  <Height>0.23333in</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -998,10 +1079,11 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=Fields!texamtth.Value</Value>
                                   <Style>
                                     <FontFamily>Angsana New</FontFamily>
-                                    <FontSize>11pt</FontSize>
+                                    <FontSize>12pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1011,33 +1093,10 @@
                           <rd:DefaultName>Textbox70</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Color>LightGrey</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <TopBorder>
-                              <Color>Black</Color>
-                              <Style>Solid</Style>
-                              <Width>1pt</Width>
-                            </TopBorder>
-                            <BottomBorder>
-                              <Color>Black</Color>
-                              <Style>Solid</Style>
-                              <Width>1pt</Width>
-                            </BottomBorder>
-                            <LeftBorder>
-                              <Color>Black</Color>
-                              <Style>Solid</Style>
-                              <Width>1pt</Width>
-                            </LeftBorder>
-                            <RightBorder>
-                              <Color>Black</Color>
-                              <Style>Solid</Style>
-                              <Width>1pt</Width>
-                            </RightBorder>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
-                            <PaddingTop>2pt</PaddingTop>
-                            <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
                         <ColSpan>5</ColSpan>
@@ -1064,7 +1123,7 @@
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Angsana New</FontFamily>
-                                    <FontSize>11pt</FontSize>
+                                    <FontSize>12pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                     <TextDecoration>None</TextDecoration>
                                     <Color>#000000</Color>
@@ -1100,7 +1159,7 @@
                                   <Value>=Fields!GSTValue.Value</Value>
                                   <Style>
                                     <FontFamily>Angsana New</FontFamily>
-                                    <FontSize>11pt</FontSize>
+                                    <FontSize>12pt</FontSize>
                                     <Format>#,0.00;(#,0.00);''</Format>
                                   </Style>
                                 </TextRun>
@@ -1132,7 +1191,7 @@
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Angsana New</FontFamily>
-                                    <FontSize>11pt</FontSize>
+                                    <FontSize>12pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                     <TextDecoration>None</TextDecoration>
                                     <Color>#000000</Color>
@@ -1148,7 +1207,7 @@
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Angsana New</FontFamily>
-                                    <FontSize>11pt</FontSize>
+                                    <FontSize>12pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                     <TextDecoration>None</TextDecoration>
                                     <Color>#000000</Color>
@@ -1187,7 +1246,8 @@
                                   <Value>=Fields!SalesbeforeGST.Value</Value>
                                   <Style>
                                     <FontFamily>Angsana New</FontFamily>
-                                    <FontSize>11pt</FontSize>
+                                    <FontSize>12pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
                                     <Format>#,0.00;(#,0.00);''</Format>
                                   </Style>
                                 </TextRun>
@@ -1232,7 +1292,7 @@
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Angsana New</FontFamily>
-                                    <FontSize>11pt</FontSize>
+                                    <FontSize>12pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                     <TextDecoration>None</TextDecoration>
                                     <Color>#000000</Color>
@@ -1276,7 +1336,7 @@
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Angsana New</FontFamily>
-                                    <FontSize>11pt</FontSize>
+                                    <FontSize>12pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                     <TextDecoration>None</TextDecoration>
                                     <Color>#000000</Color>
@@ -1317,7 +1377,7 @@
                                   <Value />
                                   <Style>
                                     <FontFamily>Angsana New</FontFamily>
-                                    <FontSize>11pt</FontSize>
+                                    <FontSize>12pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1351,7 +1411,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.4in</Height>
+                  <Height>0.475in</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -1365,7 +1425,7 @@
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Angsana New</FontFamily>
-                                    <FontSize>11pt</FontSize>
+                                    <FontSize>12pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                     <TextDecoration>None</TextDecoration>
                                     <Color>#000000</Color>
@@ -1383,7 +1443,7 @@
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Angsana New</FontFamily>
-                                    <FontSize>11pt</FontSize>
+                                    <FontSize>12pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                     <TextDecoration>None</TextDecoration>
                                     <Color>#000000</Color>
@@ -1488,9 +1548,9 @@
               </TablixMembers>
             </TablixRowHierarchy>
             <DataSetName>DataSet_Result</DataSetName>
-            <Top>0.14389in</Top>
+            <Top>0.08139in</Top>
             <Left>0.14583in</Left>
-            <Height>2.55832in</Height>
+            <Height>2.79999in</Height>
             <Width>7.94583in</Width>
             <Style>
               <Border>
@@ -1509,7 +1569,7 @@
                     <Style>
                       <FontStyle>Normal</FontStyle>
                       <FontFamily>Angsana New</FontFamily>
-                      <FontSize>11pt</FontSize>
+                      <FontSize>12pt</FontSize>
                       <FontWeight>Normal</FontWeight>
                       <TextDecoration>None</TextDecoration>
                       <Color>#000000</Color>
@@ -1527,7 +1587,7 @@
                     <Style>
                       <FontStyle>Normal</FontStyle>
                       <FontFamily>Angsana New</FontFamily>
-                      <FontSize>11pt</FontSize>
+                      <FontSize>12pt</FontSize>
                       <FontWeight>Normal</FontWeight>
                       <TextDecoration>None</TextDecoration>
                       <Color>#000000</Color>
@@ -1545,7 +1605,7 @@
                     <Style>
                       <FontStyle>Normal</FontStyle>
                       <FontFamily>Angsana New</FontFamily>
-                      <FontSize>11pt</FontSize>
+                      <FontSize>12pt</FontSize>
                       <FontWeight>Normal</FontWeight>
                       <TextDecoration>None</TextDecoration>
                       <Color>#000000</Color>
@@ -1558,9 +1618,9 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox1</rd:DefaultName>
-            <Top>2.74667in</Top>
+            <Top>2.94667in</Top>
             <Left>0.14583in</Left>
-            <Height>0.65833in</Height>
+            <Height>0.69055in</Height>
             <Width>3.91249in</Width>
             <ZIndex>1</ZIndex>
             <Style>
@@ -1600,7 +1660,7 @@
                     <Style>
                       <FontStyle>Normal</FontStyle>
                       <FontFamily>Angsana New</FontFamily>
-                      <FontSize>11pt</FontSize>
+                      <FontSize>12pt</FontSize>
                       <FontWeight>Normal</FontWeight>
                       <TextDecoration>None</TextDecoration>
                       <Color>#000000</Color>
@@ -1618,7 +1678,7 @@
                     <Style>
                       <FontStyle>Normal</FontStyle>
                       <FontFamily>Angsana New</FontFamily>
-                      <FontSize>11pt</FontSize>
+                      <FontSize>12pt</FontSize>
                       <FontWeight>Normal</FontWeight>
                       <TextDecoration>None</TextDecoration>
                       <Color>#000000</Color>
@@ -1636,7 +1696,7 @@
                     <Style>
                       <FontStyle>Normal</FontStyle>
                       <FontFamily>Angsana New</FontFamily>
-                      <FontSize>11pt</FontSize>
+                      <FontSize>12pt</FontSize>
                       <FontWeight>Normal</FontWeight>
                       <TextDecoration>None</TextDecoration>
                       <Color>#000000</Color>
@@ -1649,10 +1709,10 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox1</rd:DefaultName>
-            <Top>2.74388in</Top>
-            <Left>4.09166in</Left>
-            <Height>0.65833in</Height>
-            <Width>4in</Width>
+            <Top>2.94667in</Top>
+            <Left>4.12776in</Left>
+            <Height>0.69055in</Height>
+            <Width>3.9639in</Width>
             <ZIndex>2</ZIndex>
             <Style>
               <Border>
@@ -1691,7 +1751,7 @@
                     <Style>
                       <FontStyle>Normal</FontStyle>
                       <FontFamily>Angsana New</FontFamily>
-                      <FontSize>11pt</FontSize>
+                      <FontSize>12pt</FontSize>
                       <FontWeight>Normal</FontWeight>
                       <TextDecoration>None</TextDecoration>
                       <Color>#000000</Color>
@@ -1709,7 +1769,7 @@
                     <Style>
                       <FontStyle>Normal</FontStyle>
                       <FontFamily>Angsana New</FontFamily>
-                      <FontSize>11pt</FontSize>
+                      <FontSize>12pt</FontSize>
                       <FontWeight>Normal</FontWeight>
                       <TextDecoration>None</TextDecoration>
                       <Color>#000000</Color>
@@ -1722,9 +1782,9 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox1</rd:DefaultName>
-            <Top>3.52611in</Top>
+            <Top>3.68861in</Top>
             <Left>0.15in</Left>
-            <Height>0.40833in</Height>
+            <Height>0.425in</Height>
             <Width>7.94166in</Width>
             <ZIndex>3</ZIndex>
             <Style>
@@ -1734,21 +1794,21 @@
             </Style>
           </Textbox>
         </ReportItems>
-        <Height>4.04389in</Height>
+        <Height>4.16056in</Height>
         <Style />
       </Body>
-      <Width>8.2125in</Width>
+      <Width>8.12917in</Width>
       <Page>
         <PageHeader>
-          <Height>4.41944in</Height>
+          <Height>4.59444in</Height>
           <PrintOnFirstPage>true</PrintOnFirstPage>
           <PrintOnLastPage>true</PrintOnLastPage>
           <ReportItems>
             <Rectangle Name="Rectangle2">
               <KeepTogether>true</KeepTogether>
-              <Top>3.44028in</Top>
+              <Top>3.46528in</Top>
               <Left>0.15in</Left>
-              <Height>0.9236in</Height>
+              <Height>0.9736in</Height>
               <Width>7.94166in</Width>
               <Style>
                 <Border>
@@ -1777,10 +1837,42 @@
               </Style>
             </Rectangle>
             <Rectangle Name="Rectangle1">
+              <ReportItems>
+                <Textbox Name="Textbox25">
+                  <KeepTogether>true</KeepTogether>
+                  <Paragraphs>
+                    <Paragraph>
+                      <TextRuns>
+                        <TextRun>
+                          <Value>=Globals!PageNumber</Value>
+                          <Style>
+                            <FontFamily>AngsanaUPC</FontFamily>
+                            <FontSize>11pt</FontSize>
+                            <FontWeight>Normal</FontWeight>
+                          </Style>
+                        </TextRun>
+                      </TextRuns>
+                      <Style>
+                        <TextAlign>Left</TextAlign>
+                      </Style>
+                    </Paragraph>
+                  </Paragraphs>
+                  <rd:DefaultName>Textbox1</rd:DefaultName>
+                  <Top>0.09444in</Top>
+                  <Left>7.49306in</Left>
+                  <Height>0.2in</Height>
+                  <Width>0.36389in</Width>
+                  <Style>
+                    <Border>
+                      <Style>None</Style>
+                    </Border>
+                  </Style>
+                </Textbox>
+              </ReportItems>
               <KeepTogether>true</KeepTogether>
-              <Top>2.08833in</Top>
+              <Top>2.02778in</Top>
               <Left>0.15in</Left>
-              <Height>1.32417in</Height>
+              <Height>1.38472in</Height>
               <Width>7.94166in</Width>
               <ZIndex>1</ZIndex>
               <Style>
@@ -1819,7 +1911,7 @@
                       <Value>ใบเสร็จรับเงิน / ใบกำกับภาษี</Value>
                       <Style>
                         <FontFamily>AngsanaUPC</FontFamily>
-                        <FontSize>14pt</FontSize>
+                        <FontSize>15pt</FontSize>
                         <FontWeight>Bold</FontWeight>
                       </Style>
                     </TextRun>
@@ -1851,7 +1943,7 @@
                       <Value>Receipt / Tax Invoice</Value>
                       <Style>
                         <FontFamily>AngsanaUPC</FontFamily>
-                        <FontSize>14pt</FontSize>
+                        <FontSize>15pt</FontSize>
                         <FontWeight>Bold</FontWeight>
                       </Style>
                     </TextRun>
@@ -1883,7 +1975,7 @@
                       <Value>ลูกค้า</Value>
                       <Style>
                         <FontFamily>AngsanaUPC</FontFamily>
-                        <FontSize>14pt</FontSize>
+                        <FontSize>15pt</FontSize>
                         <FontWeight>Bold</FontWeight>
                       </Style>
                     </TextRun>
@@ -1935,7 +2027,7 @@
                       <Value>สาขาที่ออกใบกำกับภาษี</Value>
                       <Style>
                         <FontFamily>AngsanaUPC</FontFamily>
-                        <FontSize>12pt</FontSize>
+                        <FontSize>15pt</FontSize>
                         <FontWeight>Normal</FontWeight>
                       </Style>
                     </TextRun>
@@ -1964,10 +2056,10 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>สำนักงานใหญ่</Value>
+                      <Value>=First(Fields!Branch.Value, "DataSet_Result")</Value>
                       <Style>
                         <FontFamily>AngsanaUPC</FontFamily>
-                        <FontSize>12pt</FontSize>
+                        <FontSize>15pt</FontSize>
                         <FontWeight>Normal</FontWeight>
                       </Style>
                     </TextRun>
@@ -1999,7 +2091,7 @@
                       <Value>=First(Fields!CompName.Value, "DataSet_Result")</Value>
                       <Style>
                         <FontFamily>AngsanaUPC</FontFamily>
-                        <FontSize>14pt</FontSize>
+                        <FontSize>15pt</FontSize>
                         <FontWeight>Normal</FontWeight>
                       </Style>
                     </TextRun>
@@ -2031,7 +2123,7 @@
                       <Value>=First(Fields!CompName2.Value, "DataSet_Result")</Value>
                       <Style>
                         <FontFamily>AngsanaUPC</FontFamily>
-                        <FontSize>14pt</FontSize>
+                        <FontSize>15pt</FontSize>
                         <FontWeight>Normal</FontWeight>
                       </Style>
                     </TextRun>
@@ -2063,7 +2155,7 @@
                       <Value>เลขประจำตัวผู้เสียภาษี</Value>
                       <Style>
                         <FontFamily>AngsanaUPC</FontFamily>
-                        <FontSize>12pt</FontSize>
+                        <FontSize>15pt</FontSize>
                         <FontWeight>Normal</FontWeight>
                       </Style>
                     </TextRun>
@@ -2095,7 +2187,7 @@
                       <Value>=First(Fields!CompAddress.Value, "DataSet_Result")</Value>
                       <Style>
                         <FontFamily>AngsanaUPC</FontFamily>
-                        <FontSize>12pt</FontSize>
+                        <FontSize>15pt</FontSize>
                         <FontWeight>Normal</FontWeight>
                       </Style>
                     </TextRun>
@@ -2127,7 +2219,7 @@
                       <Value>=First(Fields!CompAddress2.Value, "DataSet_Result")</Value>
                       <Style>
                         <FontFamily>AngsanaUPC</FontFamily>
-                        <FontSize>12pt</FontSize>
+                        <FontSize>15pt</FontSize>
                         <FontWeight>Normal</FontWeight>
                       </Style>
                     </TextRun>
@@ -2156,10 +2248,10 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>โทร.(สำนักงานใหญ่) +66 (0) 2715-6000 โทรสาร +66 (0) 2715-6016</Value>
+                      <Value>="โทร.(สำนักงานใหญ่)"+First(Fields!PhoneNo.Value, "DataSet_Result")+" โทรสาร "+First(Fields!faxNo.Value, "DataSet_Result")</Value>
                       <Style>
                         <FontFamily>AngsanaUPC</FontFamily>
-                        <FontSize>12pt</FontSize>
+                        <FontSize>15pt</FontSize>
                         <FontWeight>Normal</FontWeight>
                       </Style>
                     </TextRun>
@@ -2173,7 +2265,7 @@
               <Top>1.72222in</Top>
               <Left>0.15in</Left>
               <Height>0.25in</Height>
-              <Width>3.71667in</Width>
+              <Width>4.32083in</Width>
               <ZIndex>12</ZIndex>
               <Style>
                 <Border>
@@ -2190,7 +2282,7 @@
                       <Value>เลขที่</Value>
                       <Style>
                         <FontFamily>AngsanaUPC</FontFamily>
-                        <FontSize>11pt</FontSize>
+                        <FontSize>12pt</FontSize>
                         <FontWeight>Normal</FontWeight>
                       </Style>
                     </TextRun>
@@ -2222,7 +2314,7 @@
                       <Value>No.</Value>
                       <Style>
                         <FontFamily>AngsanaUPC</FontFamily>
-                        <FontSize>11pt</FontSize>
+                        <FontSize>12pt</FontSize>
                         <FontWeight>Normal</FontWeight>
                       </Style>
                     </TextRun>
@@ -2253,7 +2345,7 @@
                       <Value>Ref</Value>
                       <Style>
                         <FontFamily>AngsanaUPC</FontFamily>
-                        <FontSize>11pt</FontSize>
+                        <FontSize>12pt</FontSize>
                         <FontWeight>Normal</FontWeight>
                       </Style>
                     </TextRun>
@@ -2284,7 +2376,7 @@
                       <Value>ผู้ซื้อ</Value>
                       <Style>
                         <FontFamily>AngsanaUPC</FontFamily>
-                        <FontSize>11pt</FontSize>
+                        <FontSize>12pt</FontSize>
                         <FontWeight>Normal</FontWeight>
                       </Style>
                     </TextRun>
@@ -2315,7 +2407,7 @@
                       <Value>PO :</Value>
                       <Style>
                         <FontFamily>AngsanaUPC</FontFamily>
-                        <FontSize>11pt</FontSize>
+                        <FontSize>12pt</FontSize>
                         <FontWeight>Normal</FontWeight>
                       </Style>
                     </TextRun>
@@ -2347,7 +2439,7 @@
                       <Value>วันที่</Value>
                       <Style>
                         <FontFamily>AngsanaUPC</FontFamily>
-                        <FontSize>11pt</FontSize>
+                        <FontSize>12pt</FontSize>
                         <FontWeight>Normal</FontWeight>
                       </Style>
                     </TextRun>
@@ -2378,7 +2470,7 @@
                       <Value>DATE</Value>
                       <Style>
                         <FontFamily>AngsanaUPC</FontFamily>
-                        <FontSize>11pt</FontSize>
+                        <FontSize>12pt</FontSize>
                         <FontWeight>Normal</FontWeight>
                       </Style>
                     </TextRun>
@@ -2409,7 +2501,7 @@
                       <Value>Page(s) :</Value>
                       <Style>
                         <FontFamily>AngsanaUPC</FontFamily>
-                        <FontSize>11pt</FontSize>
+                        <FontSize>12pt</FontSize>
                         <FontWeight>Normal</FontWeight>
                       </Style>
                     </TextRun>
@@ -2440,7 +2532,7 @@
                       <Value>ที่อยู่</Value>
                       <Style>
                         <FontFamily>AngsanaUPC</FontFamily>
-                        <FontSize>11pt</FontSize>
+                        <FontSize>12pt</FontSize>
                         <FontWeight>Normal</FontWeight>
                       </Style>
                     </TextRun>
@@ -2471,7 +2563,7 @@
                       <Value>Tel :</Value>
                       <Style>
                         <FontFamily>AngsanaUPC</FontFamily>
-                        <FontSize>11pt</FontSize>
+                        <FontSize>12pt</FontSize>
                         <FontWeight>Normal</FontWeight>
                       </Style>
                     </TextRun>
@@ -2502,7 +2594,7 @@
                       <Value>=First(Fields!DocNo.Value, "DataSet_Result")+" ("+First(Fields!MarketPlace.Value, "DataSet_Result")+")"</Value>
                       <Style>
                         <FontFamily>AngsanaUPC</FontFamily>
-                        <FontSize>11pt</FontSize>
+                        <FontSize>12pt</FontSize>
                         <FontWeight>Normal</FontWeight>
                       </Style>
                     </TextRun>
@@ -2533,7 +2625,7 @@
                       <Value>=First(Fields!DocNo.Value, "DataSet_Result")</Value>
                       <Style>
                         <FontFamily>AngsanaUPC</FontFamily>
-                        <FontSize>11pt</FontSize>
+                        <FontSize>12pt</FontSize>
                         <FontWeight>Normal</FontWeight>
                       </Style>
                     </TextRun>
@@ -2564,7 +2656,7 @@
                       <Value>=First(Fields!HeaderDocNo.Value, "DataSet_Result")</Value>
                       <Style>
                         <FontFamily>AngsanaUPC</FontFamily>
-                        <FontSize>11pt</FontSize>
+                        <FontSize>12pt</FontSize>
                         <FontWeight>Normal</FontWeight>
                       </Style>
                     </TextRun>
@@ -2586,37 +2678,6 @@
                 </Border>
               </Style>
             </Textbox>
-            <Textbox Name="Textbox25">
-              <KeepTogether>true</KeepTogether>
-              <Paragraphs>
-                <Paragraph>
-                  <TextRuns>
-                    <TextRun>
-                      <Value>=Globals!PageNumber</Value>
-                      <Style>
-                        <FontFamily>AngsanaUPC</FontFamily>
-                        <FontSize>11pt</FontSize>
-                        <FontWeight>Normal</FontWeight>
-                      </Style>
-                    </TextRun>
-                  </TextRuns>
-                  <Style>
-                    <TextAlign>Left</TextAlign>
-                  </Style>
-                </Paragraph>
-              </Paragraphs>
-              <rd:DefaultName>Textbox1</rd:DefaultName>
-              <Top>2.12222in</Top>
-              <Left>7.62917in</Left>
-              <Height>0.2in</Height>
-              <Width>0.36389in</Width>
-              <ZIndex>26</ZIndex>
-              <Style>
-                <Border>
-                  <Style>None</Style>
-                </Border>
-              </Style>
-            </Textbox>
             <Textbox Name="Textbox26">
               <KeepTogether>true</KeepTogether>
               <Paragraphs>
@@ -2626,7 +2687,7 @@
                       <Value>=First(Fields!Sell_to_Customer_Name.Value, "DataSet_Result")</Value>
                       <Style>
                         <FontFamily>AngsanaUPC</FontFamily>
-                        <FontSize>11pt</FontSize>
+                        <FontSize>12pt</FontSize>
                         <FontWeight>Normal</FontWeight>
                       </Style>
                     </TextRun>
@@ -2641,7 +2702,7 @@
               <Left>0.47361in</Left>
               <Height>0.2in</Height>
               <Width>4.58888in</Width>
-              <ZIndex>27</ZIndex>
+              <ZIndex>26</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -2657,7 +2718,7 @@
                       <Value>=First(Fields!DocDate.Value, "DataSet_Result")</Value>
                       <Style>
                         <FontFamily>AngsanaUPC</FontFamily>
-                        <FontSize>11pt</FontSize>
+                        <FontSize>12pt</FontSize>
                         <FontWeight>Normal</FontWeight>
                         <Format>d</Format>
                       </Style>
@@ -2673,7 +2734,7 @@
               <Left>4.27916in</Left>
               <Height>0.2in</Height>
               <Width>0.975in</Width>
-              <ZIndex>28</ZIndex>
+              <ZIndex>27</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -2689,7 +2750,7 @@
                       <Value>=First(Fields!ShopifyPaymentMethod.Value, "DataSet_Result")</Value>
                       <Style>
                         <FontFamily>AngsanaUPC</FontFamily>
-                        <FontSize>11pt</FontSize>
+                        <FontSize>12pt</FontSize>
                         <FontWeight>Normal</FontWeight>
                       </Style>
                     </TextRun>
@@ -2704,7 +2765,7 @@
               <Left>5.675in</Left>
               <Height>0.2in</Height>
               <Width>1.7in</Width>
-              <ZIndex>29</ZIndex>
+              <ZIndex>28</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -2720,7 +2781,7 @@
                       <Value>เลขประจำตัวผู้เสียภาษี</Value>
                       <Style>
                         <FontFamily>AngsanaUPC</FontFamily>
-                        <FontSize>11pt</FontSize>
+                        <FontSize>12pt</FontSize>
                         <FontWeight>Normal</FontWeight>
                       </Style>
                     </TextRun>
@@ -2735,7 +2796,7 @@
               <Left>5.675in</Left>
               <Height>0.2in</Height>
               <Width>1.10833in</Width>
-              <ZIndex>30</ZIndex>
+              <ZIndex>29</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -2748,10 +2809,10 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value />
+                      <Value>=First(Fields!VatRegNo.Value, "DataSet_Result")</Value>
                       <Style>
                         <FontFamily>AngsanaUPC</FontFamily>
-                        <FontSize>11pt</FontSize>
+                        <FontSize>12pt</FontSize>
                         <FontWeight>Normal</FontWeight>
                       </Style>
                     </TextRun>
@@ -2766,7 +2827,7 @@
               <Left>6.68611in</Left>
               <Height>0.2in</Height>
               <Width>1.28056in</Width>
-              <ZIndex>31</ZIndex>
+              <ZIndex>30</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -2782,7 +2843,7 @@
                       <Value>=First(Fields!Sell_to_Address.Value, "DataSet_Result")+" "+First(Fields!Sell_to_Address_2.Value, "DataSet_Result")+" "+First(Fields!Sell_to_City.Value, "DataSet_Result")+" "+First(Fields!Sell_to_Post_Code.Value, "DataSet_Result")</Value>
                       <Style>
                         <FontFamily>AngsanaUPC</FontFamily>
-                        <FontSize>11pt</FontSize>
+                        <FontSize>12pt</FontSize>
                         <FontWeight>Normal</FontWeight>
                       </Style>
                     </TextRun>
@@ -2797,7 +2858,7 @@
               <Left>0.46944in</Left>
               <Height>0.2in</Height>
               <Width>7.49723in</Width>
-              <ZIndex>32</ZIndex>
+              <ZIndex>31</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -2813,7 +2874,7 @@
                       <Value>=First(Fields!Sell_to_Phone_No_.Value, "DataSet_Result")</Value>
                       <Style>
                         <FontFamily>AngsanaUPC</FontFamily>
-                        <FontSize>11pt</FontSize>
+                        <FontSize>12pt</FontSize>
                         <FontWeight>Normal</FontWeight>
                       </Style>
                     </TextRun>
@@ -2828,7 +2889,7 @@
               <Left>0.44167in</Left>
               <Height>0.2in</Height>
               <Width>1.37223in</Width>
-              <ZIndex>33</ZIndex>
+              <ZIndex>32</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -2844,7 +2905,7 @@
                       <Value>=First(Fields!Branch.Value, "DataSet_Result")</Value>
                       <Style>
                         <FontFamily>AngsanaUPC</FontFamily>
-                        <FontSize>11pt</FontSize>
+                        <FontSize>12pt</FontSize>
                         <FontWeight>Normal</FontWeight>
                       </Style>
                     </TextRun>
@@ -2859,7 +2920,7 @@
               <Left>5.875in</Left>
               <Height>0.2in</Height>
               <Width>1.14861in</Width>
-              <ZIndex>34</ZIndex>
+              <ZIndex>33</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -2875,7 +2936,7 @@
                       <Value>ที่อยู่จัดส่ง</Value>
                       <Style>
                         <FontFamily>AngsanaUPC</FontFamily>
-                        <FontSize>11pt</FontSize>
+                        <FontSize>12pt</FontSize>
                         <FontWeight>Normal</FontWeight>
                       </Style>
                     </TextRun>
@@ -2886,11 +2947,11 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox1</rd:DefaultName>
-              <Top>3.46806in</Top>
+              <Top>3.51806in</Top>
               <Left>0.2in</Left>
               <Height>0.2in</Height>
               <Width>1.4in</Width>
-              <ZIndex>35</ZIndex>
+              <ZIndex>34</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -2906,7 +2967,7 @@
                       <Value>ผู้ซื้อ</Value>
                       <Style>
                         <FontFamily>AngsanaUPC</FontFamily>
-                        <FontSize>11pt</FontSize>
+                        <FontSize>12pt</FontSize>
                         <FontWeight>Normal</FontWeight>
                       </Style>
                     </TextRun>
@@ -2917,11 +2978,11 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox1</rd:DefaultName>
-              <Top>3.69583in</Top>
+              <Top>3.74583in</Top>
               <Left>0.19583in</Left>
               <Height>0.2in</Height>
               <Width>0.24167in</Width>
-              <ZIndex>36</ZIndex>
+              <ZIndex>35</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -2937,7 +2998,7 @@
                       <Value>ที่อยู่</Value>
                       <Style>
                         <FontFamily>AngsanaUPC</FontFamily>
-                        <FontSize>11pt</FontSize>
+                        <FontSize>12pt</FontSize>
                         <FontWeight>Normal</FontWeight>
                       </Style>
                     </TextRun>
@@ -2948,11 +3009,11 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox1</rd:DefaultName>
-              <Top>3.89583in</Top>
+              <Top>3.94583in</Top>
               <Left>0.19583in</Left>
               <Height>0.2in</Height>
               <Width>0.24167in</Width>
-              <ZIndex>37</ZIndex>
+              <ZIndex>36</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -2968,7 +3029,7 @@
                       <Value>=First(Fields!shipName.Value, "DataSet_Result")</Value>
                       <Style>
                         <FontFamily>AngsanaUPC</FontFamily>
-                        <FontSize>11pt</FontSize>
+                        <FontSize>12pt</FontSize>
                         <FontWeight>Normal</FontWeight>
                       </Style>
                     </TextRun>
@@ -2979,11 +3040,11 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox1</rd:DefaultName>
-              <Top>3.69166in</Top>
+              <Top>3.74166in</Top>
               <Left>0.46944in</Left>
               <Height>0.2in</Height>
               <Width>4.58888in</Width>
-              <ZIndex>38</ZIndex>
+              <ZIndex>37</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -2999,7 +3060,7 @@
                       <Value>=First(Fields!shipadd1.Value, "DataSet_Result")+" "+First(Fields!shipadd2.Value, "DataSet_Result")+" "+First(Fields!shipcity.Value, "DataSet_Result")+" "+First(Fields!shippostcode.Value, "DataSet_Result")</Value>
                       <Style>
                         <FontFamily>AngsanaUPC</FontFamily>
-                        <FontSize>11pt</FontSize>
+                        <FontSize>12pt</FontSize>
                         <FontWeight>Normal</FontWeight>
                       </Style>
                     </TextRun>
@@ -3010,11 +3071,11 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox1</rd:DefaultName>
-              <Top>3.89166in</Top>
+              <Top>3.94166in</Top>
               <Left>0.46527in</Left>
               <Height>0.2in</Height>
               <Width>7.49723in</Width>
-              <ZIndex>39</ZIndex>
+              <ZIndex>38</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -3030,7 +3091,7 @@
                       <Value>=First(Fields!Sell_to_Phone_No_.Value, "DataSet_Result")</Value>
                       <Style>
                         <FontFamily>AngsanaUPC</FontFamily>
-                        <FontSize>11pt</FontSize>
+                        <FontSize>12pt</FontSize>
                         <FontWeight>Normal</FontWeight>
                       </Style>
                     </TextRun>
@@ -3041,11 +3102,11 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox1</rd:DefaultName>
-              <Top>4.10972in</Top>
+              <Top>4.15972in</Top>
               <Left>0.45417in</Left>
               <Height>0.2in</Height>
               <Width>1.35556in</Width>
-              <ZIndex>40</ZIndex>
+              <ZIndex>39</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -3061,7 +3122,7 @@
                       <Value>Tel :</Value>
                       <Style>
                         <FontFamily>AngsanaUPC</FontFamily>
-                        <FontSize>11pt</FontSize>
+                        <FontSize>12pt</FontSize>
                         <FontWeight>Normal</FontWeight>
                       </Style>
                     </TextRun>
@@ -3072,11 +3133,11 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox1</rd:DefaultName>
-              <Top>4.10972in</Top>
+              <Top>4.15972in</Top>
               <Left>0.19583in</Left>
               <Height>0.2in</Height>
               <Width>0.24167in</Width>
-              <ZIndex>41</ZIndex>
+              <ZIndex>40</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -3404,6 +3465,9 @@ End Function
         </Field>
         <Field Name="LineDeliveryTime">
           <DataField>LineDeliveryTime</DataField>
+        </Field>
+        <Field Name="texamtth">
+          <DataField>texamtth</DataField>
         </Field>
         <Field Name="Number">
           <DataField>Number</DataField>

@@ -1,8 +1,8 @@
-codeunit 60003 "TH_WS_Integration Mgmt._SNY"
+codeunit 60003 "INT_WS_Integration Mgmt._SNY"
 {
     procedure Request(RequestJSON: Text): Text
     var
-        IntegrationMethods: Codeunit "TH_WS_Integration Methods_SNY";
+        IntegrationMethods: Codeunit "INT_WS_Integration Methods_SNY";
     begin
         IntegrationMethods.Set(requestJSON);
         if IntegrationMethods.Run() then

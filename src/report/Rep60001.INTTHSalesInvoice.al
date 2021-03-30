@@ -1,5 +1,5 @@
 
-report 60001 "TH Sales Invoice"
+report 60001 "INT_TH_Sales_Invoice"
 {
     RDLCLayout = './ReportDesign/TH_Sales_Invoice.rdl';
     Caption = 'Sales Invoice TH';
@@ -124,7 +124,7 @@ report 60001 "TH Sales Invoice"
             column(Sell_to_County; "Sell-to County") { }
             column(Sell_to_Post_Code; "Sell-to Post Code") { }
             column(Sell_to_Phone_No_; "Sell-to Phone No.") { }
-            column(Branch; 'สำนักงานใหญ่') { }
+            column(Branch; Branch) { }
             column(shipName; shipName) { }
             column(shipadd1; shipadd1) { }
             column(shipadd2; shipadd2) { }
@@ -210,6 +210,7 @@ report 60001 "TH Sales Invoice"
                 column(LineDeliveryTime; LineDeliveryTime)
                 {
                 }
+                column(texamtth; texamtth) { }
 
                 trigger OnPreDataItem()
                 var
@@ -317,10 +318,10 @@ report 60001 "TH Sales Invoice"
                     //fixline := 13;
                     //countLine := fixline - LineNo;
                     //SetRange(Number, countLine);
-                    IF countLine > 13 THEN
+                    IF countLine > 12 THEN
                         countLine := (27 - countLine)
                     ELSE
-                        countLine := 13 - countLine;
+                        countLine := 12 - countLine;
                     SETRANGE(Number, 1, countLine);
                 end;
             }
@@ -361,6 +362,10 @@ report 60001 "TH Sales Invoice"
                 SalesbeforeGST := Round((TotalSalesValue / 1.07), 0.01, '=');
                 GSTValue := Round((TotalSalesValue - SalesbeforeGST), 0.01, '=');
 
+                //TH Tex Amount
+                texamtth := TH_Even_Sub.FormatNoThaiText(TotalSalesValue);
+                //TH Tex Amount
+
                 if Discount_Target = 'all' then
                     DiscountExist := true;
 
@@ -388,6 +393,14 @@ report 60001 "TH Sales Invoice"
                     shipcity := "Sell-to City";
                     shippostcode := "Sell-to Post Code";
                 end;
+
+                if Branch <> '' then
+                    Branch := 'สาขาที่ : ' + Branch
+                else
+                    if Branch = '00000' then
+                        Branch := 'สำนักงานใหญ่'
+                    else
+                        Branch := 'สำนักงานใหญ่'
             end;
 
         }
@@ -461,5 +474,8 @@ report 60001 "TH Sales Invoice"
         shipcity: text[50];
         shippostcode: text[50];
         countLine: Integer;
+        Branch: text[50];
+        TH_Even_Sub: Codeunit "INT_Even_Sub";
+        texamtth: Text[200];
 
 }

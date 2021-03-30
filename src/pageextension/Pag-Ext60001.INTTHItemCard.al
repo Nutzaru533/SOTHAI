@@ -1,4 +1,4 @@
-pageextension 60001 "TH Item Card" extends "Item Card"
+pageextension 60001 "INT_TH_Item_Card" extends "Item Card"
 {
     layout
     {

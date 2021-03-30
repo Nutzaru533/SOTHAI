@@ -1,4 +1,4 @@
-pageextension 60005 TH_INT_FOCBundleCard_SN extends INT_FOCBundleCard_SNY
+pageextension 60005 "INT_TH_FOCBundleCard_SN" extends INT_FOCBundleCard_SNY
 {
     layout
     {

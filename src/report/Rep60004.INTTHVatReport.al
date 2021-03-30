@@ -1,4 +1,4 @@
-report 60004 "Vat Report"
+report 60004 "INT_TH_VatReport"
 {
 
     RDLCLayout = './ReportDesign/Var_report.rdl';
