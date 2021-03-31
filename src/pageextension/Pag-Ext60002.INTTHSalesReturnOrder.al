@@ -5,8 +5,9 @@ pageextension 60002 "INT_TH_Sales_Return_Order" extends "Sales Return Order"
         // Add changes to page layout here
         addafter(Status)
         {
-            field("Order Confirm"; "TH Order Confirm")
+            field("Order Confirm"; INT_Order_Confirm_SNY)
             {
+                Caption = 'Order Confrim';
                 ApplicationArea = All;
             }
         }
@@ -30,7 +31,7 @@ pageextension 60002 "INT_TH_Sales_Return_Order" extends "Sales Return Order"
                     Caption = 'Confirm Order';
                     trigger OnAction()
                     begin
-                        "TH Order Confirm" := true;
+                        "INT_Order_Confirm_SNY" := true;
                         Modify;
                     end;
                 }
@@ -43,7 +44,7 @@ pageextension 60002 "INT_TH_Sales_Return_Order" extends "Sales Return Order"
                     Caption = 'Cancel Confirm Order';
                     trigger OnAction()
                     begin
-                        "TH Order Confirm" := false;
+                        "INT_Order_Confirm_SNY" := false;
                         Modify;
                     end;
                 }
@@ -59,7 +60,7 @@ pageextension 60002 "INT_TH_Sales_Return_Order" extends "Sales Return Order"
                     var
                         NotifySAP: Codeunit INT_SAPAPI_SNY;
                     begin
-                        TestField("TH Order Confirm");
+                        TestField("INT_Order_Confirm_SNY");
                         NotifySAP.ManualNotify(Rec);
                     end;
                 }

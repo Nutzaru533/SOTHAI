@@ -5,8 +5,9 @@ pageextension 60001 "INT_TH_Item_Card" extends "Item Card"
         // Add changes to page layout here
         addafter("Purchasing Code")
         {
-            field("Exclude Discount"; "TH Exclude Discount")
+            field("Exclude Discount"; INT_Exclude_Discount_SNY)
             {
+                Caption = 'Exclude Discount';
                 ApplicationArea = all;
             }
         }

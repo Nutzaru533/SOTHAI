@@ -138,7 +138,7 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
                     INT_salesline3.SetFilter(Quantity, '>%1', 0);
                     if INT_salesline3.FindFirst then begin
                         if INT_item.get(INT_salesline3."No.") then begin
-                            if not INT_item."TH Exclude Discount" then begin
+                            if not INT_item.INT_Exclude_Discount_SNY then begin
                                 INT_salesline3.validate("Line Discount Amount", SalesHeader."Seller Voucher Amount");
                             end;
                         end;
@@ -2206,7 +2206,7 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
             INT_salesline3.SetFilter(Quantity, '>%1', 0);
             if INT_salesline3.FindFirst then begin
                 if INT_item.get(INT_salesline3."No.") then begin
-                    if not INT_item."TH Exclude Discount" then begin
+                    if not INT_item.INT_Exclude_Discount_SNY then begin
                         INT_salesline3.validate("Line Discount Amount", SalesHeader."Seller Voucher Amount");
                     end;
                 end;

@@ -3,6 +3,15 @@ pageextension 60003 "INT_TH_Sales_Order" extends "Sales Order"
     layout
     {
         // Add changes to page layout here
+        addafter("Sell-to Address 2")
+        {
+            //field("Sell-to County"; "Sell-to County")
+            //{
+            //    Caption = 'County';
+            //    ApplicationArea = all;
+            // }
+        }
+
     }
 
     actions
@@ -62,7 +71,7 @@ pageextension 60003 "INT_TH_Sales_Order" extends "Sales Order"
                     if salesline.Find('-') then
                         repeat
                             if item.get(salesline."No.") then begin
-                                if not item."TH Exclude Discount" then begin
+                                if not item.INT_Exclude_Discount_SNY then begin
                                     salesline.Validate("Line Discount Amount", "Seller Voucher Amount");
                                     salesline.Modify();
                                 end
