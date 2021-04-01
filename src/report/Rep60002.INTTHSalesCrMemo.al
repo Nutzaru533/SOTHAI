@@ -157,7 +157,7 @@ report 60002 "INT_TH_SalesCr.Memo"
             column(TotalDeliveryCharges; TotalDeliveryCharges)
             { }
             column(texamtth; texamtth) { }
-            column(Applies_to_ID; "Applies-to ID") { }
+            column(Applies_to_ID; "External Document No.") { }
             column(originnalinvamt; originnalinvamt) { }
             column(currectamt; currectamt) { }
             column(difamt; difamt) { }
@@ -413,7 +413,7 @@ report 60002 "INT_TH_SalesCr.Memo"
                 //Calculate CREDIT MEMO
                 salesH3.reset;
                 salesH3.SetRange("Document Type", salesH3."Document Type"::Order);
-                salesH3.SetRange("No.", "Applies-to ID");
+                salesH3.SetRange("External Document No.", "External Document No.");
                 if salesH3.Find('-') then begin
                     salesH3.CalcFields("Amount Including VAT");
                     originnalinvamt := salesH3."Amount Including VAT";
