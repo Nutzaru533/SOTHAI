@@ -46,7 +46,7 @@ page 60001 "INT_TH_WS_GenJSON Response_SNY"
 
                 trigger OnAction()
                 var
-                    IntegrationMgmt: Codeunit "INT_WS_Integration Mgmt._SNY";
+                    IntegrationMgmt: Codeunit "INT_WS_Integration_Mgmt_SNY";
                 begin
                     if RequestJSON = '' then exit;
                     ResponseJSON := IntegrationMgmt.Request(RequestJSON);

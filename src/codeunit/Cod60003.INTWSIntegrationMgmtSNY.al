@@ -1,4 +1,4 @@
-codeunit 60003 "INT_WS_Integration Mgmt._SNY"
+codeunit 60003 "INT_WS_Integration_Mgmt_SNY"
 {
     procedure Request(RequestJSON: Text): Text
     var

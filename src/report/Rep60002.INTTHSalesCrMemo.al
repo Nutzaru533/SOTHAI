@@ -19,6 +19,7 @@ report 60002 "INT_TH_SalesCr.Memo"
             }
             column(DocNo; "No.") { }
             column(MarketPlace; INT_MarketPlace_SNY) { }
+            column(marketSignature_SNY; marketplace.INT_Signature_SNY) { }
             column(HeaderDocNo; "External Document No.")
             {
             }
@@ -124,7 +125,8 @@ report 60002 "INT_TH_SalesCr.Memo"
             column(Sell_to_County; "Sell-to County") { }
             column(Sell_to_Post_Code; "Sell-to Post Code") { }
             column(Sell_to_Phone_No_; "Sell-to Phone No.") { }
-            column(Branch; Branch) { }
+            column(Branch; ShowBranch) { }
+            column(Companybranch; Companybranch) { }
             column(shipName; shipName) { }
             column(shipadd1; shipadd1) { }
             column(shipadd2; shipadd2) { }
@@ -390,39 +392,52 @@ report 60002 "INT_TH_SalesCr.Memo"
                     shipadd1 := "Ship-to Address";
                     shipadd2 := "Ship-to Address 2";
                     shipcity := "Ship-to City";
+                    shipCountry := "Ship-to County";
                     shippostcode := "Ship-to Post Code";
                 end else begin
-                    shipName := "Sell-to Customer Name";
-                    shipadd1 := "Sell-to Address";
-                    shipadd2 := "Sell-to Address 2";
-                    shipcity := "Sell-to City";
-                    shippostcode := "Sell-to Post Code";
+                    shipName := "bill-to Name";
+                    shipadd1 := "bill-to Address";
+                    shipadd2 := "bill-to Address 2";
+                    shipcity := "bill-to City";
+                    shipCountry := "Bill-to County";
+                    shippostcode := "bill-to Post Code";
                 end;
 
-                if Branch <> '' then
-                    Branch := 'สาขาที่ : ' + Branch
+                if "Branch No." <> '' then
+                    ShowBranch := 'สาขาที่ : ' + "Branch No."
                 else
-                    if Branch = '00000' then
-                        Branch := 'สำนักงานใหญ่'
+                    if "Branch No." = '00000' then
+                        ShowBranch := 'สำนักงานใหญ่'
                     else
-                        Branch := 'สำนักงานใหญ่';
+                        ShowBranch := 'สำนักงานใหญ่';
+
+                Companybranch := 'สำนักงานใหญ่';
                 //TH Tex Amount
                 texamtth := TH_Even_Sub.FormatNoThaiText(TotalSalesValue);
                 //TH Tex Amount
 
                 //Calculate CREDIT MEMO
+
                 salesH3.reset;
                 salesH3.SetRange("Document Type", salesH3."Document Type"::Order);
                 salesH3.SetRange("External Document No.", "External Document No.");
                 if salesH3.Find('-') then begin
-                    salesH3.CalcFields("Amount Including VAT");
-                    originnalinvamt := salesH3."Amount Including VAT";
-                    currectamt := TotalSalesValue;
-                    difamt := abs(TotalSalesValue - originnalinvamt);
-                    vatdif := round((difamt * 7) / 100);
-                    totalcramt := difamt + vatdif;
+                    if salesH3."External Document No." <> '' then begin
+                        salesH3.CalcFields("Amount Including VAT");
+                        originnalinvamt := salesH3."Amount Including VAT";
+                        currectamt := TotalSalesValue;
+                        difamt := abs(TotalSalesValue - originnalinvamt);
+                        vatdif := round((difamt * 7) / 100);
+                        totalcramt := difamt + vatdif;
+                    end;
                 end;
                 //Calculate CREDIT MEMO
+
+                marketplace.reset;
+                marketplace.SetRange(marketplace, INT_MarketPlace_SNY);
+                if marketplace.Find('-') then begin
+                    marketplace.CalcFields(INT_Signature_SNY);
+                end;
             end;
 
         }
@@ -494,10 +509,11 @@ report 60002 "INT_TH_SalesCr.Memo"
         shipadd1: text[50];
         shipadd2: text[50];
         shipcity: text[50];
+        shipCountry: text[50];
         shippostcode: text[50];
         countLine: Integer;
-        Branch: text[50];
-        TH_Even_Sub: Codeunit "INT_Even_Sub";
+        ShowBranch: text[50];
+        TH_Even_Sub: Codeunit INT_Even_Sub_SNY;
         texamtth: Text[200];
 
         originnalinvamt: Decimal;
@@ -506,5 +522,6 @@ report 60002 "INT_TH_SalesCr.Memo"
         vatdif: Decimal;
         totalcramt: Decimal;
         salesH3: Record "Sales Header";
-
+        marketplace: Record INT_MarketPlaces_SNY;
+        Companybranch: Text[50];
 }

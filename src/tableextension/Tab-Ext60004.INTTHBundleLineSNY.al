@@ -1,4 +1,4 @@
-tableextension 60004 "INT_TH_BundleLine" extends INT_BundleLine_SNY
+tableextension 60004 "INT_TH_BundleLine_SNY" extends INT_BundleLine_SNY
 {
     fields
     {

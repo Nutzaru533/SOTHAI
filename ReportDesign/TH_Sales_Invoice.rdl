@@ -1799,6 +1799,22 @@
               </Border>
             </Style>
           </Textbox>
+          <Image Name="Image1">
+            <Source>Database</Source>
+            <Value>=First(Fields!markeINT_Signature_SNY.Value, "DataSet_Result")</Value>
+            <MIMEType>image/jpeg</MIMEType>
+            <Sizing>FitProportional</Sizing>
+            <Top>2.95917in</Top>
+            <Left>4.75in</Left>
+            <Height>0.43056in</Height>
+            <Width>2.87917in</Width>
+            <ZIndex>4</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+            </Style>
+          </Image>
         </ReportItems>
         <Height>4.27723in</Height>
         <Style />
@@ -2093,7 +2109,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=First(Fields!Branch.Value, "DataSet_Result")</Value>
+                      <Value>=First(Fields!Companybranch.Value, "DataSet_Result")</Value>
                       <Style>
                         <FontFamily>AngsanaUPC</FontFamily>
                         <FontSize>15pt</FontSize>
@@ -2189,7 +2205,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>เลขประจำตัวผู้เสียภาษี</Value>
+                      <Value>="เลขประจำตัวผู้เสียภาษี "+First(Fields!VatRegNo.Value, "DataSet_Result")</Value>
                       <Style>
                         <FontFamily>AngsanaUPC</FontFamily>
                         <FontSize>15pt</FontSize>
@@ -2815,7 +2831,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=First(Fields!VatRegNo.Value, "DataSet_Result")</Value>
+                      <Value>=First(Fields!VAT_Registration_No_.Value, "DataSet_Result")</Value>
                       <Style>
                         <FontFamily>AngsanaUPC</FontFamily>
                         <FontSize>12pt</FontSize>
@@ -2846,7 +2862,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=First(Fields!Sell_to_Address.Value, "DataSet_Result")+" "+First(Fields!Sell_to_Address_2.Value, "DataSet_Result")+" "+First(Fields!Sell_to_City.Value, "DataSet_Result")+" "+First(Fields!Sell_to_Post_Code.Value, "DataSet_Result")</Value>
+                      <Value>=First(Fields!Sell_to_Address.Value, "DataSet_Result")+" "+First(Fields!Sell_to_Address_2.Value, "DataSet_Result")+" "+First(Fields!Sell_to_City.Value, "DataSet_Result")+" "+First(Fields!Sell_to_County.Value, "DataSet_Result")+" "+First(Fields!Sell_to_Post_Code.Value, "DataSet_Result")</Value>
                       <Style>
                         <FontFamily>AngsanaUPC</FontFamily>
                         <FontSize>12pt</FontSize>
@@ -3063,7 +3079,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=First(Fields!shipadd1.Value, "DataSet_Result")+" "+First(Fields!shipadd2.Value, "DataSet_Result")+" "+First(Fields!shipcity.Value, "DataSet_Result")+" "+First(Fields!shippostcode.Value, "DataSet_Result")</Value>
+                      <Value>=First(Fields!shipadd1.Value, "DataSet_Result")+" "+First(Fields!shipadd2.Value, "DataSet_Result")+" "+First(Fields!shipcity.Value, "DataSet_Result")+" "+First(Fields!shipCountry.Value, "DataSet_Result")+" "+First(Fields!shippostcode.Value, "DataSet_Result")</Value>
                       <Style>
                         <FontFamily>AngsanaUPC</FontFamily>
                         <FontSize>12pt</FontSize>
@@ -3214,6 +3230,9 @@ End Function
         <Field Name="MarketPlace">
           <DataField>MarketPlace</DataField>
         </Field>
+        <Field Name="markeINT_Signature_SNY">
+          <DataField>markeINT_Signature_SNY</DataField>
+        </Field>
         <Field Name="HeaderDocNo">
           <DataField>HeaderDocNo</DataField>
         </Field>
@@ -3355,6 +3374,9 @@ End Function
         <Field Name="Branch">
           <DataField>Branch</DataField>
         </Field>
+        <Field Name="Companybranch">
+          <DataField>Companybranch</DataField>
+        </Field>
         <Field Name="shipName">
           <DataField>shipName</DataField>
         </Field>
@@ -3366,6 +3388,9 @@ End Function
         </Field>
         <Field Name="shipcity">
           <DataField>shipcity</DataField>
+        </Field>
+        <Field Name="shipCountry">
+          <DataField>shipCountry</DataField>
         </Field>
         <Field Name="shippostcode">
           <DataField>shippostcode</DataField>

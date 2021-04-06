@@ -1,4 +1,4 @@
-codeunit 60000 "INT_Even_Sub"
+codeunit 60000 "INT_Even_Sub_SNY"
 {
     /*
      [EventSubscriber(ObjectType::Table, Database::"Sales Line", 'OnAfterUpdateAmounts', '', true, true)]
@@ -155,7 +155,59 @@ codeunit 60000 "INT_Even_Sub"
         EXIT(fdigit + fcount);
     end;
 
+    procedure PrintDocument(Var SalesHeader: Record "Sales Header"; Var SalesLine: Record "Sales Line")
+    var
+        MenuStringLbl: Label 'Shipping Label';
+        SelectedOption: Integer;
+        Handled: Boolean;
+    begin
+        case SalesHeader.INT_MarketPlace_SNY of
+            'LAZADA':
+                begin
+                    SelectedOption := StrMenu(MenuStringLbl, 0);
+                    if SelectedOption > 0 then
+                        case SelectedOption of
+                            1:
+                                OnPrintDocument(SalesHeader, SalesLine, 'shippingLabel', Handled);
+                            2:
+                                OnPrintDocument(SalesHeader, SalesLine, 'invoice', Handled);
+                            3:
+                                OnPrintDocument(SalesHeader, SalesLine, 'carrierManifest', Handled);
+                        End;
 
+                end;
+        /* 'SONY STORE ONLINE':
+            begin
+                Report.RunModal(70003, true, false, SalesHeader);
+            end; */
+        end;
+    end;
+
+    procedure PrintDocument(Var SalesHeader: Record "Sales Header")
+    var
+        SalesLine: Record "Sales Line";
+    begin
+        SalesLine.reset();
+        SalesLine.setrange("Document Type", SalesHeader."Document Type");
+        SalesLine.setrange("Document No.", SalesHeader."No.");
+        SalesLine.FindSet();
+        PrintDocument(SalesHeader, SalesLine);
+    end;
+
+    procedure PrintDocument(var SalesLine: Record "Sales Line"; DocumentCode: text[30])
+    Var
+        SalesHeader: Record "Sales Header";
+        Handled: Boolean;
+    begin
+        SalesHeader.get(SalesLine."Document Type", SalesLine."Document No.");
+        OnPrintDocument(SalesHeader, SalesLine, DocumentCode, Handled);
+    end;
+
+    [IntegrationEvent(true, false)]
+    procedure OnPrintDocument(Var SalesHeader: Record "Sales Header"; var SalesLine: Record "Sales Line"; DocumentCode: text[30]; var Handled: Boolean)
+    begin
+
+    end;
 
     var
         myInt: Integer;

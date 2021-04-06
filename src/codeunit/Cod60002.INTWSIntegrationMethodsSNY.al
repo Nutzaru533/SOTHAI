@@ -109,14 +109,24 @@ codeunit 60002 "INT_WS_Integration Methods_SNY"
         CompanyCodeJKeyLbl: Label 'company_code';
         SafetyStockQtyJKeyLbl: Label 'safety_stock_qty';
         InventoryTypeJKeyLbl: Label 'inventory_type';
+        SOTHAIItem: Record Item;
 
     local procedure HandleItemJnlInventory()
+    var
+        inventorysetup: Record "Inventory Setup";
+        inventoryallocation: Codeunit INT_Inventory_allocation_SNY;
     begin
         GetInterfaceSetup();
         HandleItemInfoInDataJsonArr();
         TempItemJnlLine.Reset();
         if not TempItemJnlLine.FindSet() then begin
             ResponseMsg := 'All inventory are upto date.';
+            //SOTHAI Calculate Allocation stock
+            inventorysetup.get;
+            if inventorysetup.INT_Item_Allocation_SNY then begin
+                inventoryallocation.GetDataToCalitemAllcation(ItemJnlLine, SOTHAIItem);
+            end;
+            //SOTHAI Calculate Allocation stock
             exit;
         end;
         repeat
@@ -124,6 +134,12 @@ codeunit 60002 "INT_WS_Integration Methods_SNY"
             ItemJnlLine.Insert(true);
         until TempItemJnlLine.Next() = 0;
         Codeunit.Run(Codeunit::"Item Jnl.-Post Batch", ItemJnlLine);
+        //SOTHAI Calculate Allocation stock
+        inventorysetup.get;
+        if inventorysetup.INT_Item_Allocation_SNY then begin
+            inventoryallocation.GetDataToCalitemAllcation(ItemJnlLine, SOTHAIItem);
+        end;
+        //SOTHAI Calculate Allocation stock
         ResponseMsg := 'The journal lines were successfully posted.';
     end;
 
@@ -165,6 +181,9 @@ codeunit 60002 "INT_WS_Integration Methods_SNY"
                 Item.SetRange("Location Filter", LocationCode);
                 Item.CalcFields(Inventory);
                 CurrentInventory := Item.Inventory;
+                //SOTHAI
+                SOTHAIItem := Item;
+                //SOTHAI
                 NeedToAdjInventory := CurrentInventory <> ActualQuantity;
                 if (Item.Type <> Item.Type::Inventory) then NeedToAdjInventory := false;
                 if NeedToAdjInventory then begin

@@ -19,6 +19,7 @@ report 60001 "INT_TH_Sales_Invoice"
             }
             column(DocNo; "No.") { }
             column(MarketPlace; INT_MarketPlace_SNY) { }
+            column(markeINT_Signature_SNY; marketplace.INT_Signature_SNY) { }
             column(HeaderDocNo; "External Document No.")
             {
             }
@@ -117,18 +118,20 @@ report 60001 "INT_TH_Sales_Invoice"
             { }
             column(Website; CompanyInfo.Website)
             { }
-            column(Sell_to_Customer_Name; "Sell-to Customer Name") { }
-            column(Sell_to_Address; "Sell-to Address") { }
-            column(Sell_to_Address_2; "Sell-to Address 2") { }
-            column(Sell_to_City; "Sell-to City") { }
-            column(Sell_to_County; "Sell-to County") { }
-            column(Sell_to_Post_Code; "Sell-to Post Code") { }
+            column(Sell_to_Customer_Name; "Bill-to Name") { }
+            column(Sell_to_Address; "Bill-to Address") { }
+            column(Sell_to_Address_2; "bill-to Address 2") { }
+            column(Sell_to_City; "bill-to City") { }
+            column(Sell_to_County; "bill-to County") { }
+            column(Sell_to_Post_Code; "bill-to Post Code") { }
             column(Sell_to_Phone_No_; "Sell-to Phone No.") { }
-            column(Branch; Branch) { }
+            column(Branch; showBranch) { }
+            column(Companybranch; Companybranch) { }
             column(shipName; shipName) { }
             column(shipadd1; shipadd1) { }
             column(shipadd2; shipadd2) { }
             column(shipcity; shipcity) { }
+            column(shipCountry; shipCountry) { }
             column(shippostcode; shippostcode) { }
             column(VAT_Registration_No_; "VAT Registration No.") { }
             column(TotalSalesValue; TotalSalesValue)
@@ -383,25 +386,37 @@ report 60001 "INT_TH_Sales_Invoice"
                     shipadd1 := "Ship-to Address";
                     shipadd2 := "Ship-to Address 2";
                     shipcity := "Ship-to City";
+                    shipCountry := "Ship-to County";
                     shippostcode := "Ship-to Post Code";
                 end else begin
-                    shipName := "Sell-to Customer Name";
-                    shipadd1 := "Sell-to Address";
-                    shipadd2 := "Sell-to Address 2";
-                    shipcity := "Sell-to City";
-                    shippostcode := "Sell-to Post Code";
+                    shipName := "Bill-to Name";
+                    shipadd1 := "bill-to Address";
+                    shipadd2 := "bill-to Address 2";
+                    shipcity := "bill-to City";
+                    shipCountry := "bill-to County";
+                    shippostcode := "Bill-to Post Code";
                 end;
 
-                if Branch <> '' then
-                    Branch := 'สาขาที่ : ' + Branch
+                if "Branch No." <> '' then
+                    showBranch := 'สาขาที่ : ' + "Branch No."
                 else
-                    if Branch = '00000' then
-                        Branch := 'สำนักงานใหญ่'
+                    if "Branch No." = '00000' then
+                        showBranch := 'สำนักงานใหญ่'
                     else
-                        Branch := 'สำนักงานใหญ่';
+                        showBranch := 'สำนักงานใหญ่';
+
+                //Companybranch
+                Companybranch := 'สำนักงานใหญ่';
                 //TH Tex Amount
                 texamtth := TH_Even_Sub.FormatNoThaiText(TotalSalesValue);
                 //TH Tex Amount
+
+                marketplace.reset;
+                marketplace.SetRange(marketplace, INT_MarketPlace_SNY);
+                if marketplace.Find('-') then begin
+                    marketplace.CalcFields(INT_Signature_SNY);
+                end;
+
             end;
 
         }
@@ -473,10 +488,13 @@ report 60001 "INT_TH_Sales_Invoice"
         shipadd1: text[50];
         shipadd2: text[50];
         shipcity: text[50];
+        shipCountry: Text[50];
         shippostcode: text[50];
         countLine: Integer;
-        Branch: text[50];
-        TH_Even_Sub: Codeunit "INT_Even_Sub";
+        showBranch: text[50];
+        TH_Even_Sub: Codeunit INT_Even_Sub_SNY;
         texamtth: Text[200];
+        marketplace: Record INT_MarketPlaces_SNY;
+        Companybranch: Text[50];
 
 }

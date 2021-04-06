@@ -1,4 +1,4 @@
-tableextension 60003 "INT_TH_Sales_Header" extends "Sales Header"
+tableextension 60003 "INT_TH_Sales_Header_SNY" extends "Sales Header"
 {
     fields
     {
@@ -9,6 +9,7 @@ tableextension 60003 "INT_TH_Sales_Header" extends "Sales Header"
             DataClassification = ToBeClassified;
             Editable = false;
         }
+
     }
 
     var

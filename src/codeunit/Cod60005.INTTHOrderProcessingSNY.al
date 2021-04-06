@@ -117,7 +117,7 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
                     //Commit();
                 end;
 
-                if (SalesHeader.INT_InternalProcessing_SNY in [SalesHeader.INT_InternalProcessing_SNY::"Delivery Fee", SalesHeader.INT_InternalProcessing_SNY::Presales])
+                if (SalesHeader.INT_InternalProcessing_SNY in [SalesHeader.INT_InternalProcessing_SNY::"Explode SO", SalesHeader.INT_InternalProcessing_SNY::Presales])
                         and (SalesHeader.INT_OrderType_SNY = SalesHeader.INT_OrderType_SNY::Presale) then begin
                     ProcessPreslaesOrder();
 
@@ -217,10 +217,11 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
 
                 if SalesHeader.INT_InternalProcessing_SNY = SalesHeader.INT_InternalProcessing_SNY::"Explode SO" then begin
                     //InsertDeliveryFee();
-                    //Commit();
+                    skipInsertDeliveryFee();
+                    Commit();
                 end;
 
-                if (SalesHeader.INT_InternalProcessing_SNY in [SalesHeader.INT_InternalProcessing_SNY::"Delivery Fee", SalesHeader.INT_InternalProcessing_SNY::Presales])
+                if (SalesHeader.INT_InternalProcessing_SNY in [SalesHeader.INT_InternalProcessing_SNY::"Explode SO", SalesHeader.INT_InternalProcessing_SNY::Presales])
                         and (SalesHeader.INT_OrderType_SNY = SalesHeader.INT_OrderType_SNY::Presale) then begin
                     ProcessPreslaesOrder();
 
@@ -1024,7 +1025,79 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
         SalesHeader.Modify(true);
 
     end;
+    //skip delivery fee
+    procedure skipInsertDeliveryFee()
+    var
+        SalesLine: Record "Sales Line";
+        NewSalesLine: Record "Sales Line";
+        BundleSalesLine: Record "Sales Line";
+        DeliveryModel: Record INT_DelDummyModel_SNY;
+        Item: Record Item;
+        NewLineNo: Integer;
+        HavePresales: Boolean;
+    begin
 
+        SalesLine.reset();
+        SalesLine.SetRange("Document Type", SalesHeader."Document Type");
+        SalesLine.setrange("Document No.", SalesHeader."No.");
+        SalesLine.SetRange(type, SalesLine.Type::Item);
+        // if SalesLine.FindLast() then
+        //    NewLineNo := SalesLine."Line No." + 10000
+        //else
+        //    NewLineNo := 10000;
+        //SalesLine.setrange("INT_Delivery Line_SNY", false);
+        //salesline.SetFilter(INT_DeliverFee_SNY, '>0');
+        if SalesLine.FindSet() then
+            repeat
+                if SalesLine.INT_RelatedItemType_SNY = SalesLine.INT_RelatedItemType_SNY::Virtual then
+                    Item.get(SalesLine.INT_RelatedItemNo_SNY)
+                else
+                    Item.get(SalesLine."No.");
+                item.TestField("Retail Product Code");
+                if not HavePresales then
+                    HavePresales := SalesLine.INT_OrderType_SNY = SalesLine.INT_OrderType_SNY::Presale;
+            //If not DeliveryModel.get(Item."Retail Product Code") then
+            //    Error('Define Dummy Delivery Model for Retail Prorduct Group (6D Code) %1', item."Retail Product Code");
+            /*
+            DeliveryModel.TestField("Item No.");
+            if SalesLine.INT_DeliverFee_SNY > 0 then begin
+                NewSalesLine.init();
+                NewSalesLine."Document Type" := SalesHeader."Document Type";
+                NewSalesLine."Document No." := SalesHeader."No.";
+                NewSalesLine."Line No." := NewLineNo;
+                NewSalesLine.Insert(true);
+                NewLineNo += 10000;
+                NewSalesLine.validate(type, newsalesline.type::Item);
+                NewSalesLine.validate("no.", DeliveryModel."Item No.");
+                NewSalesLine.validate(Quantity, 1);
+                NewSalesLine.validate("Unit Price", SalesLine.INT_DeliverFee_SNY);
+                NewSalesLine."INT_Delivery Line_SNY" := true;
+
+                NewSalesLine.INT_RelatedItemType_SNY := NewSalesLine.INT_RelatedItemType_SNY::"Main Delivery";
+
+                if SalesLine.INT_RelatedItemType_SNY = SalesLine.INT_RelatedItemType_SNY::Virtual then
+                    NewSalesLine.INT_RelatedItemNo_SNY := SalesLine.INT_RelatedItemNo_SNY
+                else
+                    NewSalesLine.INT_RelatedItemNo_SNY := SalesLine."No.";
+                NewSalesLine.INT_MktOrdStatus_SNY := SalesLine.INT_MktOrdStatus_SNY;
+                NewSalesLine.INT_MktOrderLineID_SNY := salesline.INT_MktOrderLineID_SNY;
+                NewSalesLine.INT_DeliveryType_SNY := SalesLine.INT_DeliveryType_SNY;
+                NewSalesLine.INT_OrderType_SNY := SalesLine.INT_OrderType_SNY;
+                NewSalesLine.INT_ItemType_SNY := SalesLine.INT_ItemType_SNY;
+                NewSalesLine.INT_OrderId_SNY := SalesLine.INT_OrderId_SNY;
+                NewSalesLine.Modify(true);
+            end;
+            */
+            until SalesLine.Next() = 0;
+        if HavePresales then begin
+            SalesHeader.INT_InternalProcessing_SNY := SalesHeader.INT_InternalProcessing_SNY::Presales;
+            SalesHeader.INT_OrderType_SNY := SalesHeader.INT_OrderType_SNY::Presale;
+        end else
+            SalesHeader.INT_InternalProcessing_SNY := SalesHeader.INT_InternalProcessing_SNY::"Inventory N/A";
+        SalesHeader.Modify(true);
+
+    end;
+    //
     procedure ProcessPreslaesOrder()
     var
         SalesLine: Record "Sales Line";
@@ -1311,13 +1384,13 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
 
         if SalesHeader.INT_InternalProcessing_SNY = SalesHeader.INT_InternalProcessing_SNY::"Explode SO" then begin
             //InsertDeliveryFee();
-            //Commit();
+            skipInsertDeliveryFee();
+            Commit();
         end;
 
-        if (SalesHeader.INT_InternalProcessing_SNY in [SalesHeader.INT_InternalProcessing_SNY::"Delivery Fee", SalesHeader.INT_InternalProcessing_SNY::Presales])
+        if (SalesHeader.INT_InternalProcessing_SNY in [SalesHeader.INT_InternalProcessing_SNY::"Explode SO", SalesHeader.INT_InternalProcessing_SNY::Presales])
                 and (SalesHeader.INT_OrderType_SNY = SalesHeader.INT_OrderType_SNY::Presale) then begin
             ProcessPreslaesOrder();
-
             Commit();
         end;
 
@@ -2182,14 +2255,13 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
         end;
 
         if SalesHeader.INT_InternalProcessing_SNY = SalesHeader.INT_InternalProcessing_SNY::"Explode SO" then begin
-            //InsertDeliveryFee2();
-            //Commit();
+            InsertDeliveryFee2();
+            Commit();
         end;
 
         if (SalesHeader.INT_InternalProcessing_SNY in [SalesHeader.INT_InternalProcessing_SNY::"Delivery Fee", SalesHeader.INT_InternalProcessing_SNY::Presales])
                 and (SalesHeader.INT_OrderType_SNY = SalesHeader.INT_OrderType_SNY::Presale) then begin
             ProcessPreslaesOrder();
-
             Commit();
         end;
 

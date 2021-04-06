@@ -8,6 +8,12 @@ tableextension 60007 "INT_T_MktPlaceItem_SNY" extends INT_MktPlaceItem_SNY
             Caption = 'Active';
             DataClassification = ToBeClassified;
         }
+        field(60008; INT_Inventory_SNY; Decimal)
+        {
+            Caption = 'Inventory';
+            DataClassification = ToBeClassified;
+        }
+
     }
 
     var
