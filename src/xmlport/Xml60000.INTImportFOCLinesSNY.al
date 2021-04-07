@@ -2,15 +2,21 @@ xmlport 60000 "INT_ImportFOCLines_SNY"
 {
     caption = 'Import FOC Lines';
     Format = VariableText;
+    Direction = Import;
     FieldSeparator = ',';
     TextEncoding = UTF8;
 
     schema
     {
-        textelement(RootNodeName)
+        textelement(Root)
         {
-            tableelement(ImpFOCLine; "Sales Header")
+            tableelement(FOCLine; Integer)
             {
+                SourceTableView = sorting(number);
+                UseTemporary = false;
+                AutoSave = false;
+                AutoReplace = false;
+
                 textelement(gType)
                 {
                     MinOccurs = Zero;
@@ -32,6 +38,8 @@ xmlport 60000 "INT_ImportFOCLines_SNY"
                 textelement(gUOM)
                 {
                 }
+                textelement(gQty)
+                { }
                 textelement(gSRP_Price)
                 {
                 }
@@ -50,10 +58,6 @@ xmlport 60000 "INT_ImportFOCLines_SNY"
                 textelement(gFreeGiftID)
                 {
                 }
-                textelement(gBCustomerNo)
-                {
-                    MinOccurs = Zero;
-                }
                 textelement(gRelatedItemNo)
                 {
                 }
@@ -62,54 +66,52 @@ xmlport 60000 "INT_ImportFOCLines_SNY"
                 }
 
                 trigger OnBeforeInsertRecord()
+                var
+                    myInt: Integer;
                 begin
-                    if gIsFirstRow then begin
-                        gIsFirstRow := false;
-                        currXMLport.Skip(); //To skip header line
+                    EntryNo += 1;
+
+                end;
+
+                trigger OnAfterInsertRecord()
+                var
+                    myInt: Integer;
+                begin
+                    if Entryno > 1 then begin
+                        //lineNo += 10000;
+                        gImpFOCLine.init;
+                        gImpFOCLine.type := gImpFOCLine.type::FOC;
+                        gImpFOCLine."No." := gNo;
+                        Evaluate(lineNo, gLinrNo);
+                        gImpFOCLine."Line No." := lineNo;
+                        gImpFOCLine.Validate("Item No.", gItemNo);
+                        gImpFOCLine."Item Description" := gItemDes;
+                        gImpFOCLine.Validate(UOM, gUOM);
+                        Evaluate(qty, gQty);
+                        gImpFOCLine.Validate(Quantity, qty);
+                        Evaluate(SrpPrice, gSRP_Price);
+                        gImpFOCLine.Validate("SRP Price", SrpPrice);
+                        Evaluate(promotionprice, gPromotion_Price);
+                        gImpFOCLine.validate("Promotional Price", promotionprice);
+                        gImpFOCLine.Validate(Currency, gCurrency);
+                        gImpFOCLine.Plant := gPlant;
+                        gImpFOCLine."Storage Location" := gStoreLocation;
+                        gImpFOCLine."Free Gift ID" := gFreeGiftID;
+                        if gRelatedItemNo <> '' then
+                            gImpFOCLine.Validate("Related Item No.", gRelatedItemNo);
+                        if gEplodFOCItem = 'Yes' then
+                            gImpFOCLine."Explode FOC Item" := true
+                        else
+                            gImpFOCLine."Explode FOC Item" := false;
+                        gImpFOCLine.Insert();
                     end;
-                    /*
-                    ImpFOCLine."Entry No." := gEntNo;
-                    ImpFOCLine.Marketplace := gMarkPlaceID;
-                    ImpSalLine."Marketplace Order ID" := gMarkPlaceordID;
-                    ImpSalLine."Marketplace Order Line ID" := gMarkPlaceLineID;
-                    ImpSalLine."Sell-to Customer No." := gBCustomerNo;
-                    ImpSalLine."Sell-to Customer Name" := gBCustomerName;
-                    ImpSalLine."Sell-to Contact" := gBContact;
-                    ImpSalLine."Sell-to Address" := gBCustomerAddr;
-                    ImpSalLine."Sell-to Address 2" := gBCustomerAddr2;
-                    ImpSalLine."Sell-to City" := gBillToCity;
-                    ImpSalLine."Sell-to Post Code" := gBillToPostCode;
-                    ImpSalLine."Sell-to Country/Region Code" := gBCountry;
-                    ImpSalLine."Your Reference" := gYourRef;
-                    ImpSalLine."order Date" := ConvertTextToDate(gOrdDate);
-                    ImpSalLine."location code" := gLocCode;
-                    ImpSalLine."Requested Delivery Date" := ConvertTextToDate(gReqDelDate);
-                    ImpSalLine.MarketOrdStatus := gMktOrdStatus;
-                    ImpSalLine."SAP Order ID" := gSAPOrderId;
-                    ImpSalLine."Remark 1" := gRemark1;
-                    impsalLine."Remark 2" := gRemark2;
-                    impsalLine."Remark 3" := gRemark3;
-                    ImpSalLine."Seller ID" := gSellId;
-                    ImpSalLine."Item No." := gItemNo;
-                    ImpSalLine."Seller SKU" := gSellSku;
-                    if gqty <> '' then
-                        evaluate(ImpSalLine."Qty.", gQty);
-                    if gUnitPrice <> '' then
-                        evaluate(ImpSalLine."Unit Price", gUnitPrice);
-                    if gDelFee <> '' then
-                        evaluate(ImpSalLine."Delivery Fee", gDelFee);
-                    ImpSalLine."MarketPlace Sync Status" := true;
-                    ImpSalLine."Imported By" := UserId;
-                    ImpSalLine."Imported On" := CurrentDateTime;
-                    ImpSalLine."Imported File Name" := Filename;
-                    gEntNo += 1;
-                    */
                 end;
             }
         }
     }
     trigger OnPreXmlPort()
     begin
+        /*
         gIsFirstRow := true;
         gImpSalLine.Reset();
         if gImpSalLine.FindLast() then
@@ -118,6 +120,15 @@ xmlport 60000 "INT_ImportFOCLines_SNY"
             gEntNo := 1;
         gImpSalLine.SetRange("Imported By", UserId);
         gImpSalLine.DeleteAll(true);
+        */
+        Entryno := 0;
+    end;
+
+    trigger OnPostXmlPort()
+    var
+        myInt: Integer;
+    begin
+        Message('FOC Import Line Completed');
     end;
 
     procedure ConvertTextToDate(Txt: text): Date
@@ -138,6 +149,12 @@ xmlport 60000 "INT_ImportFOCLines_SNY"
 
     var
         gEntNo: Integer;
+        Entryno: Integer;
         gIsFirstRow: Boolean;
-        gImpSalLine: Record INT_ImportSalesLine_SNY;
+        gImpFOCLine: Record INT_BundleLine_SNY;
+        lineNo: Integer;
+        qty: Decimal;
+        SrpPrice: Decimal;
+        promotionprice: Decimal;
+
 }

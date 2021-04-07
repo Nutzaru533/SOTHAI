@@ -26,7 +26,7 @@ report 60002 "INT_TH_SalesCr.Memo"
             column(DocDate; "Order Date")
             {
             }
-            column(ShiptoName; "Bill-to Contact")
+            column(ShiptoName; "Sell-to Contact")
             {
             }
             column(ShiptoAddress; "Sell-to Address")

@@ -26,7 +26,7 @@ report 60001 "INT_TH_Sales_Invoice"
             column(DocDate; "Order Date")
             {
             }
-            column(ShiptoName; "Bill-to Contact")
+            column(ShiptoName; "Sell-to Contact")
             {
             }
             column(ShiptoAddress; "Sell-to Address")

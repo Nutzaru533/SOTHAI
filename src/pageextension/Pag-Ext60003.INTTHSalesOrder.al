@@ -234,7 +234,7 @@ pageextension 60003 "INT_TH_Sales_Order" extends "Sales Order"
             action(Unmark)
             {
                 ApplicationArea = All;
-                Caption = 'UnMark Address';
+                Caption = 'UNMask Address';
                 Image = Lock;
                 trigger OnAction()
                 begin
@@ -247,12 +247,19 @@ pageextension 60003 "INT_TH_Sales_Order" extends "Sales Order"
             }
         }
     }
+    trigger OnOpenPage()
+    var
+        myInt: Integer;
+    begin
+        MaskText := true;
+        intMaskAddress();
+    end;
+
     trigger OnAfterGetRecord()
 
     begin
         SetActionVisible();
         MaskAddress();
-
     end;
 
     var
@@ -263,21 +270,21 @@ pageextension 60003 "INT_TH_Sales_Order" extends "Sales Order"
         show_ConfirmCollect: Boolean;
         Show_ReprocessOrder: Boolean;
         MaskText: Boolean;
-        selltoaddrss: Text[50];
-        selltoaddress2: Text[50];
-        selltocity: text[50];
-        selltocoulty: text[50];
-        selltopostcode: text[50];
-        billtoaddess: Text[50];
-        billtoaddress2: text[50];
-        billtocity: text[50];
-        billtocoulty: text[50];
-        billtopostcode: text[50];
-        shiptoaddress: text[50];
-        shiptoaddress2: text[50];
-        shiptocity: text[50];
-        shiptocoulty: text[50];
-        shiptopostcode: text[50];
+        selltoaddrss: Text[100];
+        selltoaddress2: Text[100];
+        selltocity: text[100];
+        selltocoulty: text[100];
+        selltopostcode: text[100];
+        billtoaddess: Text[100];
+        billtoaddress2: text[100];
+        billtocity: text[100];
+        billtocoulty: text[100];
+        billtopostcode: text[100];
+        shiptoaddress: text[100];
+        shiptoaddress2: text[100];
+        shiptocity: text[100];
+        shiptocoulty: text[100];
+        shiptopostcode: text[100];
 
     local procedure SetActionVisible()
     var
@@ -290,11 +297,9 @@ pageextension 60003 "INT_TH_Sales_Order" extends "Sales Order"
         Show_ReprocessOrder := UserActionCtrl.ActionShow(Page::"Sales Order", 110);
     end;
 
-    local procedure MaskAddress()
+    local procedure intMaskAddress()
     var
-        usersetup: Record "User Setup";
     begin
-        //
         selltoaddrss := "Sell-to Address";
         selltoaddress2 := "sell-to Address 2";
         selltocity := "Sell-to City";
@@ -312,15 +317,23 @@ pageextension 60003 "INT_TH_Sales_Order" extends "Sales Order"
         shiptocity := "Ship-to City";
         shiptocoulty := "Ship-to County";
         shiptopostcode := "Ship-to Post Code";
-        //
-        if usersetup.get(userid) then begin
-            if usersetup.INT_Unmark_SNY then
-                MaskText := true
-            else
-                MaskText := false;
-        end;
+    end;
 
-        if MaskText = false then begin
+    local procedure MaskAddress()
+    var
+        usersetup: Record "User Setup";
+    begin
+        //
+
+        //
+        //if usersetup.get(userid) then begin
+        //if usersetup.INT_Unmark_SNY then
+        //MaskText := true
+        //else
+        //MaskText := false;
+        //end;
+
+        if MaskText = true then begin
             "Sell-to Address" := 'XXXXXX';
             "Sell-to Address 2" := 'XXXXXX';
             "Sell-to City" := 'XXXXXX';
@@ -339,7 +352,7 @@ pageextension 60003 "INT_TH_Sales_Order" extends "Sales Order"
             "ship-to County" := 'XXXXXX';
             "ship-to Post Code" := 'XXXXXX';
         end;
-        if MaskText then begin
+        if MaskText = false then begin
             "Sell-to Address" := selltoaddrss;
             "Sell-to Address 2" := selltoaddress2;
             "Sell-to City" := selltocity;

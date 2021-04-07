@@ -1,5 +1,6 @@
 pageextension 60005 "INT_TH_FOCBundleCard_SN" extends INT_FOCBundleCard_SNY
 {
+
     layout
     {
         // Add changes to page layout here
@@ -22,6 +23,15 @@ pageextension 60005 "INT_TH_FOCBundleCard_SN" extends INT_FOCBundleCard_SNY
                 CheckAmount2
             end;
         }
+        modify(Marketplace)
+        {
+            trigger OnAfterValidate()
+            var
+                myInt: Integer;
+            begin
+                NewDoc;
+            end;
+        }
 
     }
 
@@ -29,8 +39,23 @@ pageextension 60005 "INT_TH_FOCBundleCard_SN" extends INT_FOCBundleCard_SNY
     {
 
         // Add changes to page actions here
+        /*
+        addfirst(Processing)
+        {
+            action(NewDoc)
+            {
+                Caption = 'New Document No.';
+                Image = New;
+                ApplicationArea = All;
+                Promoted = true;
+                trigger OnAction()
+                begin
+                    NewDoc();
+                end;
+            }
+        }
+        */
     }
-
     var
         myInt: Integer;
         FOCMessage: text[100];
@@ -40,6 +65,7 @@ pageextension 60005 "INT_TH_FOCBundleCard_SN" extends INT_FOCBundleCard_SNY
         myInt: Integer;
     begin
         CheckAmount;
+
     end;
 
     local procedure CheckAmount()
@@ -92,9 +118,25 @@ pageextension 60005 "INT_TH_FOCBundleCard_SN" extends INT_FOCBundleCard_SNY
                 Error('SRP Sum Amount Should equal to zero');
             if checkPromotionPrice <> 0 then
                 error('Promotional Amount Should equal to zero');
-
         end;
     end;
 
+    local procedure NewDoc()
+    var
+        myInt: Integer;
+        FOCHead: Record INT_BundleHeader_SNY;
+        noserialMgn: Codeunit NoSeriesManagement;
+        InterfaceSetup: Record INT_InterfaceSetup_SNY;
+        focheadPage: page INT_FOCBundleCard_SNY;
+    begin
+        InterfaceSetup.get;
 
+        "Free Gift ID" := 'Temp Free Fift ID';
+        Type := Type::FOC;
+        "No." := noserialMgn.GetNextNo(InterfaceSetup."FOC No. Series", workdate, true);
+        "No. Series" := InterfaceSetup."FOC No. Series";
+        Insert();
+        Commit();
+
+    end;
 }

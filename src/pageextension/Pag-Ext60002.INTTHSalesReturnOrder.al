@@ -7,7 +7,7 @@ pageextension 60002 "INT_TH_Sales_Return_Order" extends "Sales Return Order"
         {
             field("Order Confirm"; INT_Order_Confirm_SNY)
             {
-                Caption = 'Order Confrim';
+                Caption = 'Goods Received';
                 ApplicationArea = All;
             }
         }
@@ -28,26 +28,14 @@ pageextension 60002 "INT_TH_Sales_Return_Order" extends "Sales Return Order"
                     Image = Confirm;
                     Promoted = true;
                     PromotedCategory = Process;
-                    Caption = 'Confirm Order';
+                    Caption = 'Goods Received';
                     trigger OnAction()
                     begin
                         "INT_Order_Confirm_SNY" := true;
                         Modify;
                     end;
                 }
-                action("Cancel Confirm Order")
-                {
-                    ApplicationArea = All;
-                    Image = Cancel;
-                    Promoted = true;
-                    PromotedCategory = Process;
-                    Caption = 'Cancel Confirm Order';
-                    trigger OnAction()
-                    begin
-                        "INT_Order_Confirm_SNY" := false;
-                        Modify;
-                    end;
-                }
+
                 action("TH_INT_SyncToSAP_SNY")
                 {
                     ApplicationArea = All;

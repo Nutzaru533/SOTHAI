@@ -24,6 +24,13 @@ tableextension 60004 "INT_TH_BundleLine_SNY" extends INT_BundleLine_SNY
         }
 
     }
+    trigger OnBeforeInsert()
+    var
+        myInt: Integer;
+    begin
+        //"Free Gift ID" := 'TEMP';
+    end;
+
     trigger OnInsert()
     var
         myInt: Integer;
