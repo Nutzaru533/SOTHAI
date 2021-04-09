@@ -19,6 +19,25 @@ pageextension 60003 "INT_TH_Sales_Order" extends "Sales Order"
         // Add changes to page actions here
         addafter(INT_PrintDocument_SNY)
         {
+            action(AWB)
+            {
+                Caption = 'AWB Report';
+                ApplicationArea = All;
+                Image = PrintDocument;
+                Promoted = true;
+                PromotedCategory = Process;
+
+                trigger OnAction()
+                var
+                    SalesHeaderReport: Record "Sales Header";
+                begin
+                    SalesHeaderReport.reset;
+                    SalesHeaderReport.SetRange("Document Type", "Document Type");
+                    SalesHeaderReport.SetRange("No.", "No.");
+                    if SalesHeaderReport.findfirst() then
+                        Report.RunModal(60003, true, false, SalesHeaderReport);
+                end;
+            }
 
             action(TaxInvoice)
             {

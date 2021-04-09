@@ -27,7 +27,7 @@
       "id": "a7cfe777-16c7-4f20-9320-668c50da2e2e",
       "publisher": "ARSHU CONSULTANCY PTE. LTD.",
       "name": "ARSHU LAZADA Connector",
-      "version": "16.0.0.46"
+      "version": "17.0.0.0"
     },
     {
       "id": "0ea2f0cc-4933-4087-b4ee-6fd96f3957a6",
@@ -36,16 +36,10 @@
       "version": "17.0.0.0"
     },
     {
-      "id": "bf3291c5-ce90-4fee-9de9-5d999a7b470b",
-      "publisher": "ARSHU CONSULTANCY PTE. LTD.",
-      "name": "Shopee Connector",
-      "version": "17.0.0.0"
-    },
-    {
       "id": "5ecfc871-5d82-43f1-9c54-59685e82318d",
       "publisher": "LS Retail",
       "name": "LS Central",
-      "version": "17.2.2.0"
+      "version": "17.3.3.0"
     }
 
   ],

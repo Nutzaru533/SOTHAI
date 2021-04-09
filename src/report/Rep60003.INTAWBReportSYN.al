@@ -5,6 +5,7 @@ report 60003 "INT_AWB_Report_SYN"
     UsageCategory = Administration;
     ApplicationArea = All;
 
+
     dataset
     {
         dataitem(SalesHeader; "Sales Header")
@@ -25,8 +26,15 @@ report 60003 "INT_AWB_Report_SYN"
             column(Sell_to_Post_Code; "Sell-to Post Code") { }
             column(Sell_to_Contact; "Sell-to Contact") { }
             column(Sell_to_Phone_No_; "Sell-to Phone No.") { }
+            column(shipName; Customer.Name) { }
+            column(shipaddress; Customer.Address) { }
+            column(shipaddress2; Customer."Address 2") { }
+            column(shipCity; Customer.City) { }
+            column(shipCounty; Customer.County) { }
+            column(ShipPostcode; Customer."Post Code") { }
             column(External_Document_No_; "External Document No.") { }
             column(Posting_Date; "Posting Date") { }
+            column(BarCodePicture; BarCode.Picture) { }
             dataitem(SalesLine; "Sales Line")
             {
                 column(No_; "No.") { }
@@ -35,11 +43,48 @@ report 60003 "INT_AWB_Report_SYN"
                 column(Unit_of_Measure; "Unit of Measure") { }
 
             }
+            trigger OnPostDataItem()
+            var
+                myInt: Integer;
+            begin
+                BarCode.Reset();
+                BarCode.SetFilter(Value, '<>%1', '');
+                if BarCode.Find('-') then begin
+                    BarCode.Delete()
+                end;
+            end;
+
             trigger OnAfterGetRecord()
             var
 
             begin
                 companyinfor.get;
+                if not Customer.get("Sell-to Customer No.") then
+                    Customer.init;
+
+                BarCode.reset;
+                BarCode.SetRange("INT_Ref_NO.SNY", "No.");
+                if BarCode.find('-') then begin
+                    BarCode."INT_Ref_NO.SNY" := "No.";
+                    BarCode.Value := "External Document No.";
+                    BarCode.Type := BarCode.Type::c128a;
+                    BarCode.Width := 250;
+                    BarCode.Height := 100;
+                    BarCode.Modify();
+                    Commit();
+                    GenerateBarcodeCode.GenerateBarcode(BarCode);
+                    //Message('%1', BarCode."INT_Ref_NO.SNY");
+                end else begin
+                    BarCode."INT_Ref_NO.SNY" := "No.";
+                    BarCode.Value := "External Document No.";
+                    BarCode.Type := BarCode.Type::c128a;
+                    BarCode.Width := 250;
+                    BarCode.Height := 100;
+                    BarCode.Insert();
+                    Commit();
+                    GenerateBarcodeCode.GenerateBarcode(BarCode);
+                    //Message('%1', BarCode."INT_Ref_NO.SNY");
+                end;
             end;
         }
     }
@@ -68,7 +113,6 @@ report 60003 "INT_AWB_Report_SYN"
                 action(ActionName)
                 {
                     ApplicationArea = All;
-
                 }
             }
         }
@@ -76,4 +120,7 @@ report 60003 "INT_AWB_Report_SYN"
 
     var
         companyinfor: Record "Company Information";
+        BarCode: Record "INT_Barcode_SNY";
+        GenerateBarcodeCode: Codeunit INT_GenerateBarcode_SNY;
+        Customer: Record Customer;
 }
