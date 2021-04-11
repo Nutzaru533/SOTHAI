@@ -2,7 +2,23 @@ pageextension 60011 "INT_FOCBundleList_SNY" extends INT_FOCBundleList_SNY
 {
     layout
     {
+        addafter("No.")
+        {
+            field(Marketplace2; Marketplace)
+            {
+                ApplicationArea = all;
+                Caption = 'Marketplace';
+            }
+        }
+        modify(Marketplace)
+        {
+            Visible = false;
+        }
         // Add changes to page layout here
+        modify("Free Gift ID")
+        {
+            Visible = false;
+        }
     }
 
     actions
@@ -16,7 +32,7 @@ pageextension 60011 "INT_FOCBundleList_SNY" extends INT_FOCBundleList_SNY
 
                 action(INT_ImportFOCHeader_SNY)
                 {
-                    caption = 'Import FOC Header';
+                    caption = 'Import FOC';
                     Promoted = true;
                     PromotedOnly = true;
                     PromotedCategory = Process;
@@ -30,22 +46,7 @@ pageextension 60011 "INT_FOCBundleList_SNY" extends INT_FOCBundleList_SNY
                         CurrPage.Update(false);
                     end;
                 }
-                action(INT_ImportFOCLine_SNY)
-                {
-                    caption = 'Import FOC Line';
-                    Promoted = true;
-                    PromotedOnly = true;
-                    PromotedCategory = Process;
-                    ApplicationArea = all;
-                    Image = Import;
-                    RunObject = xmlport INT_ImportFOCLines_SNY;
-                    trigger OnAction()
-                    var
-                        myInt: Integer;
-                    begin
-                        CurrPage.Update(false);
-                    end;
-                }
+
             }
         }
 

@@ -31,6 +31,8 @@ pageextension 60003 "INT_TH_Sales_Order" extends "Sales Order"
                 var
                     SalesHeaderReport: Record "Sales Header";
                 begin
+                    if not (INT_DeliveryType_SNY=INT_DeliveryType_SNY::"DBS Home") then
+                      Error('Only Print on Delivery Type is DBS Home');
                     SalesHeaderReport.reset;
                     SalesHeaderReport.SetRange("Document Type", "Document Type");
                     SalesHeaderReport.SetRange("No.", "No.");

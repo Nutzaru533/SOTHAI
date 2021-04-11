@@ -109,7 +109,7 @@ codeunit 60002 "INT_WS_Integration Methods_SNY"
         CompanyCodeJKeyLbl: Label 'company_code';
         SafetyStockQtyJKeyLbl: Label 'safety_stock_qty';
         InventoryTypeJKeyLbl: Label 'inventory_type';
-        SOTHAIItem: Record Item;
+        GetItemAllcation: code[20];
 
     local procedure HandleItemJnlInventory()
     var
@@ -124,7 +124,7 @@ codeunit 60002 "INT_WS_Integration Methods_SNY"
             //SOTHAI Calculate Allocation stock
             inventorysetup.get;
             if inventorysetup.INT_Item_Allocation_SNY then begin
-                inventoryallocation.GetDataToCalitemAllcation(ItemJnlLine, SOTHAIItem);
+                inventoryallocation.GetDataToCalitemAllcation(GetItemAllcation, '');
             end;
             //SOTHAI Calculate Allocation stock
             exit;
@@ -137,7 +137,7 @@ codeunit 60002 "INT_WS_Integration Methods_SNY"
         //SOTHAI Calculate Allocation stock
         inventorysetup.get;
         if inventorysetup.INT_Item_Allocation_SNY then begin
-            inventoryallocation.GetDataToCalitemAllcation(ItemJnlLine, SOTHAIItem);
+            inventoryallocation.GetDataToCalitemAllcation(GetItemAllcation, '');
         end;
         //SOTHAI Calculate Allocation stock
         ResponseMsg := 'The journal lines were successfully posted.';
@@ -182,7 +182,7 @@ codeunit 60002 "INT_WS_Integration Methods_SNY"
                 Item.CalcFields(Inventory);
                 CurrentInventory := Item.Inventory;
                 //SOTHAI
-                SOTHAIItem := Item;
+                GetItemAllcation := Item."No.";
                 //SOTHAI
                 NeedToAdjInventory := CurrentInventory <> ActualQuantity;
                 if (Item.Type <> Item.Type::Inventory) then NeedToAdjInventory := false;

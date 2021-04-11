@@ -14,6 +14,21 @@ pageextension 60005 "INT_TH_FOCBundleCard_SN" extends INT_FOCBundleCard_SNY
                 Style = StrongAccent;
             }
         }
+        addbefore("No.")
+        {
+            field(Marketplace1; Marketplace)
+            {
+                Caption = 'MarketPlace';
+                ApplicationArea = all;
+                trigger OnValidate()
+                var
+                    myInt: Integer;
+                begin
+                    NewDoc;
+                end;
+            }
+
+        }
         modify(isActive)
         {
             trigger OnAfterValidate()
@@ -23,14 +38,13 @@ pageextension 60005 "INT_TH_FOCBundleCard_SN" extends INT_FOCBundleCard_SNY
                 CheckAmount2
             end;
         }
+        modify("Free Gift ID")
+        {
+            Visible = false;
+        }
         modify(Marketplace)
         {
-            trigger OnAfterValidate()
-            var
-                myInt: Integer;
-            begin
-                NewDoc;
-            end;
+            Visible = false;
         }
 
     }
@@ -131,9 +145,9 @@ pageextension 60005 "INT_TH_FOCBundleCard_SN" extends INT_FOCBundleCard_SNY
     begin
         InterfaceSetup.get;
 
-        "Free Gift ID" := 'Temp Free Fift ID';
+        "Free Gift ID" := noserialMgn.GetNextNo(InterfaceSetup."FOC No. Series", workdate, true);
         Type := Type::FOC;
-        "No." := noserialMgn.GetNextNo(InterfaceSetup."FOC No. Series", workdate, true);
+        "No." := "Free Gift ID";
         "No. Series" := InterfaceSetup."FOC No. Series";
         Insert();
         Commit();

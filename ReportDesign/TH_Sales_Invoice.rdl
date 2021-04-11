@@ -3110,7 +3110,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=First(Fields!Sell_to_Phone_No_.Value, "DataSet_Result")</Value>
+                      <Value EvaluationMode="Constant" />
                       <Style>
                         <FontFamily>AngsanaUPC</FontFamily>
                         <FontSize>12pt</FontSize>

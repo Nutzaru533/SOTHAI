@@ -12,6 +12,18 @@
   "logo": "",
   "dependencies": [
     {
+      "id": "63ca2fa4-4f03-4f2b-a480-172fef340d3f",
+      "name": "System Application",
+      "version": "16.0.0.0",
+      "publisher": "Microsoft"
+    },
+    {
+      "id": "437dbf0e-84ff-417a-965d-ed2bb9650972",
+      "name": "Base Application",
+      "version": "16.0.0.0",
+      "publisher": "Microsoft"
+    },
+    {
     "id": "4dfe05ce-a809-4c13-a62f-9baa0d3d0a6f",
     "publisher": "Sony",
     "name": "Ecom_Interface",
@@ -24,18 +36,6 @@
       "version": "2.0.0.0"
     },
     {
-      "id": "a7cfe777-16c7-4f20-9320-668c50da2e2e",
-      "publisher": "ARSHU CONSULTANCY PTE. LTD.",
-      "name": "ARSHU LAZADA Connector",
-      "version": "17.0.0.0"
-    },
-    {
-      "id": "0ea2f0cc-4933-4087-b4ee-6fd96f3957a6",
-      "publisher": "ARSHU CONSULTANCY PTE. LTD.",
-      "name": "JDT Connector",
-      "version": "17.0.0.0"
-    },
-    {
       "id": "5ecfc871-5d82-43f1-9c54-59685e82318d",
       "publisher": "LS Retail",
       "name": "LS Central",
@@ -44,8 +44,8 @@
 
   ],
   "screenshots": [],
-  "platform": "17.0.0.0",
-  "application": "17.0.0.0",
+  "platform": "16.0.0.0",
+  "application": "16.0.0.0",
   "idRanges": [
     {
       "from": 60000,

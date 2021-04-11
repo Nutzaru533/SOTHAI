@@ -315,6 +315,7 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
         SalesSetup: Record "Sales & Receivables Setup";
         AlertMgmt: Codeunit INT_AlertMgnt_SNY;
         INT_salesline3: Record "Sales Line";
+        checkLine: Integer;
         INT_item: Record item;
 
     local procedure PostingShipments()
@@ -2270,6 +2271,7 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
             Commit();
         end;
         //calculatediscount 
+        checkLine := 0;
         if SalesHeader."Seller Voucher Amount" <> 0 then begin
             INT_salesline3.reset;
             INT_salesline3.SetRange("Document Type", SalesHeader."Document Type");
@@ -2277,11 +2279,17 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
             INT_salesline3.SetRange(Type, INT_salesline3.Type::Item);
             INT_salesline3.SetFilter(Quantity, '>%1', 0);
             if INT_salesline3.FindFirst then begin
-                if INT_item.get(INT_salesline3."No.") then begin
-                    if not INT_item.INT_Exclude_Discount_SNY then begin
-                        INT_salesline3.validate("Line Discount Amount", SalesHeader."Seller Voucher Amount");
+                repeat
+                    if INT_item.get(INT_salesline3."No.") then begin
+
+                        if not INT_item.INT_Exclude_Discount_SNY then begin
+                            checkLine += 1;
+                            INT_salesline3.validate("Line Discount Amount", SalesHeader."Seller Voucher Amount");
+
+                        end;
+
                     end;
-                end;
+                until (INT_salesline3.Next() = 0) or (checkLine = 1);
             end
         end;
         //calculatediscount

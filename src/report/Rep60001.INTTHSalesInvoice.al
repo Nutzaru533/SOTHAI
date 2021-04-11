@@ -133,6 +133,7 @@ report 60001 "INT_TH_Sales_Invoice"
             column(shipcity; shipcity) { }
             column(shipCountry; shipCountry) { }
             column(shippostcode; shippostcode) { }
+
             column(VAT_Registration_No_; "VAT Registration No.") { }
             column(TotalSalesValue; TotalSalesValue)
             {
@@ -160,6 +161,7 @@ report 60001 "INT_TH_Sales_Invoice"
             column(TotalDeliveryCharges; TotalDeliveryCharges)
             { }
             column(texamtth; texamtth) { }
+
             dataitem(Line; "Sales Line")
             {
                 DataItemLink = "Document Type" = FIELD("Document Type"), "Document No." = FIELD("No.");
@@ -214,6 +216,7 @@ report 60001 "INT_TH_Sales_Invoice"
                 column(LineDeliveryTime; LineDeliveryTime)
                 {
                 }
+
 
 
                 trigger OnPreDataItem()
@@ -490,6 +493,7 @@ report 60001 "INT_TH_Sales_Invoice"
         shipcity: text[50];
         shipCountry: Text[50];
         shippostcode: text[50];
+        shipPhoneNo: Text[50];
         countLine: Integer;
         showBranch: text[50];
         TH_Even_Sub: Codeunit INT_Even_Sub_SNY;

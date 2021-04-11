@@ -1,6 +1,6 @@
 xmlport 60001 "INT_ImportFOCHeader_SNY"
 {
-    caption = 'Import FOC Head';
+    caption = 'Import FOC';
     Format = VariableText;
     Direction = Import;
     FieldSeparator = ',';
@@ -17,17 +17,6 @@ xmlport 60001 "INT_ImportFOCHeader_SNY"
                 AutoSave = false;
                 AutoReplace = false;
 
-
-                textelement(gType)
-                {
-                    MinOccurs = Zero;
-
-                }
-                textelement(gFreeGiftID)
-                {
-                    MinOccurs = Zero;
-
-                }
                 textelement(gNo)
                 {
                     MinOccurs = Zero;
@@ -36,39 +25,39 @@ xmlport 60001 "INT_ImportFOCHeader_SNY"
                 {
                     MinOccurs = Zero;
                 }
-                textelement(gChannel)
-                {
-                }
-                textelement(gDes)
-                {
-                }
                 textelement(gItemNo)
                 {
                 }
-                textelement(gitemDes)
-                { }
+
+                textelement(gDes)
+                {
+                }
+
                 textelement(gStartingDate)
                 {
                 }
                 textelement(gEndingDate)
                 {
                 }
-                textelement(gIsActive)
+                textelement(gLineItemNo)
                 {
                 }
-                //textelement(gSRPPrice)
-                // {
-                // }
-                //textelement(gPromotionPrice)
-                //{
-                // }
-                textelement(gActivedDate)
+                textelement(gQty)
                 {
                 }
-                textelement(gActiviatedBy)
+                textelement(gSRPPriece)
+                {
+                }
+                textelement(gPromotionalPrice)
                 {
                 }
 
+                textelement(gRelated_Item_Type)
+                {
+                }
+                textelement(gStorageLocation)
+                {
+                }
 
                 trigger OnBeforeInsertRecord()
                 var
@@ -84,9 +73,7 @@ xmlport 60001 "INT_ImportFOCHeader_SNY"
                         gImpFOCHeader.init;
                         gImpFOCHeader.Type := gImpFOCHeader.Type::FOC;
                         gImpFOCHeader."No." := gNo;
-                        if gFreeGiftID = '' then
-                            error('Please Input Free Gift ID');
-                        gImpFOCHeader."Free Gift ID" := gFreeGiftID;
+                        gImpFOCHeader."Free Gift ID" := gNo;
                         gImpFOCHeader.Validate(Marketplace, gMarketplace);
                         marketplace.reset;
                         marketplace.SetRange(marketplace, gImpFOCHeader.Marketplace);
@@ -95,21 +82,106 @@ xmlport 60001 "INT_ImportFOCHeader_SNY"
                         end;
                         gImpFOCHeader.Description := gDes;
                         gImpFOCHeader.Validate("Item No.", gItemNo);
-                        gImpFOCHeader."Item Description" := gitemDes;
+                        if not item.get(gItemNo) then
+                            item.init;
+                        gImpFOCHeader."Item Description" := item.Description;
                         gImpFOCHeader."Starting Date" := ConvertTextToDate(gStartingDate);
                         gImpFOCHeader."Ending Date" := ConvertTextToDate(gEndingDate);
-                        if gIsActive = 'Yes' then
-                            gImpFOCHeader."Is Active" := true
-                        else
-                            gImpFOCHeader."Is Active" := false;
+                        if gImpFOCHeader.Insert() then begin
+                            lineNo += 10000;
+                            gImpFOCLine.init;
+                            gImpFOCLine.type := gImpFOCLine.type::FOC;
+                            gImpFOCLine."No." := gNo;
+                            Evaluate(LineItemNo, gLineItemNo);
+                            gImpFOCLine."Line No." := lineNo;
+                            gImpFOCLine.Validate("Item No.", LineItemNo);
+                            if not item.get(gItemNo) then
+                                item.init;
+                            gImpFOCLine."Item Description" := item.Description;
+                            gImpFOCLine.Validate(UOM, item."Base Unit of Measure");
+                            if gQty <> '' then
+                                Evaluate(qty, gQty);
+                            gImpFOCLine.Validate(Quantity, qty);
+                            if gSRPPriece <> '' then
+                                Evaluate(SrpPrice, gSRPPriece);
+                            gImpFOCLine."SRP Price" := SrpPrice;
+                            if gPromotionalPrice <> '' then
+                                Evaluate(promotionprice, gPromotionalPrice);
+                            gImpFOCLine."Promotional Price" := promotionprice;
+                            gImpFOCLine."Storage Location" := gStorageLocation;
+                            gImpFOCLine."Free Gift ID" := gImpFOCHeader."Free Gift ID";
+                            if gRelated_Item_Type = 'FOC' then
+                                gImpFOCLine."Related Item Type" := gImpFOCLine."Related Item Type"::FOC
+                            else
+                                if gRelated_Item_Type = 'FOC Dummy' then
+                                    gImpFOCLine."Related Item Type" := gImpFOCLine."Related Item Type"::"FOC Dummy"
+                                else
+                                    if gRelated_Item_Type = 'Main' then
+                                        gImpFOCLine."Related Item Type" := gImpFOCLine."Related Item Type"::Main
+                                    else
+                                        if gRelated_Item_Type = 'Main Delivery' then
+                                            gImpFOCLine."Related Item Type" := gImpFOCLine."Related Item Type"::"Main Delivery"
+                                        else
+                                            if gRelated_Item_Type = 'Package' then
+                                                gImpFOCLine."Related Item Type" := gImpFOCLine."Related Item Type"::Package
+                                            else
+                                                if gRelated_Item_Type = 'Package Dummy' then
+                                                    gImpFOCLine."Related Item Type" := gImpFOCLine."Related Item Type"::"Package Dummy";
 
-                        //Evaluate(SrpPrice, gSRPPrice);
-                        //gImpFOCHeader.Validate("SRP Price", SrpPrice);
-                        //Evaluate(PromotionPirce, gPromotionPrice);
-                        //gImpFOCHeader.Validate("Promotion Price", PromotionPirce);
-                        gImpFOCHeader."Activated Date" := ConvertTextToDate(gActivedDate);
-                        gImpFOCHeader."Activated By" := gActiviatedBy;
-                        gImpFOCHeader.Insert();
+                            gImpFOCLine.Insert();
+                            Commit();
+                        end
+                        else begin
+                            gImpFOCLine2.reset;
+                            gImpFOCLine2.SetRange("No.");
+                            gImpFOCLine2.SetRange(Type, gImpFOCLine2.Type::FOC);
+                            if gImpFOCLine2.Find('+') then begin
+                                lineNo := gImpFOCLine2."Line No." + 10000;
+                            end;
+                            //start
+                            gImpFOCLine.init;
+                            gImpFOCLine.type := gImpFOCLine.type::FOC;
+                            gImpFOCLine."No." := gNo;
+                            if gLineItemNo <> '' then
+                                Evaluate(LineItemNo, gLineItemNo);
+                            gImpFOCLine."Line No." := lineNo;
+                            gImpFOCLine.Validate("Item No.", LineItemNo);
+                            if not item.get(gItemNo) then
+                                item.init;
+                            gImpFOCLine."Item Description" := item.Description;
+                            gImpFOCLine.Validate(UOM, item."Base Unit of Measure");
+                            if gQty <> '' then
+                                Evaluate(qty, gQty);
+                            gImpFOCLine.Validate(Quantity, qty);
+                            if gSRPPriece <> '' then
+                                Evaluate(SrpPrice, gSRPPriece);
+                            gImpFOCLine."SRP Price" := SrpPrice;
+                            if gPromotionalPrice <> '' then
+                                Evaluate(promotionprice, gPromotionalPrice);
+                            gImpFOCLine."Promotional Price" := promotionprice;
+                            gImpFOCLine."Storage Location" := gStorageLocation;
+                            gImpFOCLine."Free Gift ID" := gImpFOCHeader."Free Gift ID";
+                            if gRelated_Item_Type = 'FOC' then
+                                gImpFOCLine."Related Item Type" := gImpFOCLine."Related Item Type"::FOC
+                            else
+                                if gRelated_Item_Type = 'FOC Dummy' then
+                                    gImpFOCLine."Related Item Type" := gImpFOCLine."Related Item Type"::"FOC Dummy"
+                                else
+                                    if gRelated_Item_Type = 'Main' then
+                                        gImpFOCLine."Related Item Type" := gImpFOCLine."Related Item Type"::Main
+                                    else
+                                        if gRelated_Item_Type = 'Main Delivery' then
+                                            gImpFOCLine."Related Item Type" := gImpFOCLine."Related Item Type"::"Main Delivery"
+                                        else
+                                            if gRelated_Item_Type = 'Package' then
+                                                gImpFOCLine."Related Item Type" := gImpFOCLine."Related Item Type"::Package
+                                            else
+                                                if gRelated_Item_Type = 'Package Dummy' then
+                                                    gImpFOCLine."Related Item Type" := gImpFOCLine."Related Item Type"::"Package Dummy";
+
+                            gImpFOCLine.Insert();
+                            //start
+                        end;
                     end;
                 end;
             }
@@ -144,8 +216,10 @@ xmlport 60001 "INT_ImportFOCHeader_SNY"
         lyear: Integer;
     begin
         if Txt <> '' then begin
-            EVALUATE(lday, COPYSTR(Txt, 1, 2));
-            EVALUATE(lmonth, COPYSTR(Txt, 4, 2));
+            //EVALUATE(lday, COPYSTR(Txt, 1, 2));
+            //EVALUATE(lmonth, COPYSTR(Txt, 4, 2));
+            EVALUATE(lmonth, COPYSTR(Txt, 1, 2));
+            EVALUATE(lday, COPYSTR(Txt, 4, 2));
             EVALUATE(lyear, COPYSTR(Txt, 7, 4));
             exit(DMY2Date(lday, lmonth, lyear));
         end else
@@ -161,5 +235,12 @@ xmlport 60001 "INT_ImportFOCHeader_SNY"
         gImpFOCHeader: Record INT_BundleHeader_SNY;
         SrpPrice: Decimal;
         PromotionPirce: Decimal;
+        item: Record item;
+        gImpFOCLine: Record INT_BundleLine_SNY;
+        gImpFOCLine2: Record INT_BundleLine_SNY;
+        lineNo: Integer;
+        qty: Decimal;
+        promotionprice: Decimal;
+        LineItemNo: code[20];
 
 }
