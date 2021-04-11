@@ -43,6 +43,7 @@ pageextension 60011 "INT_FOCBundleList_SNY" extends INT_FOCBundleList_SNY
                     var
                         myInt: Integer;
                     begin
+                        //XMLPORT.RUN(60001, true, FALSE);
                         CurrPage.Update(false);
                     end;
                 }

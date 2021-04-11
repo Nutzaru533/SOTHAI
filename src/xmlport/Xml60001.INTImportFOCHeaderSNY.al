@@ -5,7 +5,7 @@ xmlport 60001 "INT_ImportFOCHeader_SNY"
     Direction = Import;
     FieldSeparator = ',';
     TextEncoding = UTF8;
-
+    UseRequestPage = false;
     schema
     {
         textelement(Root)
