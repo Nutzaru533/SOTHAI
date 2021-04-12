@@ -24,19 +24,37 @@ pageextension 60005 "INT_TH_FOCBundleCard_SN" extends INT_FOCBundleCard_SNY
                 var
                     myInt: Integer;
                 begin
-                    NewDoc;
+                    if "No." = '' then
+                        NewDoc;
+                    CurrPage.Update(false);
                 end;
             }
 
         }
+        addafter("Activated By")
+        {
+            field(INT_External_SYN; INT_External_SYN)
+            {
+                ApplicationArea = all;
+            }
+        }
         modify(isActive)
         {
+            Editable = false;
             trigger OnAfterValidate()
             var
                 myInt: Integer;
             begin
                 CheckAmount2
             end;
+        }
+        modify("Activated Date")
+        {
+            Editable = false;
+        }
+        modify("Activated By")
+        {
+            Editable = false;
         }
         modify("Free Gift ID")
         {
@@ -46,6 +64,7 @@ pageextension 60005 "INT_TH_FOCBundleCard_SN" extends INT_FOCBundleCard_SNY
         {
             Visible = false;
         }
+
 
     }
 
@@ -69,6 +88,41 @@ pageextension 60005 "INT_TH_FOCBundleCard_SN" extends INT_FOCBundleCard_SNY
             }
         }
         */
+        addfirst(Processing)
+        {
+            action(CertifyFOC)
+            {
+                Caption = 'Certify Foc';
+                Image = Approval;
+                ApplicationArea = All;
+
+                trigger OnAction()
+                begin
+
+                    "Is Active" := true;
+                    "Activated By" := UserId;
+                    "Activated Date" := today;
+                    Modify();
+                    CurrPage.Update(false);
+                end;
+            }
+            action(UnCertifyFOC)
+            {
+                Caption = 'Un Certify Foc';
+                Image = Reject;
+                ApplicationArea = All;
+
+                trigger OnAction()
+                begin
+
+                    "Is Active" := false;
+                    "Activated By" := '';
+                    "Activated Date" := 0D;
+                    Modify();
+                    CurrPage.Update(false);
+                end;
+            }
+        }
     }
     var
         myInt: Integer;
@@ -78,8 +132,15 @@ pageextension 60005 "INT_TH_FOCBundleCard_SN" extends INT_FOCBundleCard_SNY
     var
         myInt: Integer;
     begin
-        CheckAmount;
+        //CheckAmount;
+        if ("No." = '') then
+            CurrPage.Update(false);
+    end;
 
+    trigger OnInsertRecord(BelowxRec: Boolean): Boolean
+    begin
+        if ("No." = '') then
+            CurrPage.Update(false);
     end;
 
     local procedure CheckAmount()
@@ -135,22 +196,6 @@ pageextension 60005 "INT_TH_FOCBundleCard_SN" extends INT_FOCBundleCard_SNY
         end;
     end;
 
-    local procedure NewDoc()
-    var
-        myInt: Integer;
-        FOCHead: Record INT_BundleHeader_SNY;
-        noserialMgn: Codeunit NoSeriesManagement;
-        InterfaceSetup: Record INT_InterfaceSetup_SNY;
-        focheadPage: page INT_FOCBundleCard_SNY;
-    begin
-        InterfaceSetup.get;
 
-        "Free Gift ID" := noserialMgn.GetNextNo(InterfaceSetup."FOC No. Series", workdate, true);
-        Type := Type::FOC;
-        "No." := "Free Gift ID";
-        "No. Series" := InterfaceSetup."FOC No. Series";
-        Insert();
-        Commit();
 
-    end;
 }

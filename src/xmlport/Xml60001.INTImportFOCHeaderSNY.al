@@ -69,71 +69,78 @@ xmlport 60001 "INT_ImportFOCHeader_SNY"
                 var
                     marketplace: Record INT_MarketPlaces_SNY;
                 begin
+                    InterfaceSetup.get;
                     if EntryNo > 1 then begin
-                        gImpFOCHeader.init;
-                        gImpFOCHeader.Type := gImpFOCHeader.Type::FOC;
-                        gImpFOCHeader."No." := gNo;
-                        gImpFOCHeader."Free Gift ID" := gNo;
-                        gImpFOCHeader.Validate(Marketplace, gMarketplace);
-                        marketplace.reset;
-                        marketplace.SetRange(marketplace, gImpFOCHeader.Marketplace);
-                        if marketplace.Find('-') then begin
-                            gImpFOCHeader.Channel := marketplace.Channel;
-                        end;
-                        gImpFOCHeader.Description := gDes;
-                        gImpFOCHeader.Validate("Item No.", gItemNo);
-                        if not item.get(gItemNo) then
-                            item.init;
-                        gImpFOCHeader."Item Description" := item.Description;
-                        gImpFOCHeader."Starting Date" := ConvertTextToDate(gStartingDate);
-                        gImpFOCHeader."Ending Date" := ConvertTextToDate(gEndingDate);
-                        if gImpFOCHeader.Insert() then begin
-                            lineNo += 10000;
-                            gImpFOCLine.init;
-                            gImpFOCLine.type := gImpFOCLine.type::FOC;
-                            gImpFOCLine."No." := gNo;
-                            Evaluate(LineItemNo, gLineItemNo);
-                            gImpFOCLine."Line No." := lineNo;
-                            gImpFOCLine.Validate("Item No.", LineItemNo);
+                        gImpFOCHeader2.reset; //check document
+                        gImpFOCHeader2.SetRange(INT_External_SYN, gNo);
+                        if not gImpFOCHeader2.find('-') then begin
+                            gImpFOCHeader.init;
+                            gImpFOCHeader.Type := gImpFOCHeader.Type::FOC;
+                            gImpFOCHeader."No." := noserialMgn.GetNextNo(InterfaceSetup."FOC No. Series", workdate, true);
+                            gImpFOCHeader.INT_External_SYN := gNo;
+                            gImpFOCHeader."Free Gift ID" := gNo;
+                            gImpFOCHeader.Validate(Marketplace, gMarketplace);
+                            marketplace.reset;
+                            marketplace.SetRange(marketplace, gImpFOCHeader.Marketplace);
+                            if marketplace.Find('-') then begin
+                                gImpFOCHeader.Channel := marketplace.Channel;
+                            end;
+                            gImpFOCHeader.Description := gDes;
+                            gImpFOCHeader.Validate("Item No.", gItemNo);
                             if not item.get(gItemNo) then
                                 item.init;
-                            gImpFOCLine."Item Description" := item.Description;
-                            gImpFOCLine.Validate(UOM, item."Base Unit of Measure");
-                            if gQty <> '' then
-                                Evaluate(qty, gQty);
-                            gImpFOCLine.Validate(Quantity, qty);
-                            if gSRPPriece <> '' then
-                                Evaluate(SrpPrice, gSRPPriece);
-                            gImpFOCLine."SRP Price" := SrpPrice;
-                            if gPromotionalPrice <> '' then
-                                Evaluate(promotionprice, gPromotionalPrice);
-                            gImpFOCLine."Promotional Price" := promotionprice;
-                            gImpFOCLine."Storage Location" := gStorageLocation;
-                            gImpFOCLine."Free Gift ID" := gImpFOCHeader."Free Gift ID";
-                            if gRelated_Item_Type = 'FOC' then
-                                gImpFOCLine."Related Item Type" := gImpFOCLine."Related Item Type"::FOC
-                            else
-                                if gRelated_Item_Type = 'FOC Dummy' then
-                                    gImpFOCLine."Related Item Type" := gImpFOCLine."Related Item Type"::"FOC Dummy"
+                            gImpFOCHeader."Item Description" := item.Description;
+                            gImpFOCHeader."Starting Date" := ConvertTextToDate(gStartingDate);
+                            gImpFOCHeader."Ending Date" := ConvertTextToDate(gEndingDate);
+                            if gImpFOCHeader.Insert() then begin
+                                lineNo += 10000;
+                                gImpFOCLine.init;
+                                gImpFOCLine.type := gImpFOCLine.type::FOC;
+                                gImpFOCLine."No." := gImpFOCHeader."No.";
+                                gImpFOCLine.INT_External_SYN := gImpFOCHeader.INT_External_SYN;
+                                Evaluate(LineItemNo, gLineItemNo);
+                                gImpFOCLine."Line No." := lineNo;
+                                gImpFOCLine.Validate("Item No.", LineItemNo);
+                                if not item.get(gItemNo) then
+                                    item.init;
+                                gImpFOCLine."Item Description" := item.Description;
+                                gImpFOCLine.Validate(UOM, item."Base Unit of Measure");
+                                if gQty <> '' then
+                                    Evaluate(qty, gQty);
+                                gImpFOCLine.Validate(Quantity, qty);
+                                if gSRPPriece <> '' then
+                                    Evaluate(SrpPrice, gSRPPriece);
+                                gImpFOCLine."SRP Price" := SrpPrice;
+                                if gPromotionalPrice <> '' then
+                                    Evaluate(promotionprice, gPromotionalPrice);
+                                gImpFOCLine."Promotional Price" := promotionprice;
+                                gImpFOCLine."Storage Location" := gStorageLocation;
+                                gImpFOCLine."Free Gift ID" := gImpFOCHeader."Free Gift ID";
+                                if gRelated_Item_Type = 'FOC' then
+                                    gImpFOCLine."Related Item Type" := gImpFOCLine."Related Item Type"::FOC
                                 else
-                                    if gRelated_Item_Type = 'Main' then
-                                        gImpFOCLine."Related Item Type" := gImpFOCLine."Related Item Type"::Main
+                                    if gRelated_Item_Type = 'FOC Dummy' then
+                                        gImpFOCLine."Related Item Type" := gImpFOCLine."Related Item Type"::"FOC Dummy"
                                     else
-                                        if gRelated_Item_Type = 'Main Delivery' then
-                                            gImpFOCLine."Related Item Type" := gImpFOCLine."Related Item Type"::"Main Delivery"
+                                        if gRelated_Item_Type = 'Main' then
+                                            gImpFOCLine."Related Item Type" := gImpFOCLine."Related Item Type"::Main
                                         else
-                                            if gRelated_Item_Type = 'Package' then
-                                                gImpFOCLine."Related Item Type" := gImpFOCLine."Related Item Type"::Package
+                                            if gRelated_Item_Type = 'Main Delivery' then
+                                                gImpFOCLine."Related Item Type" := gImpFOCLine."Related Item Type"::"Main Delivery"
                                             else
-                                                if gRelated_Item_Type = 'Package Dummy' then
-                                                    gImpFOCLine."Related Item Type" := gImpFOCLine."Related Item Type"::"Package Dummy";
+                                                if gRelated_Item_Type = 'Package' then
+                                                    gImpFOCLine."Related Item Type" := gImpFOCLine."Related Item Type"::Package
+                                                else
+                                                    if gRelated_Item_Type = 'Package Dummy' then
+                                                        gImpFOCLine."Related Item Type" := gImpFOCLine."Related Item Type"::"Package Dummy";
 
-                            gImpFOCLine.Insert();
-                            Commit();
+                                gImpFOCLine.Insert();
+                                Commit();
+                            end;
                         end
                         else begin
                             gImpFOCLine2.reset;
-                            gImpFOCLine2.SetRange("No.");
+                            gImpFOCLine2.SetRange(INT_External_SYN, gNo);
                             gImpFOCLine2.SetRange(Type, gImpFOCLine2.Type::FOC);
                             if gImpFOCLine2.Find('+') then begin
                                 lineNo := gImpFOCLine2."Line No." + 10000;
@@ -141,7 +148,8 @@ xmlport 60001 "INT_ImportFOCHeader_SNY"
                             //start
                             gImpFOCLine.init;
                             gImpFOCLine.type := gImpFOCLine.type::FOC;
-                            gImpFOCLine."No." := gNo;
+                            gImpFOCLine."No." := gImpFOCLine2."No.";
+                            gImpFOCLine.INT_External_SYN := gNo;
                             if gLineItemNo <> '' then
                                 Evaluate(LineItemNo, gLineItemNo);
                             gImpFOCLine."Line No." := lineNo;
@@ -238,9 +246,11 @@ xmlport 60001 "INT_ImportFOCHeader_SNY"
         item: Record item;
         gImpFOCLine: Record INT_BundleLine_SNY;
         gImpFOCLine2: Record INT_BundleLine_SNY;
+        gImpFOCHeader2: Record INT_BundleHeader_SNY;
         lineNo: Integer;
         qty: Decimal;
         promotionprice: Decimal;
         LineItemNo: code[20];
-
+        noserialMgn: Codeunit NoSeriesManagement;
+        InterfaceSetup: Record INT_InterfaceSetup_SNY;
 }

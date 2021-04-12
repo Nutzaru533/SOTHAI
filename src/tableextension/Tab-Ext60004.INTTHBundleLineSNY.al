@@ -3,13 +3,28 @@ tableextension 60004 "INT_TH_BundleLine_SNY" extends INT_BundleLine_SNY
     fields
     {
         // Add changes to table fields here
+        field(60001; INT_External_SYN; Code[20])
+        {
+            Caption = 'External No.';
+            DataClassification = ToBeClassified;
+        }
         modify("Item No.")
         {
             trigger OnAfterValidate()
             var
                 myInt: Integer;
                 item: Record item;
+                FOCHeader: Record INT_BundleHeader_SNY;
             begin
+                //check item in header
+                FOCHeader.reset;
+                FOCHeader.SetRange("No.", "No.");
+                if FOCHeader.Find('-') then begin
+                    if "Item No." = FOCHeader."Item No." then
+                        error('Item Must be Different in Header');
+                end;
+                //check item in header
+
                 INT_BundleHeader_SNY.reset;
                 INT_BundleHeader_SNY.setrange("No.", "No.");
                 if INT_BundleHeader_SNY.find('-') then begin
@@ -20,6 +35,7 @@ tableextension 60004 "INT_TH_BundleLine_SNY" extends INT_BundleLine_SNY
                     "Item Description" := item.Description;
                     Validate(uom, item."Base Unit of Measure");
                 end;
+
             end;
         }
 

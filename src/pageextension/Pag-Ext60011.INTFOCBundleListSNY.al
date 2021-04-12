@@ -10,6 +10,13 @@ pageextension 60011 "INT_FOCBundleList_SNY" extends INT_FOCBundleList_SNY
                 Caption = 'Marketplace';
             }
         }
+        addafter("No.")
+        {
+            field(INT_External_SYN; INT_External_SYN)
+            {
+                ApplicationArea = all;
+            }
+        }
         modify(Marketplace)
         {
             Visible = false;

@@ -128,24 +128,13 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
                     CheckInventory();
                     Commit();
                 end;
-                //
-                //calculatediscount 
-                if SalesHeader."Seller Voucher Amount" <> 0 then begin
-                    INT_salesline3.reset;
-                    INT_salesline3.SetRange("Document Type", SalesHeader."Document Type");
-                    INT_salesline3.SetRange("Document No.", SalesHeader."No.");
-                    INT_salesline3.SetRange(Type, INT_salesline3.Type::Item);
-                    INT_salesline3.SetFilter(Quantity, '>%1', 0);
-                    if INT_salesline3.FindFirst then begin
-                        if INT_item.get(INT_salesline3."No.") then begin
-                            if not INT_item.INT_Exclude_Discount_SNY then begin
-                                INT_salesline3.validate("Line Discount Amount", SalesHeader."Seller Voucher Amount");
-                            end;
-                        end;
-                    end
+                //SellVoucherCalculate 
+                SalesHeader.CalcFields(Amount);
+                if (SalesHeader."Seller Voucher Amount" <> 0) and (SalesHeader."Amount" <> 0) then begin
+                    SellVoucherCalculate();
                 end;
-                //calculatediscount
-                //
+                //SellVoucherCalculate
+
                 if (SalesHeader.INT_InternalProcessing_SNY = SalesHeader.INT_InternalProcessing_SNY::"Inventory Checked")
                  and (not SalesHeader.INT_DelConfirmed_SNY) then begin
                     DeliveryConfirm2(false);
@@ -220,6 +209,13 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
                     skipInsertDeliveryFee();
                     Commit();
                 end;
+
+                //SellVoucherCalculate test1
+                SalesHeader.CalcFields(Amount);
+                if (SalesHeader."Seller Voucher Amount" <> 0) and (SalesHeader."Amount" <> 0) then begin
+                    SellVoucherCalculate();
+                end;
+                //SellVoucherCalculate test1
 
                 if (SalesHeader.INT_InternalProcessing_SNY in [SalesHeader.INT_InternalProcessing_SNY::"Explode SO", SalesHeader.INT_InternalProcessing_SNY::Presales])
                         and (SalesHeader.INT_OrderType_SNY = SalesHeader.INT_OrderType_SNY::Presale) then begin
@@ -315,8 +311,12 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
         SalesSetup: Record "Sales & Receivables Setup";
         AlertMgmt: Codeunit INT_AlertMgnt_SNY;
         INT_salesline3: Record "Sales Line";
+        INT_salesline4: Record "Sales Line";
         checkLine: Integer;
+        checkLine2: Integer;
         INT_item: Record item;
+        SellVourcher: Decimal;
+        calculatelineamount: Decimal;
 
     local procedure PostingShipments()
     var
@@ -2270,29 +2270,15 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
             CheckInventory();
             Commit();
         end;
-        //calculatediscount 
-        checkLine := 0;
-        if SalesHeader."Seller Voucher Amount" <> 0 then begin
-            INT_salesline3.reset;
-            INT_salesline3.SetRange("Document Type", SalesHeader."Document Type");
-            INT_salesline3.SetRange("Document No.", SalesHeader."No.");
-            INT_salesline3.SetRange(Type, INT_salesline3.Type::Item);
-            INT_salesline3.SetFilter(Quantity, '>%1', 0);
-            if INT_salesline3.FindFirst then begin
-                repeat
-                    if INT_item.get(INT_salesline3."No.") then begin
 
-                        if not INT_item.INT_Exclude_Discount_SNY then begin
-                            checkLine += 1;
-                            INT_salesline3.validate("Line Discount Amount", SalesHeader."Seller Voucher Amount");
-
-                        end;
-
-                    end;
-                until (INT_salesline3.Next() = 0) or (checkLine = 1);
-            end
+        //SellVoucherCalculate 
+        SalesHeader.CalcFields(Amount);
+        if (SalesHeader."Seller Voucher Amount" <> 0) and (SalesHeader."Amount" <> 0) then begin
+            SellVoucherCalculate();
         end;
-        //calculatediscount
+        //SellVoucherCalculate 
+
+
         if (SalesHeader.INT_InternalProcessing_SNY = SalesHeader.INT_InternalProcessing_SNY::"Inventory Checked")
          and (not SalesHeader.INT_DelConfirmed_SNY) then begin
             DeliveryConfirm2(false);
@@ -2818,5 +2804,151 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
             until SalesLine.Next() = 0;
         // SalesHeader.INT_InternalProcessing_SNY := SalesHeader.INT_InternalProcessing_SNY::"Explode SO";
         // SalesHeader.Modify(true);
+    end;
+
+    procedure SellVoucherCalculate()
+    var
+        totalamount: Decimal;
+        checksenario: Boolean;
+        resetsalesline: Record "Sales Line";
+
+    begin
+        //reset linediscount
+        resetsalesline.reset;
+
+        resetsalesline.SetRange("Document Type", SalesHeader."Document Type");
+        resetsalesline.SetRange("Document No.", SalesHeader."No.");
+        resetsalesline.SetRange(Type, resetsalesline.Type::Item);
+        resetsalesline.SetFilter("Line Discount Amount", '>%1', 0);
+        if resetsalesline.Find('-') then begin
+            repeat
+                resetsalesline.Validate("Line Discount Amount", 0);
+                resetsalesline.Modify();
+                Commit();
+            until resetsalesline.next = 0;
+        end;
+        //reset linediscount
+
+        //calculatediscount 
+        checksenario := false;
+        checkLine := 0;
+        SalesHeader.CalcFields("Amount Including VAT");
+        SalesHeader.CalcFields(Amount);
+        totalamount := 0;
+        if (SalesHeader."Seller Voucher Amount" <> 0) and (SalesHeader."Amount" <> 0) then begin
+            //SellVourcher := SalesHeader."Seller Voucher Amount";
+            //count discount line
+            INT_salesline3.reset;
+            INT_salesline3.SetRange("Document Type", SalesHeader."Document Type");
+            INT_salesline3.SetRange("Document No.", SalesHeader."No.");
+            INT_salesline3.SetRange(Type, INT_salesline3.Type::Item);
+            INT_salesline3.SetFilter(Quantity, '>%1', 0);
+            if INT_salesline3.find('-') then begin
+                INT_salesline3.CalcSums("Line Amount");
+                totalamount := INT_salesline3."Line Amount";
+            end;
+
+            INT_salesline3.reset;
+            INT_salesline3.SetRange("Document Type", SalesHeader."Document Type");
+            INT_salesline3.SetRange("Document No.", SalesHeader."No.");
+            INT_salesline3.SetRange(Type, INT_salesline3.Type::Item);
+            INT_salesline3.SetFilter(Quantity, '>%1', 0);
+            INT_salesline3.SetRange(INT_Exclude_Discount_SNY, false);
+            if INT_salesline3.find('-') then begin
+                checkLine := INT_salesline3.Count;
+            end;
+            //count discount line
+            if checkLine = 1 then begin
+                //first senario
+                SellVourcher := 0;
+                INT_salesline3.reset;
+                INT_salesline3.SetRange("Document Type", SalesHeader."Document Type");
+                INT_salesline3.SetRange("Document No.", SalesHeader."No.");
+                INT_salesline3.SetRange(Type, INT_salesline3.Type::Item);
+                INT_salesline3.SetFilter(Quantity, '>%1', 0);
+                INT_salesline3.SetRange(INT_Exclude_Discount_SNY, false);
+                if INT_salesline3.find('-') then begin
+                    if SalesHeader."Seller Voucher Amount" <= INT_salesline3."Line Amount" then begin
+                        INT_salesline3.Validate("Line Discount Amount", SalesHeader."Seller Voucher Amount");
+                        INT_salesline3.Modify();
+                        Commit();
+                        checksenario := true;
+                    end;
+                end;
+                //first senario
+
+                //Third senario
+                if checksenario = false then begin
+                    INT_salesline3.reset;
+                    INT_salesline3.SetRange("Document Type", SalesHeader."Document Type");
+                    INT_salesline3.SetRange("Document No.", SalesHeader."No.");
+                    INT_salesline3.SetRange(Type, INT_salesline3.Type::Item);
+                    INT_salesline3.SetFilter(Quantity, '>%1', 0);
+                    INT_salesline3.SetRange(INT_Exclude_Discount_SNY, false);
+                    if INT_salesline3.find('-') then begin
+                        if SalesHeader."Seller Voucher Amount" > INT_salesline3."Line Amount" then begin
+                            SellVourcher := SalesHeader."Seller Voucher Amount" - INT_salesline3."Line Amount";
+                            INT_salesline3.Validate("Line Discount Amount", INT_salesline3."Line Amount");
+                            INT_salesline3.Modify();
+                            Commit();
+                        end;
+
+                        INT_salesline4.reset;
+                        INT_salesline3.SetCurrentKey("Amount Including VAT");
+                        INT_salesline4.SetRange("Document Type", SalesHeader."Document Type");
+                        INT_salesline4.SetRange("Document No.", SalesHeader."No.");
+                        INT_salesline4.SetRange(Type, INT_salesline3.Type::Item);
+                        INT_salesline4.SetFilter(Quantity, '>%1', 0);
+                        INT_salesline4.SetRange(INT_Exclude_Discount_SNY, true);
+                        if INT_salesline4.find('+') then begin
+                            repeat
+                                if totalamount > SellVourcher then begin
+                                    INT_salesline4.Validate("Line Discount Amount", SellVourcher);
+                                    SellVourcher := 0;
+                                end;
+                                if SellVourcher > 0 then begin
+                                    INT_salesline4.Validate("Line Discount Amount", SellVourcher);
+                                    SellVourcher := SellVourcher - (INT_salesline4."Line Discount Amount");
+                                end;
+                                INT_salesline4.Modify();
+                                Commit();
+                            until (INT_salesline4.Next(-1) = 0) or (SellVourcher = 0);
+                        end;
+                    end;
+                end;
+                //Third senario
+            end;
+
+            //Second senario
+            if checkLine > 1 then begin
+                SellVourcher := 0;
+                checkLine2 := 0;
+                INT_salesline3.reset;
+                INT_salesline3.SetCurrentKey("Amount Including VAT");
+                INT_salesline3.SetRange("Document Type", SalesHeader."Document Type");
+                INT_salesline3.SetRange("Document No.", SalesHeader."No.");
+                INT_salesline3.SetRange(Type, INT_salesline3.Type::Item);
+                INT_salesline3.SetFilter(Quantity, '>%1', 0);
+                INT_salesline3.SetRange(INT_Exclude_Discount_SNY, false);
+                if INT_salesline3.find('+') then begin
+                    repeat
+
+                        checkLine2 += 1;
+                        if checkLine = checkLine2 then begin
+                            INT_salesline3.Validate("Line Discount Amount", SalesHeader."Seller Voucher Amount" - SellVourcher);
+                        end else begin
+                            calculatelineamount := ((INT_salesline3."Line Amount" * SalesHeader."Seller Voucher Amount") / totalamount);
+                            INT_salesline3.Validate("Line Discount Amount", calculatelineamount);
+                            SellVourcher += calculatelineamount;
+                        end;
+                        INT_salesline3.Modify();
+                        Commit();
+
+                    until INT_salesline3.Next(-1) = 0;
+                end;
+            end;
+            //Second senario
+        end;
+        //calculatediscount
     end;
 }
