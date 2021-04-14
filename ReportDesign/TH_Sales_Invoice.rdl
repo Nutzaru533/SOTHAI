@@ -1802,12 +1802,12 @@
           <Image Name="Image1">
             <Source>Database</Source>
             <Value>=First(Fields!markeINT_Signature_SNY.Value, "DataSet_Result")</Value>
-            <MIMEType>image/jpeg</MIMEType>
+            <MIMEType>image/png</MIMEType>
             <Sizing>FitProportional</Sizing>
-            <Top>2.95917in</Top>
-            <Left>4.75in</Left>
-            <Height>0.43056in</Height>
-            <Width>2.87917in</Width>
+            <Top>2.97167in</Top>
+            <Left>5.13333in</Left>
+            <Height>0.34306in</Height>
+            <Width>2.49584in</Width>
             <ZIndex>4</ZIndex>
             <Style>
               <Border>
@@ -2910,7 +2910,7 @@
               <Top>3.14444in</Top>
               <Left>0.44167in</Left>
               <Height>0.2in</Height>
-              <Width>1.37223in</Width>
+              <Width>3.74723in</Width>
               <ZIndex>31</ZIndex>
               <Style>
                 <Border>
@@ -3110,7 +3110,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value EvaluationMode="Constant" />
+                      <Value>=First(Fields!shipPhoneNo.Value, "DataSet_Result")</Value>
                       <Style>
                         <FontFamily>AngsanaUPC</FontFamily>
                         <FontSize>12pt</FontSize>
@@ -3127,7 +3127,7 @@
               <Top>4.15972in</Top>
               <Left>0.45417in</Left>
               <Height>0.2in</Height>
-              <Width>1.35556in</Width>
+              <Width>3.73473in</Width>
               <ZIndex>38</ZIndex>
               <Style>
                 <Border>
@@ -3256,6 +3256,9 @@ End Function
         </Field>
         <Field Name="ShiptoContact">
           <DataField>ShiptoContact</DataField>
+        </Field>
+        <Field Name="shipPhoneNo">
+          <DataField>shipPhoneNo</DataField>
         </Field>
         <Field Name="Deliveryexist">
           <DataField>Deliveryexist</DataField>

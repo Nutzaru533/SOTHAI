@@ -22,10 +22,11 @@ pageextension 60003 "INT_TH_Sales_Order" extends "Sales Order"
             action(AWB)
             {
                 Caption = 'AWB Report';
-                ApplicationArea = All;
+                //ApplicationArea = All;
                 Image = PrintDocument;
                 Promoted = true;
                 PromotedCategory = Process;
+                Visible = false;
 
                 trigger OnAction()
                 var
@@ -198,7 +199,10 @@ pageextension 60003 "INT_TH_Sales_Order" extends "Sales Order"
                     if MarketPlace."Process ID" = 1 then
                         OrderProcessing.ReprocessSalesOrder2(SalesHeader)
                     else
-                        OrderProcessing.ReprocessSalesOrder(SalesHeader);
+                        if MarketPlace."Process ID" = 2 then
+                            OrderProcessing.ReprocessSalesOrder3(SalesHeader)
+                        else
+                            OrderProcessing.ReprocessSalesOrder(SalesHeader)
                     // OrderProcessing.Run();
                 end;
             }

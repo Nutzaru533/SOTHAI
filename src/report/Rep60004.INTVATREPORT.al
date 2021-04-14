@@ -48,7 +48,9 @@ report 60004 "INT_VAT_REPORT"
             var
                 myInt: Integer;
             begin
-
+                //"Sales Invoice Line".SetFilter(INT_ma);
+                SetFilter("Bill-to Customer No.", CustomerNO);
+                SetFilter("Posting Date", '%1..%2', startDate, Enddate);
 
             end;
 
@@ -63,11 +65,11 @@ report 60004 "INT_VAT_REPORT"
                     end;
                 end;
 
-                if "No." <> '' then begin
+                if "Document No." <> '' then begin
                     LineNo += 1;
-                    totalamountEx += Amount;
-                    totalAmtVat += ("Amount Including VAT" - Amount);
-                    TotalAmtIncVat += "Amount Including VAT";
+                    totalamountEx += "Sales Invoice Line".Amount;
+                    totalAmtVat += ("Sales Invoice Line"."Amount Including VAT" - "Sales Invoice Line".Amount);
+                    TotalAmtIncVat += "Sales Invoice Line"."Amount Including VAT";
                 end;
 
                 customer.reset;
@@ -106,7 +108,8 @@ report 60004 "INT_VAT_REPORT"
             var
                 myInt: Integer;
             begin
-
+                SetFilter("Bill-to Customer No.", CustomerNO);
+                SetFilter("Posting Date", '%1..%2', startDate, Enddate);
             end;
 
             trigger OnAfterGetRecord()
@@ -121,11 +124,11 @@ report 60004 "INT_VAT_REPORT"
                     end;
 
                 end;
-                if "No." <> '' then begin
+                if "Document No." <> '' then begin
                     LineNo += 1;
-                    totalamountEx -= Amount;
-                    totalAmtVat -= ("Amount Including VAT" - Amount);
-                    TotalAmtIncVat -= "Amount Including VAT";
+                    totalamountEx -= "Sales Cr.Memo Line".Amount;
+                    totalAmtVat -= ("Sales Cr.Memo Line"."Amount Including VAT" - "Sales Cr.Memo Line".Amount);
+                    TotalAmtIncVat -= "Sales Cr.Memo Line"."Amount Including VAT";
                 end;
 
             end;
@@ -191,6 +194,10 @@ report 60004 "INT_VAT_REPORT"
 
         if (startDate = 0D) or (Enddate = 0D) then
             Error('Plase Filter Date !');
+
+        totalamountEx := 0;
+        totalAmtVat := 0;
+        TotalAmtIncVat := 0;
 
     end;
 

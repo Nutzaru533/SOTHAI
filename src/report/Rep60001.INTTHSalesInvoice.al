@@ -19,30 +19,34 @@ report 60001 "INT_TH_Sales_Invoice"
             }
             column(DocNo; "No.") { }
             column(MarketPlace; INT_MarketPlace_SNY) { }
-            column(markeINT_Signature_SNY; marketplace.INT_Signature_SNY) { }
+            column(markeINT_Signature_SNY; marketplace.INT_Singatrue2_SNY) { }
             column(HeaderDocNo; "External Document No.")
             {
             }
             column(DocDate; "Order Date")
             {
             }
-            column(ShiptoName; "Sell-to Contact")
+            column(ShiptoName; "Bill-to Name")
             {
             }
-            column(ShiptoAddress; "Sell-to Address")
+            column(ShiptoAddress; "Bill-to Address")
             {
             }
-            column(ShiptoAddress2; "Sell-to Address 2")
+            column(ShiptoAddress2; "Bill-to Address 2")
             {
             }
-            column(ShiptoCity; "Sell-to City")
+            column(ShiptoCity; "Bill-to City")
             {
             }
-            column(ShiptoPostCode; "Sell-to Post Code")
+            column(ShiptoPostCode; "Bill-to Post Code")
             {
             }
-            column(ShiptoContact; "Sell-to Phone No.")
+            column(ShiptoContact; "Bill-to Contact")
             {
+            }
+            column(shipPhoneNo; shipPhoneNo)
+            {
+
             }
             column(Deliveryexist; Deliveryexist)
             {
@@ -53,7 +57,7 @@ report 60001 "INT_TH_Sales_Invoice"
             column(CompName; CompanyInfo.Name)
             {
             }
-            column(CompName2; CompanyInfo."Contact Person")
+            column(CompName2; CompanyInfo."Name 2")
             {
             }
             column(CompAddress; CompanyInfo.Address)
@@ -124,7 +128,7 @@ report 60001 "INT_TH_Sales_Invoice"
             column(Sell_to_City; "bill-to City") { }
             column(Sell_to_County; "bill-to County") { }
             column(Sell_to_Post_Code; "bill-to Post Code") { }
-            column(Sell_to_Phone_No_; "Sell-to Phone No.") { }
+            column(Sell_to_Phone_No_; contact."Phone No.") { }
             column(Branch; showBranch) { }
             column(Companybranch; Companybranch) { }
             column(shipName; shipName) { }
@@ -178,7 +182,7 @@ report 60001 "INT_TH_Sales_Invoice"
                 column(ItemNo; "No.")
                 {
                 }
-                column(Description; SKU)
+                column(Description; Description)
                 {
                 }
                 column(QtytoInvoice; RepQuantity)
@@ -187,7 +191,7 @@ report 60001 "INT_TH_Sales_Invoice"
                 column(UnitPrice; UnitPrice)
                 {
                 }
-                column(LineDiscountAmount; Rebate)
+                column(LineDiscountAmount; "Line Discount Amount")
                 {
                 }
                 column(SubTotal; SubTotal)
@@ -311,6 +315,8 @@ report 60001 "INT_TH_Sales_Invoice"
                     end;
                     if "No." <> '' then
                         countLine += 1;
+
+
                 end;
             }
             dataitem(Integer; integer)
@@ -384,6 +390,7 @@ report 60001 "INT_TH_Sales_Invoice"
                     until TotalSalesLine.Next() = 0;
                 TotalDeliveryCharges := Round(TotalDeliveryCharges, 0.01, '=');
 
+                /*
                 if "Ship-to Name" <> '' then begin
                     shipName := "Ship-to Name";
                     shipadd1 := "Ship-to Address";
@@ -392,13 +399,15 @@ report 60001 "INT_TH_Sales_Invoice"
                     shipCountry := "Ship-to County";
                     shippostcode := "Ship-to Post Code";
                 end else begin
-                    shipName := "Bill-to Name";
-                    shipadd1 := "bill-to Address";
-                    shipadd2 := "bill-to Address 2";
-                    shipcity := "bill-to City";
-                    shipCountry := "bill-to County";
-                    shippostcode := "Bill-to Post Code";
-                end;
+                    */
+                shipName := "Sell-to Customer Name" + "Sell-to Customer Name 2";
+                shipadd1 := "Sell-to Address";
+                shipadd2 := "Sell-to Address 2";
+                shipcity := "sell-to City";
+                shipCountry := "sell-to County";
+                shippostcode := "sell-to Post Code";
+                shipPhoneNo := "Sell-to Phone No.";
+                //end;
 
                 if "Branch No." <> '' then
                     showBranch := 'สาขาที่ : ' + "Branch No."
@@ -417,9 +426,10 @@ report 60001 "INT_TH_Sales_Invoice"
                 marketplace.reset;
                 marketplace.SetRange(marketplace, INT_MarketPlace_SNY);
                 if marketplace.Find('-') then begin
-                    marketplace.CalcFields(INT_Signature_SNY);
+                    marketplace.CalcFields(INT_Singatrue2_SNY);
                 end;
-
+                if not contact.get("Bill-to Contact No.") then
+                    contact.init;
             end;
 
         }
@@ -487,18 +497,20 @@ report 60001 "INT_TH_Sales_Invoice"
         DeliveryChargesExist: Boolean;
         TotalDeliveryCharges: Decimal;
         RepQuantity: Decimal;
-        shipName: text[50];
-        shipadd1: text[50];
-        shipadd2: text[50];
-        shipcity: text[50];
-        shipCountry: Text[50];
-        shippostcode: text[50];
-        shipPhoneNo: Text[50];
+        shipName: text[100];
+        shipadd1: text[100];
+        shipadd2: text[100];
+        shipcity: text[100];
+        shipCountry: Text[100];
+        shippostcode: text[100];
+        shipPhoneNo: Text[100];
         countLine: Integer;
         showBranch: text[50];
         TH_Even_Sub: Codeunit INT_Even_Sub_SNY;
         texamtth: Text[200];
         marketplace: Record INT_MarketPlaces_SNY;
         Companybranch: Text[50];
+
+        contact: Record Contact;
 
 }

@@ -1,13 +1,12 @@
-pageextension 60001 "INT_TH_Item_Card" extends "Item Card"
+pageextension 60016 "INT_company_infor_SYN" extends "Company Information"
 {
     layout
     {
         // Add changes to page layout here
-        addafter("Purchasing Code")
+        addafter(Name)
         {
-            field("Exclude Discount"; INT_Exclude_Discount_SNY)
+            field("Name 2"; "Name 2")
             {
-                Caption = 'Inclusive Discount';
                 ApplicationArea = all;
             }
         }

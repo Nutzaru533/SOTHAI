@@ -21,20 +21,19 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
 
         if SalesHeader."Document Type" = SalesHeader."Document Type"::Order then begin
             MarketPlace.Get(SalesHeader.INT_MarketPlace_SNY);
-            if MarketPlace."Process ID" = 1 then begin // SHOPIFY - PROCESS
-                                                       //
+
+            if MarketPlace."Process ID" = 2 then begin // process - shopee
                 SalesLine2.Reset;
                 SalesLine2.SetRange("Document Type", SalesHeader."Document Type");
                 SalesLine2.SetRange("Document No.", SalesHeader."No.");
                 if SalesLine2.findfirst() then
                     repeat
                         ShopifyFullfillmentSetup.Reset;
-                        ShopifyFullfillmentSetup.SetRange(FulfilmentLocation, SalesLine2.INT_FulfilmentLocation_SNY);
+                        //ShopifyFullfillmentSetup.SetRange(FulfilmentLocation, SalesLine2.INT_FulfilmentLocation_SNY);
                         ShopifyFullfillmentSetup.SetRange(ShippingProfile, SalesHeader.INT_ShippingProfile_SNY);
+
+                        //wait to confirm. from sri//
                         if ShopifyFullfillmentSetup.Findfirst() then begin
-                            //
-                            // Message('Second %1,%2', ShopifyFullfillmentSetup."Final Delivery Type", ShopifyFullfillmentSetup."Final Location");
-                            //
                             SalesLine2.INT_DeliveryType_SNY := ShopifyFullfillmentSetup."Final Delivery Type";
                             //location code update only for inventory items--start
                             item.Get(SalesLine2."No.");
@@ -46,239 +45,381 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
                             //SalesLine2."Location Code" := ShopifyFullfillmentSetup."Final Location";
                         end;
                         SalesLine2.Modify();
+                        //SOTHAI
+                        if SalesHeader.INT_InternalProcessing_SNY = SalesHeader.INT_InternalProcessing_SNY::"Not Started" then begin
+                            SalesHeader.INT_OrderStatus_SNY := SalesHeader.INT_OrderStatus_SNY::"In-Process";
+                            SalesHeader."Requested Delivery Date" := 0D;
+                            SalesHeader.INT_BCOrderNo_SNY := SalesHeader."No.";
+                            SplitByDeliveryType();
+                            Commit();
+                        end;
 
+                        if SalesHeader.INT_InternalProcessing_SNY = SalesHeader.INT_InternalProcessing_SNY::"Delivery Split Completed" then begin
+                            SplitByItemType();
+                            Commit();
+                        end;
+
+                        //Copy from Here for reprocess umang
+                        if SalesHeader.INT_InternalProcessing_SNY = SalesHeader.INT_InternalProcessing_SNY::"PSG/BUN Split" then begin
+                            ExplodeOrder();
+                            Commit();
+                        end;
+
+                        if SalesHeader.INT_InternalProcessing_SNY = SalesHeader.INT_InternalProcessing_SNY::"Explode SO" then begin
+                            //InsertDeliveryFee();
+                            skipInsertDeliveryFee();
+                            Commit();
+                        end;
+
+                        //SellVoucherCalculate test1
+                        SalesHeader.CalcFields(Amount);
+                        if (SalesHeader."Seller Voucher Amount" <> 0) and (SalesHeader."Amount" <> 0) then begin
+                            SellVoucherCalculate();
+                        end;
+                        //SellVoucherCalculate test1
+
+                        if (SalesHeader.INT_InternalProcessing_SNY in [SalesHeader.INT_InternalProcessing_SNY::"Explode SO", SalesHeader.INT_InternalProcessing_SNY::Presales])
+                                and (SalesHeader.INT_OrderType_SNY = SalesHeader.INT_OrderType_SNY::Presale) then begin
+                            ProcessPreslaesOrder();
+
+                            Commit();
+                        end;
+
+                        if SalesHeader.INT_InternalProcessing_SNY = SalesHeader.INT_InternalProcessing_SNY::"Inventory N/A" then begin
+                            CheckInventory();
+                            Commit();
+                        end;
+
+                        if (SalesHeader.INT_InternalProcessing_SNY = SalesHeader.INT_InternalProcessing_SNY::"Inventory Checked")
+                         and (not SalesHeader.INT_DelConfirmed_SNY) then begin
+                            DeliveryConfirm(false);
+                            Commit();
+                        end;
+
+                        if ((SalesHeader.INT_InternalProcessing_SNY = SalesHeader.INT_InternalProcessing_SNY::"Inventory Checked")
+                                and ((SalesHeader.INT_OrderStatus_SNY = SalesHeader.INT_OrderStatus_SNY::Delivered)
+                                    or (SalesHeader.INT_OrderStatus_SNY = SalesHeader.INT_OrderStatus_SNY::Shipped)
+                                    or (SalesHeader.INT_OrderStatus_SNY = SalesHeader.INT_OrderStatus_SNY::Failed)
+                                    or (SalesHeader.INT_OrderStatus_SNY = SalesHeader.INT_OrderStatus_SNY::Returned)
+                                )) then begin
+                            SalesHeader.INT_InternalProcessing_SNY := SalesHeader.INT_InternalProcessing_SNY::Completed;
+                            Commit;
+                        end;
+
+                        /*
+                        if ((SalesHeader.INT_InternalProcessing_SNY = SalesHeader.INT_InternalProcessing_SNY::"Inventory Checked") or
+                            (SalesHeader.INT_InternalProcessing_SNY = SalesHeader.INT_InternalProcessing_SNY::Completed))
+                            and (SalesHeader.INT_SimpleStatus_SNY = SalesHeader.INT_SimpleStatus_SNY::"Not Started") then begin
+                            SynctoSAP(false);
+                        end;
+                        */
+                        if InterfaceSetup."Auto Set Lazada Inv" then
+                            if SalesHeader.INT_InvCheck_SNY then begin
+                                Commit();
+                                clear(UpdateStatus);
+                                UpdateSalesHeader.get(SalesHeader."Document Type", SalesHeader."No.");
+                                UpdateStatus.SetOrder(UpdateSalesHeader, 10);
+                                if not UpdateStatus.Run() then begin
+                                    UpdateSalesHeader.get(SalesHeader."Document Type", SalesHeader."No.");
+                                    UpdateSalesHeader.INT_ProcessErr_SNY := GetLastErrorText;
+                                    UpdateSalesHeader.Modify();
+                                end;
+                                Commit();
+                                clear(UpdateStatus);
+                                UpdateSalesHeader.get(SalesHeader."Document Type", SalesHeader."No.");
+                                UpdateStatus.SetOrder(UpdateSalesHeader, 20);
+                                if not UpdateStatus.run() then begin
+                                    UpdateSalesHeader.get(SalesHeader."Document Type", SalesHeader."No.");
+                                    UpdateSalesHeader.INT_ProcessErr_SNY := GetLastErrorText;
+                                    UpdateSalesHeader.Modify();
+                                    Commit();
+                                end;
+                            end;
+
+                        if SalesHeader.INT_SAPOrderID_SNY <> '' then
+                            PostingShipments();
+                        if SalesHeader."Document Type" = SalesHeader."Document Type"::"Return Order" then begin
+
+                            MarketPlace.Get(SalesHeader.INT_MarketPlace_SNY);
+                            if MarketPlace."Process ID" = 1 then begin
+                                if SalesHeader.INT_OrderStatus_SNY < SalesHeader.INT_OrderStatus_SNY::Processed then begin
+                                    ProcessReturnOrder2();
+                                    FullfillmentReturnOrder(SalesHeader);
+                                    ReturnExplodeOrder2();
+                                    //ReturnInsertDeliveryFee();
+                                end;
+                                /*
+                                if (SalesHeader.INT_OrderStatus_SNY >= SalesHeader.INT_OrderStatus_SNY::Processed) and
+                                  (SalesHeader.INT_SimpleStatus_SNY = SalesHeader.INT_SimpleStatus_SNY::"Not Started") then
+                                    NotifySAPForReturn();
+                                    */
+                            end else
+                                if SalesHeader.INT_OrderStatus_SNY < SalesHeader.INT_OrderStatus_SNY::Processed then
+                                    ProcessReturnOrder();
+                        end;
+                    //SOTHAI
                     until SalesLine2.next() = 0;
-                //
 
-                if SalesHeader.INT_InternalProcessing_SNY = SalesHeader.INT_InternalProcessing_SNY::"Not Started" then begin
-                    SalesHeader.INT_OrderStatus_SNY := SalesHeader.INT_OrderStatus_SNY::"In-Process";
-                    SalesHeader."Requested Delivery Date" := 0D;
-                    SalesHeader.INT_BCOrderNo_SNY := SalesHeader."No.";
+            end else
+                if MarketPlace."Process ID" = 1 then begin // SHOPIFY - PROCESS
+                                                           //
+                    SalesLine2.Reset;
+                    SalesLine2.SetRange("Document Type", SalesHeader."Document Type");
+                    SalesLine2.SetRange("Document No.", SalesHeader."No.");
+                    if SalesLine2.findfirst() then
+                        repeat
+                            ShopifyFullfillmentSetup.Reset;
+                            ShopifyFullfillmentSetup.SetRange(FulfilmentLocation, SalesLine2.INT_FulfilmentLocation_SNY);
+                            ShopifyFullfillmentSetup.SetRange(ShippingProfile, SalesHeader.INT_ShippingProfile_SNY);
+                            if ShopifyFullfillmentSetup.Findfirst() then begin
+                                //
+                                // Message('Second %1,%2', ShopifyFullfillmentSetup."Final Delivery Type", ShopifyFullfillmentSetup."Final Location");
+                                //
+                                SalesLine2.INT_DeliveryType_SNY := ShopifyFullfillmentSetup."Final Delivery Type";
+                                //location code update only for inventory items--start
+                                item.Get(SalesLine2."No.");
+                                if item.Type = item.Type::Inventory then
+                                    SalesLine2."Location Code" := ShopifyFullfillmentSetup."Final Location"
+                                else
+                                    SalesLine2."Location Code" := '';
+                                //--end
+                                //SalesLine2."Location Code" := ShopifyFullfillmentSetup."Final Location";
+                            end;
+                            SalesLine2.Modify();
 
-                    ShopifyFullfillmentSetup.Reset;
-                    ShopifyFullfillmentSetup.SetRange(ShippingProfile, SalesHeader.INT_ShippingProfile_SNY);
-                    if ShopifyFullfillmentSetup.FindSet() then begin
-                        SalesLine.Reset;
-                        SalesLine.SetRange("Document Type", SalesHeader."Document Type");
-                        SalesLine.SetRange("Document No.", SalesHeader."No.");
-                        if Salesline.findfirst() then
-                            repeat
-                                ShopifyFullfillmentSetup.SetRange(FulfilmentLocation, Salesline.INT_FulfilmentLocation_SNY);
-                                if ShopifyFullfillmentSetup.findset then begin
-                                    if ShopifyFullfillmentSetup.count() > 1 then begin
-                                        if ShopifyFullfillmentSetup."Inventory Check" = true then
-                                            if FullfillmentInventoryCheck(SalesLine, ShopifyFullfillmentSetup."Final Location") then begin
-                                                ShopifyFullfillmentSetup.next(1);
-                                                if not FullfillmentInventoryCheck(SalesLine, ShopifyFullfillmentSetup."Final Location") then begin
-                                                    //location code update only for inventory items--start
-                                                    item.Get(SalesLine."No.");
-                                                    if item.Type = item.Type::Inventory then
-                                                        SalesLine."Location Code" := ShopifyFullfillmentSetup."Final Location"
-                                                    else
-                                                        SalesLine."Location Code" := '';
-                                                    //--end
-                                                    // SalesLine."Location Code" := ShopifyFullfillmentSetup."Final Location";
-                                                    SalesLine.INT_DeliveryType_SNY := ShopifyFullfillmentSetup."Final Delivery Type";
-                                                    SalesLine.Modify;
-                                                end
-                                            end;
-                                    end else begin
-                                        SalesLine.INT_DeliveryType_SNY := ShopifyFullfillmentSetup."Final Delivery Type";
-                                        //location code update only for inventory items--start
-                                        item.Get(SalesLine."No.");
-                                        if item.Type = item.Type::Inventory then
-                                            SalesLine."Location Code" := ShopifyFullfillmentSetup."Final Location"
-                                        else
-                                            SalesLine."Location Code" := '';
-                                        //--end
-                                        //SalesLine."Location Code" := ShopifyFullfillmentSetup."Final Location";
-                                        SalesLine.Modify;
-                                    end;
-                                end
-                            until Salesline.next() = 0;
-                        commit;
-                    end;
-                    SplitByDeliveryType2();
-                    Commit();
-                end;
-                if SalesHeader.INT_InternalProcessing_SNY = SalesHeader.INT_InternalProcessing_SNY::"Delivery Split Completed" then begin
-                    SplitByItemType2();
-                    Commit();
-                end;
+                        until SalesLine2.next() = 0;
+                    //
+                    //
 
-                //Copy from Here for reprocess umang
-                if SalesHeader.INT_InternalProcessing_SNY = SalesHeader.INT_InternalProcessing_SNY::"PSG/BUN Split" then begin
-                    ExplodeOrder2();
-                    Commit();
-                end;
+                    if SalesHeader.INT_InternalProcessing_SNY = SalesHeader.INT_InternalProcessing_SNY::"Not Started" then begin
+                        SalesHeader.INT_OrderStatus_SNY := SalesHeader.INT_OrderStatus_SNY::"In-Process";
+                        SalesHeader."Requested Delivery Date" := 0D;
+                        SalesHeader.INT_BCOrderNo_SNY := SalesHeader."No.";
 
-                if SalesHeader.INT_InternalProcessing_SNY = SalesHeader.INT_InternalProcessing_SNY::"Explode SO" then begin
-                    //InsertDeliveryFee2();
-                    //Commit();
-                end;
-
-                if (SalesHeader.INT_InternalProcessing_SNY in [SalesHeader.INT_InternalProcessing_SNY::"Explode SO", SalesHeader.INT_InternalProcessing_SNY::Presales])
-                        and (SalesHeader.INT_OrderType_SNY = SalesHeader.INT_OrderType_SNY::Presale) then begin
-                    ProcessPreslaesOrder();
-
-                    Commit();
-                end;
-
-                if SalesHeader.INT_InternalProcessing_SNY = SalesHeader.INT_InternalProcessing_SNY::"Inventory N/A" then begin
-                    CheckInventory();
-                    Commit();
-                end;
-                //SellVoucherCalculate 
-                SalesHeader.CalcFields(Amount);
-                if (SalesHeader."Seller Voucher Amount" <> 0) and (SalesHeader."Amount" <> 0) then begin
-                    SellVoucherCalculate();
-                end;
-                //SellVoucherCalculate
-
-                if (SalesHeader.INT_InternalProcessing_SNY = SalesHeader.INT_InternalProcessing_SNY::"Inventory Checked")
-                 and (not SalesHeader.INT_DelConfirmed_SNY) then begin
-                    DeliveryConfirm2(false);
-                    Commit();
-                end;
-
-                if ((SalesHeader.INT_InternalProcessing_SNY = SalesHeader.INT_InternalProcessing_SNY::"Inventory Checked")
-                        and ((SalesHeader.INT_OrderStatus_SNY = SalesHeader.INT_OrderStatus_SNY::Delivered)
-                            or (SalesHeader.INT_OrderStatus_SNY = SalesHeader.INT_OrderStatus_SNY::Shipped)
-                            or (SalesHeader.INT_OrderStatus_SNY = SalesHeader.INT_OrderStatus_SNY::Failed)
-                            or (SalesHeader.INT_OrderStatus_SNY = SalesHeader.INT_OrderStatus_SNY::Returned)
-                        )) then begin
-                    SalesHeader.INT_InternalProcessing_SNY := SalesHeader.INT_InternalProcessing_SNY::Completed;
-                    Commit;
-                end;
-
-                /*
-                if ((SalesHeader.INT_InternalProcessing_SNY = SalesHeader.INT_InternalProcessing_SNY::"Inventory Checked") or
-                    (SalesHeader.INT_InternalProcessing_SNY = SalesHeader.INT_InternalProcessing_SNY::Completed))
-                    and (SalesHeader.INT_SimpleStatus_SNY = SalesHeader.INT_SimpleStatus_SNY::"Not Started") then begin
-                    SynctoSAP(false);
-                end;
-                */
-
-                if InterfaceSetup."Auto Set Lazada Inv" then
-                    if SalesHeader.INT_InvCheck_SNY then begin
-                        Commit();
-                        clear(UpdateStatus);
-                        UpdateSalesHeader.get(SalesHeader."Document Type", SalesHeader."No.");
-                        UpdateStatus.SetOrder(UpdateSalesHeader, 10);
-                        if not UpdateStatus.Run() then begin
-                            UpdateSalesHeader.get(SalesHeader."Document Type", SalesHeader."No.");
-                            UpdateSalesHeader.INT_ProcessErr_SNY := GetLastErrorText;
-                            UpdateSalesHeader.Modify();
+                        ShopifyFullfillmentSetup.Reset;
+                        ShopifyFullfillmentSetup.SetRange(ShippingProfile, SalesHeader.INT_ShippingProfile_SNY);
+                        if ShopifyFullfillmentSetup.FindSet() then begin
+                            SalesLine.Reset;
+                            SalesLine.SetRange("Document Type", SalesHeader."Document Type");
+                            SalesLine.SetRange("Document No.", SalesHeader."No.");
+                            if Salesline.findfirst() then
+                                repeat
+                                    ShopifyFullfillmentSetup.SetRange(FulfilmentLocation, Salesline.INT_FulfilmentLocation_SNY);
+                                    if ShopifyFullfillmentSetup.findset then begin
+                                        if ShopifyFullfillmentSetup.count() > 1 then begin
+                                            if ShopifyFullfillmentSetup."Inventory Check" = true then
+                                                if FullfillmentInventoryCheck(SalesLine, ShopifyFullfillmentSetup."Final Location") then begin
+                                                    ShopifyFullfillmentSetup.next(1);
+                                                    if not FullfillmentInventoryCheck(SalesLine, ShopifyFullfillmentSetup."Final Location") then begin
+                                                        //location code update only for inventory items--start
+                                                        item.Get(SalesLine."No.");
+                                                        if item.Type = item.Type::Inventory then
+                                                            SalesLine."Location Code" := ShopifyFullfillmentSetup."Final Location"
+                                                        else
+                                                            SalesLine."Location Code" := '';
+                                                        //--end
+                                                        // SalesLine."Location Code" := ShopifyFullfillmentSetup."Final Location";
+                                                        SalesLine.INT_DeliveryType_SNY := ShopifyFullfillmentSetup."Final Delivery Type";
+                                                        SalesLine.Modify;
+                                                    end
+                                                end;
+                                        end else begin
+                                            SalesLine.INT_DeliveryType_SNY := ShopifyFullfillmentSetup."Final Delivery Type";
+                                            //location code update only for inventory items--start
+                                            item.Get(SalesLine."No.");
+                                            if item.Type = item.Type::Inventory then
+                                                SalesLine."Location Code" := ShopifyFullfillmentSetup."Final Location"
+                                            else
+                                                SalesLine."Location Code" := '';
+                                            //--end
+                                            //SalesLine."Location Code" := ShopifyFullfillmentSetup."Final Location";
+                                            SalesLine.Modify;
+                                        end;
+                                    end
+                                until Salesline.next() = 0;
+                            commit;
                         end;
+                        SplitByDeliveryType2();
                         Commit();
-                        clear(UpdateStatus);
-                        UpdateSalesHeader.get(SalesHeader."Document Type", SalesHeader."No.");
-                        UpdateStatus.SetOrder(UpdateSalesHeader, 20);
-                        if not UpdateStatus.run() then begin
-                            UpdateSalesHeader.get(SalesHeader."Document Type", SalesHeader."No.");
-                            UpdateSalesHeader.INT_ProcessErr_SNY := GetLastErrorText;
-                            UpdateSalesHeader.Modify();
+                    end;
+                    if SalesHeader.INT_InternalProcessing_SNY = SalesHeader.INT_InternalProcessing_SNY::"Delivery Split Completed" then begin
+                        SplitByItemType2();
+                        Commit();
+                    end;
+
+                    //Copy from Here for reprocess umang
+                    if SalesHeader.INT_InternalProcessing_SNY = SalesHeader.INT_InternalProcessing_SNY::"PSG/BUN Split" then begin
+                        ExplodeOrder2();
+                        Commit();
+                    end;
+
+                    if SalesHeader.INT_InternalProcessing_SNY = SalesHeader.INT_InternalProcessing_SNY::"Explode SO" then begin
+                        //InsertDeliveryFee2();
+                        //Commit();
+                    end;
+
+                    if (SalesHeader.INT_InternalProcessing_SNY in [SalesHeader.INT_InternalProcessing_SNY::"Explode SO", SalesHeader.INT_InternalProcessing_SNY::Presales])
+                            and (SalesHeader.INT_OrderType_SNY = SalesHeader.INT_OrderType_SNY::Presale) then begin
+                        ProcessPreslaesOrder();
+
+                        Commit();
+                    end;
+
+                    if SalesHeader.INT_InternalProcessing_SNY = SalesHeader.INT_InternalProcessing_SNY::"Inventory N/A" then begin
+                        CheckInventory();
+                        Commit();
+                    end;
+                    //SellVoucherCalculate 
+                    SalesHeader.CalcFields(Amount);
+                    if (SalesHeader."Seller Voucher Amount" <> 0) and (SalesHeader."Amount" <> 0) then begin
+                        SellVoucherCalculate();
+                    end;
+                    //SellVoucherCalculate
+
+                    if (SalesHeader.INT_InternalProcessing_SNY = SalesHeader.INT_InternalProcessing_SNY::"Inventory Checked")
+                     and (not SalesHeader.INT_DelConfirmed_SNY) then begin
+                        DeliveryConfirm2(false);
+                        Commit();
+                    end;
+
+                    if ((SalesHeader.INT_InternalProcessing_SNY = SalesHeader.INT_InternalProcessing_SNY::"Inventory Checked")
+                            and ((SalesHeader.INT_OrderStatus_SNY = SalesHeader.INT_OrderStatus_SNY::Delivered)
+                                or (SalesHeader.INT_OrderStatus_SNY = SalesHeader.INT_OrderStatus_SNY::Shipped)
+                                or (SalesHeader.INT_OrderStatus_SNY = SalesHeader.INT_OrderStatus_SNY::Failed)
+                                or (SalesHeader.INT_OrderStatus_SNY = SalesHeader.INT_OrderStatus_SNY::Returned)
+                            )) then begin
+                        SalesHeader.INT_InternalProcessing_SNY := SalesHeader.INT_InternalProcessing_SNY::Completed;
+                        Commit;
+                    end;
+
+                    /*
+                    if ((SalesHeader.INT_InternalProcessing_SNY = SalesHeader.INT_InternalProcessing_SNY::"Inventory Checked") or
+                        (SalesHeader.INT_InternalProcessing_SNY = SalesHeader.INT_InternalProcessing_SNY::Completed))
+                        and (SalesHeader.INT_SimpleStatus_SNY = SalesHeader.INT_SimpleStatus_SNY::"Not Started") then begin
+                        SynctoSAP(false);
+                    end;
+                    */
+
+                    if InterfaceSetup."Auto Set Lazada Inv" then
+                        if SalesHeader.INT_InvCheck_SNY then begin
                             Commit();
-                        end;
-                    end;
-
-                if SalesHeader.INT_SAPOrderID_SNY <> '' then
-                    PostingShipments();
-
-            end else begin   //Regular/LAZADA Process
-                if SalesHeader.INT_InternalProcessing_SNY = SalesHeader.INT_InternalProcessing_SNY::"Not Started" then begin
-                    SalesHeader.INT_OrderStatus_SNY := SalesHeader.INT_OrderStatus_SNY::"In-Process";
-                    SalesHeader."Requested Delivery Date" := 0D;
-                    SalesHeader.INT_BCOrderNo_SNY := SalesHeader."No.";
-                    SplitByDeliveryType();
-                    Commit();
-                end;
-                if SalesHeader.INT_InternalProcessing_SNY = SalesHeader.INT_InternalProcessing_SNY::"Delivery Split Completed" then begin
-                    SplitByItemType();
-                    Commit();
-                end;
-
-                //Copy from Here for reprocess umang
-                if SalesHeader.INT_InternalProcessing_SNY = SalesHeader.INT_InternalProcessing_SNY::"PSG/BUN Split" then begin
-                    ExplodeOrder();
-                    Commit();
-                end;
-
-                if SalesHeader.INT_InternalProcessing_SNY = SalesHeader.INT_InternalProcessing_SNY::"Explode SO" then begin
-                    //InsertDeliveryFee();
-                    skipInsertDeliveryFee();
-                    Commit();
-                end;
-
-                //SellVoucherCalculate test1
-                SalesHeader.CalcFields(Amount);
-                if (SalesHeader."Seller Voucher Amount" <> 0) and (SalesHeader."Amount" <> 0) then begin
-                    SellVoucherCalculate();
-                end;
-                //SellVoucherCalculate test1
-
-                if (SalesHeader.INT_InternalProcessing_SNY in [SalesHeader.INT_InternalProcessing_SNY::"Explode SO", SalesHeader.INT_InternalProcessing_SNY::Presales])
-                        and (SalesHeader.INT_OrderType_SNY = SalesHeader.INT_OrderType_SNY::Presale) then begin
-                    ProcessPreslaesOrder();
-
-                    Commit();
-                end;
-
-                if SalesHeader.INT_InternalProcessing_SNY = SalesHeader.INT_InternalProcessing_SNY::"Inventory N/A" then begin
-                    CheckInventory();
-                    Commit();
-                end;
-
-                if (SalesHeader.INT_InternalProcessing_SNY = SalesHeader.INT_InternalProcessing_SNY::"Inventory Checked")
-                 and (not SalesHeader.INT_DelConfirmed_SNY) then begin
-                    DeliveryConfirm(false);
-                    Commit();
-                end;
-
-                if ((SalesHeader.INT_InternalProcessing_SNY = SalesHeader.INT_InternalProcessing_SNY::"Inventory Checked")
-                        and ((SalesHeader.INT_OrderStatus_SNY = SalesHeader.INT_OrderStatus_SNY::Delivered)
-                            or (SalesHeader.INT_OrderStatus_SNY = SalesHeader.INT_OrderStatus_SNY::Shipped)
-                            or (SalesHeader.INT_OrderStatus_SNY = SalesHeader.INT_OrderStatus_SNY::Failed)
-                            or (SalesHeader.INT_OrderStatus_SNY = SalesHeader.INT_OrderStatus_SNY::Returned)
-                        )) then begin
-                    SalesHeader.INT_InternalProcessing_SNY := SalesHeader.INT_InternalProcessing_SNY::Completed;
-                    Commit;
-                end;
-
-                /*
-                if ((SalesHeader.INT_InternalProcessing_SNY = SalesHeader.INT_InternalProcessing_SNY::"Inventory Checked") or
-                    (SalesHeader.INT_InternalProcessing_SNY = SalesHeader.INT_InternalProcessing_SNY::Completed))
-                    and (SalesHeader.INT_SimpleStatus_SNY = SalesHeader.INT_SimpleStatus_SNY::"Not Started") then begin
-                    SynctoSAP(false);
-                end;
-                */
-
-                if InterfaceSetup."Auto Set Lazada Inv" then
-                    if SalesHeader.INT_InvCheck_SNY then begin
-                        Commit();
-                        clear(UpdateStatus);
-                        UpdateSalesHeader.get(SalesHeader."Document Type", SalesHeader."No.");
-                        UpdateStatus.SetOrder(UpdateSalesHeader, 10);
-                        if not UpdateStatus.Run() then begin
+                            clear(UpdateStatus);
                             UpdateSalesHeader.get(SalesHeader."Document Type", SalesHeader."No.");
-                            UpdateSalesHeader.INT_ProcessErr_SNY := GetLastErrorText;
-                            UpdateSalesHeader.Modify();
-                        end;
-                        Commit();
-                        clear(UpdateStatus);
-                        UpdateSalesHeader.get(SalesHeader."Document Type", SalesHeader."No.");
-                        UpdateStatus.SetOrder(UpdateSalesHeader, 20);
-                        if not UpdateStatus.run() then begin
-                            UpdateSalesHeader.get(SalesHeader."Document Type", SalesHeader."No.");
-                            UpdateSalesHeader.INT_ProcessErr_SNY := GetLastErrorText;
-                            UpdateSalesHeader.Modify();
+                            UpdateStatus.SetOrder(UpdateSalesHeader, 10);
+                            if not UpdateStatus.Run() then begin
+                                UpdateSalesHeader.get(SalesHeader."Document Type", SalesHeader."No.");
+                                UpdateSalesHeader.INT_ProcessErr_SNY := GetLastErrorText;
+                                UpdateSalesHeader.Modify();
+                            end;
                             Commit();
+                            clear(UpdateStatus);
+                            UpdateSalesHeader.get(SalesHeader."Document Type", SalesHeader."No.");
+                            UpdateStatus.SetOrder(UpdateSalesHeader, 20);
+                            if not UpdateStatus.run() then begin
+                                UpdateSalesHeader.get(SalesHeader."Document Type", SalesHeader."No.");
+                                UpdateSalesHeader.INT_ProcessErr_SNY := GetLastErrorText;
+                                UpdateSalesHeader.Modify();
+                                Commit();
+                            end;
                         end;
+
+                    if SalesHeader.INT_SAPOrderID_SNY <> '' then
+                        PostingShipments();
+
+                end else begin   //Regular/LAZADA Process
+                    if SalesHeader.INT_InternalProcessing_SNY = SalesHeader.INT_InternalProcessing_SNY::"Not Started" then begin
+                        SalesHeader.INT_OrderStatus_SNY := SalesHeader.INT_OrderStatus_SNY::"In-Process";
+                        SalesHeader."Requested Delivery Date" := 0D;
+                        SalesHeader.INT_BCOrderNo_SNY := SalesHeader."No.";
+                        SplitByDeliveryType();
+                        Commit();
+                    end;
+                    if SalesHeader.INT_InternalProcessing_SNY = SalesHeader.INT_InternalProcessing_SNY::"Delivery Split Completed" then begin
+                        SplitByItemType();
+                        Commit();
                     end;
 
-                if SalesHeader.INT_SAPOrderID_SNY <> '' then
-                    PostingShipments();
-            end
+                    //Copy from Here for reprocess umang
+                    if SalesHeader.INT_InternalProcessing_SNY = SalesHeader.INT_InternalProcessing_SNY::"PSG/BUN Split" then begin
+                        ExplodeOrder();
+                        Commit();
+                    end;
+
+                    if SalesHeader.INT_InternalProcessing_SNY = SalesHeader.INT_InternalProcessing_SNY::"Explode SO" then begin
+                        //InsertDeliveryFee();
+                        skipInsertDeliveryFee();
+                        Commit();
+                    end;
+
+                    //SellVoucherCalculate test1
+                    SalesHeader.CalcFields(Amount);
+                    if (SalesHeader."Seller Voucher Amount" <> 0) and (SalesHeader."Amount" <> 0) then begin
+                        SellVoucherCalculate();
+                    end;
+                    //SellVoucherCalculate test1
+
+                    if (SalesHeader.INT_InternalProcessing_SNY in [SalesHeader.INT_InternalProcessing_SNY::"Explode SO", SalesHeader.INT_InternalProcessing_SNY::Presales])
+                            and (SalesHeader.INT_OrderType_SNY = SalesHeader.INT_OrderType_SNY::Presale) then begin
+                        ProcessPreslaesOrder();
+
+                        Commit();
+                    end;
+
+                    if SalesHeader.INT_InternalProcessing_SNY = SalesHeader.INT_InternalProcessing_SNY::"Inventory N/A" then begin
+                        CheckInventory();
+                        Commit();
+                    end;
+
+                    if (SalesHeader.INT_InternalProcessing_SNY = SalesHeader.INT_InternalProcessing_SNY::"Inventory Checked")
+                     and (not SalesHeader.INT_DelConfirmed_SNY) then begin
+                        DeliveryConfirm(false);
+                        Commit();
+                    end;
+
+                    if ((SalesHeader.INT_InternalProcessing_SNY = SalesHeader.INT_InternalProcessing_SNY::"Inventory Checked")
+                            and ((SalesHeader.INT_OrderStatus_SNY = SalesHeader.INT_OrderStatus_SNY::Delivered)
+                                or (SalesHeader.INT_OrderStatus_SNY = SalesHeader.INT_OrderStatus_SNY::Shipped)
+                                or (SalesHeader.INT_OrderStatus_SNY = SalesHeader.INT_OrderStatus_SNY::Failed)
+                                or (SalesHeader.INT_OrderStatus_SNY = SalesHeader.INT_OrderStatus_SNY::Returned)
+                            )) then begin
+                        SalesHeader.INT_InternalProcessing_SNY := SalesHeader.INT_InternalProcessing_SNY::Completed;
+                        Commit;
+                    end;
+
+                    /*
+                    if ((SalesHeader.INT_InternalProcessing_SNY = SalesHeader.INT_InternalProcessing_SNY::"Inventory Checked") or
+                        (SalesHeader.INT_InternalProcessing_SNY = SalesHeader.INT_InternalProcessing_SNY::Completed))
+                        and (SalesHeader.INT_SimpleStatus_SNY = SalesHeader.INT_SimpleStatus_SNY::"Not Started") then begin
+                        SynctoSAP(false);
+                    end;
+                    */
+
+                    if InterfaceSetup."Auto Set Lazada Inv" then
+                        if SalesHeader.INT_InvCheck_SNY then begin
+                            Commit();
+                            clear(UpdateStatus);
+                            UpdateSalesHeader.get(SalesHeader."Document Type", SalesHeader."No.");
+                            UpdateStatus.SetOrder(UpdateSalesHeader, 10);
+                            if not UpdateStatus.Run() then begin
+                                UpdateSalesHeader.get(SalesHeader."Document Type", SalesHeader."No.");
+                                UpdateSalesHeader.INT_ProcessErr_SNY := GetLastErrorText;
+                                UpdateSalesHeader.Modify();
+                            end;
+                            Commit();
+                            clear(UpdateStatus);
+                            UpdateSalesHeader.get(SalesHeader."Document Type", SalesHeader."No.");
+                            UpdateStatus.SetOrder(UpdateSalesHeader, 20);
+                            if not UpdateStatus.run() then begin
+                                UpdateSalesHeader.get(SalesHeader."Document Type", SalesHeader."No.");
+                                UpdateSalesHeader.INT_ProcessErr_SNY := GetLastErrorText;
+                                UpdateSalesHeader.Modify();
+                                Commit();
+                            end;
+                        end;
+
+                    if SalesHeader.INT_SAPOrderID_SNY <> '' then
+                        PostingShipments();
+                end
 
         end else
             if SalesHeader."Document Type" = SalesHeader."Document Type"::"Return Order" then begin
@@ -1366,6 +1507,82 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
     end;
 
     procedure ReprocessSalesOrder(SH: Record "Sales Header")
+    var
+        UpdateStatus: Codeunit INT_SyncMktStatus_SNY;
+        UpdateSalesHeader: Record "Sales Header";
+        InterfaceSetup: Record INT_InterfaceSetup_SNY;
+        SalesLineL: Record "Sales Line";
+    begin
+        SetOrder(SH);
+        SalesHeader.INT_InternalProcessing_SNY := SalesHeader.INT_InternalProcessing_SNY::"PSG/BUN Split";
+        salesheader.INT_ProcessErr_SNY := '';
+        SalesHeader.Modify();
+        DeleteSystemCreatedSalesLine();
+        InterfaceSetup.Get();
+        if SalesHeader.INT_InternalProcessing_SNY = SalesHeader.INT_InternalProcessing_SNY::"PSG/BUN Split" then begin
+            ExplodeOrder();
+            Commit();
+        end;
+
+        if SalesHeader.INT_InternalProcessing_SNY = SalesHeader.INT_InternalProcessing_SNY::"Explode SO" then begin
+            //InsertDeliveryFee();
+            skipInsertDeliveryFee();
+            Commit();
+        end;
+
+        if (SalesHeader.INT_InternalProcessing_SNY in [SalesHeader.INT_InternalProcessing_SNY::"Explode SO", SalesHeader.INT_InternalProcessing_SNY::Presales])
+                and (SalesHeader.INT_OrderType_SNY = SalesHeader.INT_OrderType_SNY::Presale) then begin
+            ProcessPreslaesOrder();
+            Commit();
+        end;
+
+        if SalesHeader.INT_InternalProcessing_SNY = SalesHeader.INT_InternalProcessing_SNY::"Inventory N/A" then begin
+            CheckInventory();
+            Commit();
+        end;
+
+        if (SalesHeader.INT_InternalProcessing_SNY = SalesHeader.INT_InternalProcessing_SNY::"Inventory Checked")
+         and (not SalesHeader.INT_DelConfirmed_SNY) then begin
+            DeliveryConfirm(false);
+            Commit();
+        end;
+
+        /*
+        if ((SalesHeader.INT_InternalProcessing_SNY = SalesHeader.INT_InternalProcessing_SNY::"Inventory Checked") or
+            (SalesHeader.INT_InternalProcessing_SNY = SalesHeader.INT_InternalProcessing_SNY::Completed))
+            and (SalesHeader.INT_SimpleStatus_SNY = SalesHeader.INT_SimpleStatus_SNY::"Not Started") then begin
+            SynctoSAP(false);
+        end;
+        */
+        if InterfaceSetup."Auto Set Lazada Inv" then
+            if SalesHeader.INT_InvCheck_SNY then begin
+                Commit();
+                clear(UpdateStatus);
+                UpdateSalesHeader.get(SalesHeader."Document Type", SalesHeader."No.");
+                UpdateStatus.SetOrder(UpdateSalesHeader, 10);
+                if not UpdateStatus.Run() then begin
+                    UpdateSalesHeader.get(SalesHeader."Document Type", SalesHeader."No.");
+                    UpdateSalesHeader.INT_ProcessErr_SNY := GetLastErrorText;
+                    UpdateSalesHeader.Modify();
+                end;
+                Commit();
+                clear(UpdateStatus);
+                UpdateSalesHeader.get(SalesHeader."Document Type", SalesHeader."No.");
+                UpdateStatus.SetOrder(UpdateSalesHeader, 20);
+                if not UpdateStatus.run() then begin
+                    UpdateSalesHeader.get(SalesHeader."Document Type", SalesHeader."No.");
+                    UpdateSalesHeader.INT_ProcessErr_SNY := GetLastErrorText;
+                    UpdateSalesHeader.Modify();
+                    Commit();
+                end;
+            end;
+
+        if SalesHeader.INT_SAPOrderID_SNY <> '' then
+            PostingShipments();
+
+    end;
+
+    procedure ReprocessSalesOrder3(SH: Record "Sales Header")
     var
         UpdateStatus: Codeunit INT_SyncMktStatus_SNY;
         UpdateSalesHeader: Record "Sales Header";
