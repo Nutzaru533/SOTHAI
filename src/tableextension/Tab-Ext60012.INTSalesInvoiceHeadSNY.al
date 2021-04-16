@@ -1,14 +1,8 @@
-tableextension 60003 "INT_TH_Sales_Header_SNY" extends "Sales Header"
+tableextension 60012 "INT_SalesInvoice_Head_SNY" extends "Sales Invoice Header"
 {
     fields
     {
         // Add changes to table fields here
-        field(60001; "INT_Order_Confirm_SNY"; Boolean)
-        {
-            Caption = 'Order Confirm';
-            DataClassification = ToBeClassified;
-            Editable = false;
-        }
         field(60002; INT_Print_Count_SNY; Integer)
         {
             Caption = 'Print Count';
@@ -19,7 +13,6 @@ tableextension 60003 "INT_TH_Sales_Header_SNY" extends "Sales Header"
             Caption = 'Print Date&time';
             DataClassification = ToBeClassified;
         }
-
     }
 
     var

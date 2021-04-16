@@ -22,7 +22,7 @@ pageextension 60003 "INT_TH_Sales_Order" extends "Sales Order"
             action(AWB)
             {
                 Caption = 'AWB Report';
-                //ApplicationArea = All;
+                ApplicationArea = All;
                 Image = PrintDocument;
                 Promoted = true;
                 PromotedCategory = Process;
@@ -54,12 +54,23 @@ pageextension 60003 "INT_TH_Sales_Order" extends "Sales Order"
                 var
                     EcomInterface: Codeunit INT_EcomInterface_SNY;
                     SalesHeaderReport: Record "Sales Header";
+                    Filename: Text[100];
                 begin
+
                     SalesHeaderReport.reset;
                     SalesHeaderReport.SetRange("Document Type", "Document Type");
                     SalesHeaderReport.SetRange("No.", "No.");
-                    if SalesHeaderReport.findfirst() then
-                        Report.RunModal(60001, true, false, SalesHeaderReport);
+                    if SalesHeaderReport.findfirst() then begin
+                        Report.RunModal(60001, false, false, SalesHeaderReport);
+
+                        if (SalesHeaderReport.INT_DeliveryType_SNY = INT_DeliveryType_SNY::"DBS Home") then
+                            Report.RunModal(60003, false, false, SalesHeaderReport);
+                    end;
+                    //Filename := 'C:\MyReports\' + Customer.No;
+                    //ReturnValue := Report206.SAVEASPDF(Filename);
+
+                    //if not (INT_DeliveryType_SNY = INT_DeliveryType_SNY::"DBS Home") then
+
                 end;
             }
 

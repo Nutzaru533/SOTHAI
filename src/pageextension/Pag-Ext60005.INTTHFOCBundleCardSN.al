@@ -92,7 +92,7 @@ pageextension 60005 "INT_TH_FOCBundleCard_SN" extends INT_FOCBundleCard_SNY
         {
             action(CertifyFOC)
             {
-                Caption = 'Certify Foc';
+                Caption = 'Certify FOC';
                 Image = Approval;
                 ApplicationArea = All;
 
@@ -108,7 +108,7 @@ pageextension 60005 "INT_TH_FOCBundleCard_SN" extends INT_FOCBundleCard_SNY
             }
             action(UnCertifyFOC)
             {
-                Caption = 'Un Certify Foc';
+                Caption = 'Un Certify FOC';
                 Image = Reject;
                 ApplicationArea = All;
 

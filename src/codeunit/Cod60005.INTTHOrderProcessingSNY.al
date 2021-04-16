@@ -3070,7 +3070,7 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
             INT_salesline3.SetRange("Document No.", SalesHeader."No.");
             INT_salesline3.SetRange(Type, INT_salesline3.Type::Item);
             INT_salesline3.SetFilter(Quantity, '>%1', 0);
-            INT_salesline3.SetRange(INT_Exclude_Discount_SNY, false);
+            INT_salesline3.SetRange(INT_Exclude_Discount_SNY, true);
             if INT_salesline3.find('-') then begin
                 checkLine := INT_salesline3.Count;
             end;
@@ -3083,7 +3083,7 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
                 INT_salesline3.SetRange("Document No.", SalesHeader."No.");
                 INT_salesline3.SetRange(Type, INT_salesline3.Type::Item);
                 INT_salesline3.SetFilter(Quantity, '>%1', 0);
-                INT_salesline3.SetRange(INT_Exclude_Discount_SNY, false);
+                INT_salesline3.SetRange(INT_Exclude_Discount_SNY, true);
                 if INT_salesline3.find('-') then begin
                     if SalesHeader."Seller Voucher Amount" <= INT_salesline3."Line Amount" then begin
                         INT_salesline3.Validate("Line Discount Amount", SalesHeader."Seller Voucher Amount");
@@ -3101,7 +3101,7 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
                     INT_salesline3.SetRange("Document No.", SalesHeader."No.");
                     INT_salesline3.SetRange(Type, INT_salesline3.Type::Item);
                     INT_salesline3.SetFilter(Quantity, '>%1', 0);
-                    INT_salesline3.SetRange(INT_Exclude_Discount_SNY, false);
+                    INT_salesline3.SetRange(INT_Exclude_Discount_SNY, true);
                     if INT_salesline3.find('-') then begin
                         if SalesHeader."Seller Voucher Amount" > INT_salesline3."Line Amount" then begin
                             SellVourcher := SalesHeader."Seller Voucher Amount" - INT_salesline3."Line Amount";
@@ -3116,7 +3116,7 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
                         INT_salesline4.SetRange("Document No.", SalesHeader."No.");
                         INT_salesline4.SetRange(Type, INT_salesline3.Type::Item);
                         INT_salesline4.SetFilter(Quantity, '>%1', 0);
-                        INT_salesline4.SetRange(INT_Exclude_Discount_SNY, true);
+                        INT_salesline4.SetRange(INT_Exclude_Discount_SNY, false);
                         if INT_salesline4.find('+') then begin
                             repeat
                                 if totalamount > SellVourcher then begin
@@ -3146,7 +3146,7 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
                 INT_salesline3.SetRange("Document No.", SalesHeader."No.");
                 INT_salesline3.SetRange(Type, INT_salesline3.Type::Item);
                 INT_salesline3.SetFilter(Quantity, '>%1', 0);
-                INT_salesline3.SetRange(INT_Exclude_Discount_SNY, false);
+                INT_salesline3.SetRange(INT_Exclude_Discount_SNY, true);
                 if INT_salesline3.find('+') then begin
                     repeat
 

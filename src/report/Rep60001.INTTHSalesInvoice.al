@@ -4,7 +4,7 @@ report 60001 "INT_TH_Sales_Invoice"
     RDLCLayout = './ReportDesign/TH_Sales_Invoice.rdl';
     Caption = 'Sales Invoice TH';
     UsageCategory = Administration;
-    ApplicationArea = All;
+    ApplicationArea = Basic, Suite;
     DefaultLayout = RDLC;
     PreviewMode = PrintLayout;
 
@@ -466,9 +466,23 @@ report 60001 "INT_TH_Sales_Invoice"
     begin
         CompanyInfo.GET;
         CompanyInfo.CalcFields(Picture);
+        Print := Print OR NOT CurrReport.PREVIEW;
+    end;
+
+    trigger OnPostReport()
+    var
+        myInt: Integer;
+    begin
+        if Print then begin
+
+            Header.INT_Print_Count_SNY := Header.INT_Print_Count_SNY + 1;
+            Header.INT_Print_Date_Time_SNY := CurrentDateTime;
+            Header.Modify();
+        end;
     end;
 
     var
+        Print: Boolean;
         LineInfo: Text[100];
         LineNo: Integer;
         OutputNo: Integer;

@@ -6,7 +6,7 @@ tableextension 60002 "INT_TH_Sales_Line_SNY" extends "Sales Line"
         {
             Caption = 'Exclude Discount';
             FieldClass = FlowField;
-            CalcFormula = lookup(item.INT_Exclude_Discount_SNY where("No." = FIELD("No.")));
+            CalcFormula = lookup(item.INT_Inclusive_Discount_SNY where("No." = FIELD("No.")));
 
         }
     }

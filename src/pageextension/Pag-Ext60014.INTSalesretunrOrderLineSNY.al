@@ -1,4 +1,4 @@
-pageextension 60014 "MyExtension" extends "Sales Return Order Subform"
+pageextension 60014 "INT_Sales_retunr_OrderLine_SNY" extends "Sales Return Order Subform"
 {
     layout
     {

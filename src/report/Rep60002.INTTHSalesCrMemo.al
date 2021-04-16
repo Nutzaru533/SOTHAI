@@ -4,7 +4,7 @@ report 60002 "INT_TH_SalesCr.Memo"
     RDLCLayout = './ReportDesign/TH_Sales_Cr_Memo.rdl';
     Caption = 'Sales Credit Memo';
     UsageCategory = Administration;
-    ApplicationArea = All;
+    ApplicationArea = Basic, Suite;
     DefaultLayout = RDLC;
     PreviewMode = PrintLayout;
 
