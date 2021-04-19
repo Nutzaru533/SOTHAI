@@ -65,7 +65,7 @@ report 60004 "INT_VAT_REPORT"
                     end;
                 end;
 
-                if "Document No." <> '' then begin
+                if "Sales Invoice Line"."Document No." <> '' then begin
                     LineNo += 1;
                     totalamountEx += "Sales Invoice Line".Amount;
                     totalAmtVat += ("Sales Invoice Line"."Amount Including VAT" - "Sales Invoice Line".Amount);
@@ -124,7 +124,7 @@ report 60004 "INT_VAT_REPORT"
                     end;
 
                 end;
-                if "Document No." <> '' then begin
+                if "Sales Cr.Memo Line"."Document No." <> '' then begin
                     LineNo += 1;
                     totalamountEx -= "Sales Cr.Memo Line".Amount;
                     totalAmtVat -= ("Sales Cr.Memo Line"."Amount Including VAT" - "Sales Cr.Memo Line".Amount);

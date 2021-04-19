@@ -160,6 +160,7 @@ codeunit 60000 "INT_Even_Sub_SNY"
         MenuStringLbl: Label 'Shipping Label';
         SelectedOption: Integer;
         Handled: Boolean;
+        INT_EcomInterface_SNY: Codeunit INT_EcomInterface_SNY;
     begin
         case SalesHeader.INT_MarketPlace_SNY of
             'LAZADA':
@@ -168,13 +169,13 @@ codeunit 60000 "INT_Even_Sub_SNY"
                     if SelectedOption > 0 then
                         case SelectedOption of
                             1:
-                                OnPrintDocument(SalesHeader, SalesLine, 'shippingLabel', Handled);
+                                INT_EcomInterface_SNY.OnPrintDocument(SalesHeader, SalesLine, 'shippingLabel', Handled);
                             2:
-                                OnPrintDocument(SalesHeader, SalesLine, 'invoice', Handled);
+                                INT_EcomInterface_SNY.OnPrintDocument(SalesHeader, SalesLine, 'invoice', Handled);
                             3:
-                                OnPrintDocument(SalesHeader, SalesLine, 'carrierManifest', Handled);
+                                INT_EcomInterface_SNY.OnPrintDocument(SalesHeader, SalesLine, 'carrierManifest', Handled);
                         End;
-
+                    //OnPrintDocument(SalesHeader, SalesLine, 'shippingLabel', Handled);
                 end;
         /* 'SONY STORE ONLINE':
             begin

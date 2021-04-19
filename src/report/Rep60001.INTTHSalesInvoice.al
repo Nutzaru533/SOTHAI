@@ -400,6 +400,25 @@ report 60001 "INT_TH_Sales_Invoice"
                     shippostcode := "Ship-to Post Code";
                 end else begin
                     */
+                if INT_Mask_SYN = true then begin
+                    //"Sell-to Address" := 'XXXXXX';
+                    //"Sell-to Address 2" := 'XXXXXX';
+                    //"Sell-to City" := 'XXXXXX';
+                    //"Sell-to County" := 'XXXXXX';
+                    //"Sell-to Post Code" := 'XXXXXX';
+
+                    //"bill-to Address" := 'XXXXXX';
+                    //"bill-to Address 2" := 'XXXXXX';
+                    //"bill-to City" := 'XXXXXX';
+                    //"bill-to County" := 'XXXXXX';
+                    //"bill-to Post Code" := 'XXXXXX';
+
+                    //"ship-to Address" := 'XXXXXX';
+                    //"ship-to Address 2" := 'XXXXXX';
+                    //"ship-to City" := 'XXXXXX';
+                    //"ship-to County" := 'XXXXXX';
+                    //"ship-to Post Code" := 'XXXXXX';
+                end;
                 shipName := "Sell-to Customer Name" + "Sell-to Customer Name 2";
                 shipadd1 := "Sell-to Address";
                 shipadd2 := "Sell-to Address 2";
@@ -430,6 +449,8 @@ report 60001 "INT_TH_Sales_Invoice"
                 end;
                 if not contact.get("Bill-to Contact No.") then
                     contact.init;
+
+
             end;
 
         }

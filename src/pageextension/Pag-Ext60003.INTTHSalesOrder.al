@@ -11,7 +11,69 @@ pageextension 60003 "INT_TH_Sales_Order" extends "Sales Order"
             //    ApplicationArea = all;
             // }
         }
-
+        addafter("Assigned User ID")
+        {
+            field("Posting No."; "Posting No.")
+            {
+                ApplicationArea = all;
+            }
+        }
+        modify("Sell-to Address")
+        {
+            Editable = not MaskText;
+        }
+        modify("Sell-to Address 2")
+        {
+            Editable = not MaskText;
+        }
+        modify("Sell-to City")
+        {
+            Editable = not MaskText;
+        }
+        modify("Sell-to County")
+        {
+            Editable = not MaskText;
+        }
+        modify("Sell-to Post Code")
+        {
+            Editable = not MaskText;
+        }
+        modify("bill-to Address")
+        {
+            Editable = not MaskText;
+        }
+        modify("bill-to Address 2")
+        {
+            Editable = not MaskText;
+        }
+        modify("bill-to County")
+        {
+            Editable = not MaskText;
+        }
+        modify("bill-to Post Code")
+        {
+            Editable = not MaskText;
+        }
+        modify("ship-to Address")
+        {
+            Editable = not MaskText;
+        }
+        modify("ship-to Address 2")
+        {
+            Editable = not MaskText;
+        }
+        modify("ship-to City")
+        {
+            Editable = not MaskText;
+        }
+        modify("ship-to County")
+        {
+            Editable = not MaskText;
+        }
+        modify("ship-to Post Code")
+        {
+            Editable = not MaskText;
+        }
 
     }
     actions
@@ -62,10 +124,10 @@ pageextension 60003 "INT_TH_Sales_Order" extends "Sales Order"
                     SalesHeaderReport.SetRange("No.", "No.");
                     if SalesHeaderReport.findfirst() then begin
                         Report.RunModal(60001, false, false, SalesHeaderReport);
-
-                        if (SalesHeaderReport.INT_DeliveryType_SNY = INT_DeliveryType_SNY::"DBS Home") then
-                            Report.RunModal(60003, false, false, SalesHeaderReport);
                     end;
+
+                    if (INT_DeliveryType_SNY = INT_DeliveryType_SNY::"DBS Home") then
+                        Report.RunModal(60003, false, false, Rec);
                     //Filename := 'C:\MyReports\' + Customer.No;
                     //ReturnValue := Report206.SAVEASPDF(Filename);
 
@@ -233,6 +295,7 @@ pageextension 60003 "INT_TH_Sales_Order" extends "Sales Order"
                     EcomInterface: Codeunit INT_Even_Sub_SNY;
                     SalesHeaderReport: Record "Sales Header";
                     SalesInvoiceReport: Report "INT_Sales Invoice_SNY";
+
                 begin
                     if rec.INT_MarketPlace_SNY = 'SONY STORE ONLINE' then begin
                         SalesHeaderReport.reset;
@@ -250,7 +313,6 @@ pageextension 60003 "INT_TH_Sales_Order" extends "Sales Order"
         {
             Visible = false;
         }
-
         modify("INT_ConfirmCollect_SNY")
         {
             Visible = false;
@@ -267,6 +329,9 @@ pageextension 60003 "INT_TH_Sales_Order" extends "Sales Order"
         {
             Visible = false;
         }
+
+
+
         addafter("&Order Confirmation")
         {
             action(Unmark)
@@ -279,6 +344,8 @@ pageextension 60003 "INT_TH_Sales_Order" extends "Sales Order"
                     if usersetup.get(UserId) then begin
                         usersetup.TestField(INT_Unmark_SNY);
                         MaskText := false;
+                        INT_Mask_SYN := false;
+                        Modify();
                     end;
                     MaskAddress();
                 end;
@@ -290,6 +357,10 @@ pageextension 60003 "INT_TH_Sales_Order" extends "Sales Order"
         myInt: Integer;
     begin
         MaskText := true;
+        INT_Mask_SYN := MaskText;
+        Modify();
+        Commit();
+        CurrPage.Update(false);
         intMaskAddress();
     end;
 

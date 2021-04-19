@@ -19,6 +19,11 @@ tableextension 60003 "INT_TH_Sales_Header_SNY" extends "Sales Header"
             Caption = 'Print Date&time';
             DataClassification = ToBeClassified;
         }
+        field(60004; INT_Mask_SYN; Boolean)
+        {
+            Caption = 'Mask';
+            DataClassification = ToBeClassified;
+        }
 
     }
 

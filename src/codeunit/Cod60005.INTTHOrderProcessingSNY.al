@@ -138,6 +138,10 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
 
                         if SalesHeader.INT_SAPOrderID_SNY <> '' then
                             PostingShipments();
+
+                        //Generate Posting NO./ invoice No.
+                        GeneratePostingNo;
+                        //Generate Posting NO./ invoice No.
                         if SalesHeader."Document Type" = SalesHeader."Document Type"::"Return Order" then begin
 
                             MarketPlace.Get(SalesHeader.INT_MarketPlace_SNY);
@@ -419,6 +423,10 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
 
                     if SalesHeader.INT_SAPOrderID_SNY <> '' then
                         PostingShipments();
+
+                    //Generate Posting NO./ invoice No.
+                    GeneratePostingNo();
+                    //Generate Posting NO./ invoice No.   
                 end
 
         end else
@@ -1546,7 +1554,12 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
             DeliveryConfirm(false);
             Commit();
         end;
-
+        //SellVoucherCalculate test1
+        SalesHeader.CalcFields(Amount);
+        if (SalesHeader."Seller Voucher Amount" <> 0) and (SalesHeader."Amount" <> 0) then begin
+            SellVoucherCalculate();
+        end;
+        //SellVoucherCalculate test1
         /*
         if ((SalesHeader.INT_InternalProcessing_SNY = SalesHeader.INT_InternalProcessing_SNY::"Inventory Checked") or
             (SalesHeader.INT_InternalProcessing_SNY = SalesHeader.INT_InternalProcessing_SNY::Completed))
@@ -1621,6 +1634,11 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
          and (not SalesHeader.INT_DelConfirmed_SNY) then begin
             DeliveryConfirm(false);
             Commit();
+        end;
+
+        SalesHeader.CalcFields(Amount);
+        if (SalesHeader."Seller Voucher Amount" <> 0) and (SalesHeader."Amount" <> 0) then begin
+            SellVoucherCalculate();
         end;
 
         /*
@@ -2488,12 +2506,12 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
             Commit();
         end;
 
-        //SellVoucherCalculate 
+        //SellVoucherCalculate test1
         SalesHeader.CalcFields(Amount);
         if (SalesHeader."Seller Voucher Amount" <> 0) and (SalesHeader."Amount" <> 0) then begin
             SellVoucherCalculate();
         end;
-        //SellVoucherCalculate 
+        //SellVoucherCalculate test1
 
 
         if (SalesHeader.INT_InternalProcessing_SNY = SalesHeader.INT_InternalProcessing_SNY::"Inventory Checked")
@@ -3037,6 +3055,7 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
         resetsalesline.SetRange("Document No.", SalesHeader."No.");
         resetsalesline.SetRange(Type, resetsalesline.Type::Item);
         resetsalesline.SetFilter("Line Discount Amount", '>%1', 0);
+        resetsalesline.SetFilter(Quantity, '>%1', 0);
         if resetsalesline.Find('-') then begin
             repeat
                 resetsalesline.Validate("Line Discount Amount", 0);
@@ -3167,5 +3186,18 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
             //Second senario
         end;
         //calculatediscount
+    end;
+
+    local procedure GeneratePostingNo()
+    var
+        salessetup: Record "Sales & Receivables Setup";
+        NoserialMgn: Codeunit NoSeriesManagement;
+    begin
+        salessetup.get;
+        salessetup.TestField("Invoice Nos.");
+        if SalesHeader."Posting No." = '' then begin
+            SalesHeader."Posting No." := NoserialMgn.GetNextNo(salessetup."Invoice Nos.", WorkDate(), true);
+            SalesHeader.Modify();
+        end;
     end;
 }

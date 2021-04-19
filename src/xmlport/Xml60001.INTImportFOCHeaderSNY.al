@@ -77,7 +77,20 @@ xmlport 60001 "INT_ImportFOCHeader_SNY"
                             gImpFOCHeader.init;
                             gImpFOCHeader.Type := gImpFOCHeader.Type::FOC;
                             gImpFOCHeader."No." := noserialMgn.GetNextNo(InterfaceSetup."FOC No. Series", workdate, true);
+                            if OldNo <> gImpFOCHeader."No." then begin
+                                //Delete Ext Doc
+                                FOCExt.reset;
+                                FOCExt.SetRange("No.", OldNo);
+                                if FOCExt.Find('-') then begin
+                                    FOCExt.INT_External_SYN := '';
+                                    FOCExt.Modify();
+                                end;
+                                //Delete Ext Doc
+                            end;
                             gImpFOCHeader.INT_External_SYN := gNo;
+                            //
+                            OldNo := gImpFOCHeader."No.";
+                            //
                             gImpFOCHeader."Free Gift ID" := gNo;
                             gImpFOCHeader.Validate(Marketplace, gMarketplace);
                             marketplace.reset;
@@ -214,7 +227,15 @@ xmlport 60001 "INT_ImportFOCHeader_SNY"
     var
         myInt: Integer;
     begin
-        Message('FOC Import Header Completed');
+        //Delete Ext Doc
+        FOCExt.reset;
+        FOCExt.SetRange("No.", OldNo);
+        if FOCExt.Find('-') then begin
+            FOCExt.INT_External_SYN := '';
+            FOCExt.Modify();
+        end;
+        //Delete Ext Doc
+        Message('FOC Import Completed');
     end;
 
     procedure ConvertTextToDate(Txt: text): Date
@@ -247,10 +268,12 @@ xmlport 60001 "INT_ImportFOCHeader_SNY"
         gImpFOCLine: Record INT_BundleLine_SNY;
         gImpFOCLine2: Record INT_BundleLine_SNY;
         gImpFOCHeader2: Record INT_BundleHeader_SNY;
+        FOCExt: Record INT_BundleHeader_SNY;
         lineNo: Integer;
         qty: Decimal;
         promotionprice: Decimal;
         LineItemNo: code[20];
         noserialMgn: Codeunit NoSeriesManagement;
         InterfaceSetup: Record INT_InterfaceSetup_SNY;
+        OldNo: Code[40];
 }

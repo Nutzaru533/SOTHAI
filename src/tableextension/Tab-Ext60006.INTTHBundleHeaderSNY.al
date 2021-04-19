@@ -2,7 +2,7 @@ tableextension 60006 "INT_TH_BundleHeader_SNY" extends INT_BundleHeader_SNY
 {
     fields
     {
-        field(60001; INT_External_SYN; code[20])
+        field(60001; INT_External_SYN; code[100])
         {
             Caption = 'External No.';
             DataClassification = ToBeClassified;

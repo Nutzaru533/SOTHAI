@@ -3,6 +3,13 @@ pageextension 60017 "IN_SalesOrder_SNY" extends "Sales Order List"
     layout
     {
         // Add changes to page layout here
+        addafter("No.")
+        {
+            field("Posting No."; "Posting No.")
+            {
+                ApplicationArea = all;
+            }
+        }
 
     }
 

@@ -1199,7 +1199,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Last(Fields!totalamountEx.Value)</Value>
+                                  <Value>=sum(Fields!INV_Amount.Value)+SUm(Fields!CR_Amount.Value)</Value>
                                   <Style>
                                     <FontFamily>AngsanaUPC</FontFamily>
                                     <FontSize>14pt</FontSize>
@@ -1234,7 +1234,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Last(Fields!totalAmtVat.Value)</Value>
+                                  <Value>=sum(Fields!INV_VAT_Amount.Value)+sum(Fields!CR_VAT_Amount.Value)</Value>
                                   <Style>
                                     <FontFamily>AngsanaUPC</FontFamily>
                                     <FontSize>14pt</FontSize>
@@ -1269,7 +1269,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Last(Fields!TotalAmtIncVat.Value)</Value>
+                                  <Value>=Sum(Fields!INV_Amount_Including_VAT.Value)+sum(Fields!CR_Amount_Including_VAT.Value)</Value>
                                   <Style>
                                     <FontFamily>AngsanaUPC</FontFamily>
                                     <FontSize>14pt</FontSize>
@@ -1293,6 +1293,7 @@
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
+                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                   </TablixCells>
