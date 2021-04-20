@@ -18,6 +18,7 @@ report 60001 "INT_TH_Sales_Invoice"
             {
             }
             column(DocNo; "No.") { }
+            column(InvoiceNo; "Posting No.") { }
             column(MarketPlace; INT_MarketPlace_SNY) { }
             column(markeINT_Signature_SNY; marketplace.INT_Singatrue2_SNY) { }
             column(HeaderDocNo; "External Document No.")
@@ -44,6 +45,8 @@ report 60001 "INT_TH_Sales_Invoice"
             column(ShiptoContact; "Bill-to Contact")
             {
             }
+            column(shiptoCounty; "Bill-to Country/Region Code")
+            { }
             column(shipPhoneNo; shipPhoneNo)
             {
 
@@ -129,6 +132,7 @@ report 60001 "INT_TH_Sales_Invoice"
             column(Sell_to_County; "bill-to County") { }
             column(Sell_to_Post_Code; "bill-to Post Code") { }
             column(Sell_to_Phone_No_; contact."Phone No.") { }
+            column(Sell_to_Country_Region_Code; "bill-to Country/Region Code") { }
             column(Branch; showBranch) { }
             column(Companybranch; Companybranch) { }
             column(shipName; shipName) { }
@@ -136,6 +140,7 @@ report 60001 "INT_TH_Sales_Invoice"
             column(shipadd2; shipadd2) { }
             column(shipcity; shipcity) { }
             column(shipCountry; shipCountry) { }
+            column(shipContry; shipContry) { }
             column(shippostcode; shippostcode) { }
 
             column(VAT_Registration_No_; "VAT Registration No.") { }
@@ -424,6 +429,7 @@ report 60001 "INT_TH_Sales_Invoice"
                 shipadd2 := "Sell-to Address 2";
                 shipcity := "sell-to City";
                 shipCountry := "sell-to County";
+                shipContry := "Sell-to Country/Region Code";
                 shippostcode := "sell-to Post Code";
                 shipPhoneNo := "Sell-to Phone No.";
                 //end;
@@ -537,6 +543,7 @@ report 60001 "INT_TH_Sales_Invoice"
         shipadd2: text[100];
         shipcity: text[100];
         shipCountry: Text[100];
+        shipContry: text[100];
         shippostcode: text[100];
         shipPhoneNo: Text[100];
         countLine: Integer;

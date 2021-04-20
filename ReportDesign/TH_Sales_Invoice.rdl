@@ -2675,7 +2675,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=First(Fields!DocNo.Value, "DataSet_Result")</Value>
+                      <Value>=First(Fields!InvoiceNo.Value, "DataSet_Result")</Value>
                       <Style>
                         <FontFamily>AngsanaUPC</FontFamily>
                         <FontSize>12pt</FontSize>
@@ -2862,7 +2862,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=First(Fields!Sell_to_Address.Value, "DataSet_Result")+" "+First(Fields!Sell_to_Address_2.Value, "DataSet_Result")+" "+First(Fields!Sell_to_City.Value, "DataSet_Result")+" "+First(Fields!Sell_to_County.Value, "DataSet_Result")+" "+First(Fields!Sell_to_Post_Code.Value, "DataSet_Result")</Value>
+                      <Value>=First(Fields!Sell_to_Address.Value, "DataSet_Result")+" "+First(Fields!Sell_to_Address_2.Value, "DataSet_Result")+" "+First(Fields!Sell_to_City.Value, "DataSet_Result")+" "+First(Fields!Sell_to_County.Value, "DataSet_Result")+" "+First(Fields!Sell_to_Post_Code.Value, "DataSet_Result")+" "+First(Fields!Sell_to_Country_Region_Code.Value, "DataSet_Result")</Value>
                       <Style>
                         <FontFamily>AngsanaUPC</FontFamily>
                         <FontSize>12pt</FontSize>
@@ -2910,7 +2910,7 @@
               <Top>3.14444in</Top>
               <Left>0.44167in</Left>
               <Height>0.2in</Height>
-              <Width>3.74723in</Width>
+              <Width>5.2889in</Width>
               <ZIndex>31</ZIndex>
               <Style>
                 <Border>
@@ -3079,7 +3079,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=First(Fields!shipadd1.Value, "DataSet_Result")+" "+First(Fields!shipadd2.Value, "DataSet_Result")+" "+First(Fields!shipcity.Value, "DataSet_Result")+" "+First(Fields!shipCountry.Value, "DataSet_Result")+" "+First(Fields!shippostcode.Value, "DataSet_Result")</Value>
+                      <Value>=First(Fields!shipadd1.Value, "DataSet_Result")+" "+First(Fields!shipadd2.Value, "DataSet_Result")+" "+First(Fields!shipcity.Value, "DataSet_Result")+" "+First(Fields!shipCountry.Value, "DataSet_Result")+" "+First(Fields!shippostcode.Value, "DataSet_Result")+" "+First(Fields!shipContry.Value, "DataSet_Result")</Value>
                       <Style>
                         <FontFamily>AngsanaUPC</FontFamily>
                         <FontSize>12pt</FontSize>
@@ -3127,7 +3127,7 @@
               <Top>4.15972in</Top>
               <Left>0.45417in</Left>
               <Height>0.2in</Height>
-              <Width>3.73473in</Width>
+              <Width>5.2764in</Width>
               <ZIndex>38</ZIndex>
               <Style>
                 <Border>
@@ -3227,6 +3227,9 @@ End Function
         <Field Name="DocNo">
           <DataField>DocNo</DataField>
         </Field>
+        <Field Name="InvoiceNo">
+          <DataField>InvoiceNo</DataField>
+        </Field>
         <Field Name="MarketPlace">
           <DataField>MarketPlace</DataField>
         </Field>
@@ -3256,6 +3259,9 @@ End Function
         </Field>
         <Field Name="ShiptoContact">
           <DataField>ShiptoContact</DataField>
+        </Field>
+        <Field Name="shiptoCounty">
+          <DataField>shiptoCounty</DataField>
         </Field>
         <Field Name="shipPhoneNo">
           <DataField>shipPhoneNo</DataField>
@@ -3374,6 +3380,9 @@ End Function
         <Field Name="Sell_to_Phone_No_">
           <DataField>Sell_to_Phone_No_</DataField>
         </Field>
+        <Field Name="Sell_to_Country_Region_Code">
+          <DataField>Sell_to_Country_Region_Code</DataField>
+        </Field>
         <Field Name="Branch">
           <DataField>Branch</DataField>
         </Field>
@@ -3394,6 +3403,9 @@ End Function
         </Field>
         <Field Name="shipCountry">
           <DataField>shipCountry</DataField>
+        </Field>
+        <Field Name="shipContry">
+          <DataField>shipContry</DataField>
         </Field>
         <Field Name="shippostcode">
           <DataField>shippostcode</DataField>
