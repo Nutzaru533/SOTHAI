@@ -87,8 +87,12 @@ pageextension 60002 "INT_TH_Sales_Return_Order" extends "Sales Return Order"
                     Caption = 'Goods Received';
                     trigger OnAction()
                     begin
+                        CurrPage.Update(false);
+                        resetmask;
                         "INT_Order_Confirm_SNY" := true;
                         Modify;
+                        MaskAddress;
+                        CurrPage.Update(false);
                     end;
                 }
 
@@ -104,9 +108,14 @@ pageextension 60002 "INT_TH_Sales_Return_Order" extends "Sales Return Order"
                     var
                         NotifySAP: Codeunit INT_SAPAPI_SNY;
                     begin
+                        resetmask;
+                        CurrPage.Update(false);
                         TestField("INT_Order_Confirm_SNY");
                         NotifySAP.ManualNotify(Rec);
+                        MaskAddress;
+                        CurrPage.Update(false);
                     end;
+
                 }
             }
 
@@ -127,11 +136,15 @@ pageextension 60002 "INT_TH_Sales_Return_Order" extends "Sales Return Order"
                     EcomInterface: Codeunit INT_EcomInterface_SNY;
                     SalesHeaderReport: Record "Sales Header";
                 begin
+                    resetmask;
+                    CurrPage.Update(false);
                     SalesHeaderReport.reset;
                     SalesHeaderReport.SetRange("Document Type", "Document Type");
                     SalesHeaderReport.SetRange("No.", "No.");
                     if SalesHeaderReport.findfirst() then
                         Report.RunModal(60002, true, false, SalesHeaderReport);
+                    MaskAddress;
+                    CurrPage.Update(false);
                 end;
             }
         }
@@ -151,8 +164,6 @@ pageextension 60002 "INT_TH_Sales_Return_Order" extends "Sales Return Order"
                     if usersetup.get(UserId) then begin
                         usersetup.TestField(INT_Unmark_SNY);
                         MaskText := false;
-                        INT_Mask_SYN := false;
-                        Modify();
                     end;
                     MaskAddress();
                 end;
@@ -202,11 +213,12 @@ pageextension 60002 "INT_TH_Sales_Return_Order" extends "Sales Return Order"
         myInt: Integer;
     begin
         MaskText := true;
-        INT_Mask_SYN := MaskText;
-        Modify();
-        Commit();
-        CurrPage.Update(false);
+        //INT_Mask_SYN := MaskText;
+        //Modify();
+        //Commit();
+        //CurrPage.Update(false);
         intMaskAddress();
+        MaskAddress();
     end;
 
     trigger OnAfterGetRecord()
@@ -289,5 +301,30 @@ pageextension 60002 "INT_TH_Sales_Return_Order" extends "Sales Return Order"
             "ship-to County" := shiptocoulty;
             "ship-to Post Code" := shiptopostcode;
         end;
+        CurrPage.Update(false);
+    end;
+
+    local procedure resetmask()
+    var
+        myInt: Integer;
+    begin
+        "Sell-to Address" := selltoaddrss;
+        "Sell-to Address 2" := selltoaddress2;
+        "Sell-to City" := selltocity;
+        "Sell-to County" := selltocoulty;
+        "Sell-to Post Code" := selltopostcode;
+
+        "bill-to Address" := billtoaddess;
+        "bill-to Address 2" := billtoaddress2;
+        "bill-to City" := billtocity;
+        "bill-to County" := billtocoulty;
+        "bill-to Post Code" := billtopostcode;
+
+        "ship-to Address" := shiptoaddress;
+        "ship-to Address 2" := shiptoaddress2;
+        "ship-to City" := shiptocity;
+        "ship-to County" := shiptocoulty;
+        "ship-to Post Code" := shiptopostcode;
+        CurrPage.Update(false);
     end;
 }

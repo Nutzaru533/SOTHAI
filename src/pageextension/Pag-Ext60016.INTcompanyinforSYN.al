@@ -9,6 +9,10 @@ pageextension 60016 "INT_company_infor_SYN" extends "Company Information"
             {
                 ApplicationArea = all;
             }
+            field(INT_Name_TH_SNY; INT_Name_TH_SNY)
+            {
+                ApplicationArea = all;
+            }
         }
     }
 

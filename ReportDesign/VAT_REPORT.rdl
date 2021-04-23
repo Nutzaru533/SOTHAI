@@ -1293,7 +1293,6 @@
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
-                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                   </TablixCells>
@@ -1581,7 +1580,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=First(Fields!companyinforName.Value, "DataSet_Result")</Value>
+                      <Value>=First(Fields!companyinforNameTH.Value, "DataSet_Result")</Value>
                       <Style>
                         <FontFamily>AngsanaUPC</FontFamily>
                         <FontSize>14pt</FontSize>
@@ -2367,42 +2366,6 @@
                 </Border>
               </Style>
             </Textbox>
-            <Textbox Name="Textbox25">
-              <CanGrow>true</CanGrow>
-              <KeepTogether>true</KeepTogether>
-              <Paragraphs>
-                <Paragraph>
-                  <TextRuns>
-                    <TextRun>
-                      <Value />
-                      <Style>
-                        <FontFamily>AngsanaUPC</FontFamily>
-                        <FontSize>14pt</FontSize>
-                      </Style>
-                    </TextRun>
-                  </TextRuns>
-                  <Style>
-                    <TextAlign>Left</TextAlign>
-                  </Style>
-                </Paragraph>
-              </Paragraphs>
-              <rd:DefaultName>Textbox1</rd:DefaultName>
-              <Top>1.48611in</Top>
-              <Left>1.4125in</Left>
-              <Height>0.24722in</Height>
-              <Width>4.07083in</Width>
-              <ZIndex>23</ZIndex>
-              <Style>
-                <Border>
-                  <Style>None</Style>
-                </Border>
-                <BottomBorder>
-                  <Color>Black</Color>
-                  <Style>Solid</Style>
-                  <Width>1pt</Width>
-                </BottomBorder>
-              </Style>
-            </Textbox>
             <Textbox Name="Textbox26">
               <CanGrow>true</CanGrow>
               <KeepTogether>true</KeepTogether>
@@ -2410,7 +2373,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value EvaluationMode="Constant" />
+                      <Value>="X"</Value>
                       <Style>
                         <FontFamily>AngsanaUPC</FontFamily>
                         <FontSize>14pt</FontSize>
@@ -2427,7 +2390,7 @@
               <Left>5.88123in</Left>
               <Height>0.20833in</Height>
               <Width>0.18195in</Width>
-              <ZIndex>24</ZIndex>
+              <ZIndex>23</ZIndex>
               <Style>
                 <Border>
                   <Style>Solid</Style>
@@ -2478,7 +2441,7 @@
               <Left>6.09096in</Left>
               <Height>0.275in</Height>
               <Width>0.7875in</Width>
-              <ZIndex>25</ZIndex>
+              <ZIndex>24</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -2509,7 +2472,7 @@
               <Left>7.0036in</Left>
               <Height>0.20833in</Height>
               <Width>0.18195in</Width>
-              <ZIndex>26</ZIndex>
+              <ZIndex>25</ZIndex>
               <Style>
                 <Border>
                   <Style>Solid</Style>
@@ -2560,7 +2523,7 @@
               <Left>7.21333in</Left>
               <Height>0.275in</Height>
               <Width>0.7875in</Width>
-              <ZIndex>27</ZIndex>
+              <ZIndex>26</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -2591,7 +2554,7 @@
               <Left>7.0036in</Left>
               <Height>0.20833in</Height>
               <Width>0.18195in</Width>
-              <ZIndex>28</ZIndex>
+              <ZIndex>27</ZIndex>
               <Style>
                 <Border>
                   <Style>Solid</Style>
@@ -2642,7 +2605,7 @@
               <Left>7.18694in</Left>
               <Height>0.20833in</Height>
               <Width>0.18195in</Width>
-              <ZIndex>29</ZIndex>
+              <ZIndex>28</ZIndex>
               <Style>
                 <Border>
                   <Style>Solid</Style>
@@ -2693,7 +2656,7 @@
               <Left>7.37167in</Left>
               <Height>0.20833in</Height>
               <Width>0.18195in</Width>
-              <ZIndex>30</ZIndex>
+              <ZIndex>29</ZIndex>
               <Style>
                 <Border>
                   <Style>Solid</Style>
@@ -2744,7 +2707,7 @@
               <Left>7.55362in</Left>
               <Height>0.20833in</Height>
               <Width>0.18195in</Width>
-              <ZIndex>31</ZIndex>
+              <ZIndex>30</ZIndex>
               <Style>
                 <Border>
                   <Style>Solid</Style>
@@ -2778,7 +2741,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=First(Fields!CustomerNO.Value, "DataSet_Result")</Value>
+                      <Value>=First(Fields!companyinforName2.Value, "DataSet_Result")</Value>
                       <Style>
                         <FontFamily>AngsanaUPC</FontFamily>
                         <FontSize>14pt</FontSize>
@@ -2795,7 +2758,7 @@
               <Left>2.11111in</Left>
               <Height>0.22778in</Height>
               <Width>3.37222in</Width>
-              <ZIndex>32</ZIndex>
+              <ZIndex>31</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -2807,14 +2770,14 @@
                 </BottomBorder>
               </Style>
             </Textbox>
-            <Textbox Name="Textbox44">
+            <Textbox Name="Textbox50">
               <CanGrow>true</CanGrow>
               <KeepTogether>true</KeepTogether>
               <Paragraphs>
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value />
+                      <Value>=First(Fields!companyinforAddress.Value, "DataSet_Result")</Value>
                       <Style>
                         <FontFamily>AngsanaUPC</FontFamily>
                         <FontSize>14pt</FontSize>
@@ -2827,9 +2790,45 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox1</rd:DefaultName>
-              <Top>1.78889in</Top>
+              <Top>1.52778in</Top>
+              <Left>1.13333in</Left>
+              <Height>0.22778in</Height>
+              <Width>4.35in</Width>
+              <ZIndex>32</ZIndex>
+              <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
+                <BottomBorder>
+                  <Color>Black</Color>
+                  <Style>Solid</Style>
+                  <Width>1pt</Width>
+                </BottomBorder>
+              </Style>
+            </Textbox>
+            <Textbox Name="Textbox51">
+              <CanGrow>true</CanGrow>
+              <KeepTogether>true</KeepTogether>
+              <Paragraphs>
+                <Paragraph>
+                  <TextRuns>
+                    <TextRun>
+                      <Value>=First(Fields!companyinforAddress2.Value, "DataSet_Result")+" "+First(Fields!companyinforCity.Value, "DataSet_Result")+" "+First(Fields!companyinforCounty.Value, "DataSet_Result")+" "+First(Fields!companyinforPostCode.Value, "DataSet_Result")</Value>
+                      <Style>
+                        <FontFamily>AngsanaUPC</FontFamily>
+                        <FontSize>14pt</FontSize>
+                      </Style>
+                    </TextRun>
+                  </TextRuns>
+                  <Style>
+                    <TextAlign>Left</TextAlign>
+                  </Style>
+                </Paragraph>
+              </Paragraphs>
+              <rd:DefaultName>Textbox1</rd:DefaultName>
+              <Top>1.76111in</Top>
               <Left>0.65417in</Left>
-              <Height>0.24722in</Height>
+              <Height>0.22778in</Height>
               <Width>4.82916in</Width>
               <ZIndex>33</ZIndex>
               <Style>
@@ -2843,14 +2842,14 @@
                 </BottomBorder>
               </Style>
             </Textbox>
-            <Textbox Name="Textbox47">
+            <Textbox Name="Textbox52">
               <CanGrow>true</CanGrow>
               <KeepTogether>true</KeepTogether>
               <Paragraphs>
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value />
+                      <Value EvaluationMode="Constant" />
                       <Style>
                         <FontFamily>AngsanaUPC</FontFamily>
                         <FontSize>14pt</FontSize>
@@ -2863,9 +2862,9 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox1</rd:DefaultName>
-              <Top>2.08889in</Top>
+              <Top>1.98889in</Top>
               <Left>0.65417in</Left>
-              <Height>0.24722in</Height>
+              <Height>0.22778in</Height>
               <Width>4.82916in</Width>
               <ZIndex>34</ZIndex>
               <Style>
@@ -2934,41 +2933,11 @@ End Function
   <DataSets>
     <DataSet Name="DataSet_Result">
       <Fields>
-        <Field Name="INV_No_">
-          <DataField>INV_No_</DataField>
-        </Field>
-        <Field Name="INV_Document_No_">
-          <DataField>INV_Document_No_</DataField>
-        </Field>
-        <Field Name="INV_Posting_Date">
-          <DataField>INV_Posting_Date</DataField>
-        </Field>
-        <Field Name="VatDescription">
-          <DataField>VatDescription</DataField>
-        </Field>
-        <Field Name="INV_VAT_Amount">
-          <DataField>INV_VAT_Amount</DataField>
-        </Field>
-        <Field Name="INV_VAT_AmountFormat">
-          <DataField>INV_VAT_AmountFormat</DataField>
-        </Field>
-        <Field Name="INV_Amount_Including_VAT">
-          <DataField>INV_Amount_Including_VAT</DataField>
-        </Field>
-        <Field Name="INV_Amount_Including_VATFormat">
-          <DataField>INV_Amount_Including_VATFormat</DataField>
-        </Field>
-        <Field Name="INV_Amount">
-          <DataField>INV_Amount</DataField>
-        </Field>
-        <Field Name="INV_AmountFormat">
-          <DataField>INV_AmountFormat</DataField>
-        </Field>
-        <Field Name="LineNo">
-          <DataField>LineNo</DataField>
-        </Field>
         <Field Name="companyinforName">
           <DataField>companyinforName</DataField>
+        </Field>
+        <Field Name="companyinforNameTH">
+          <DataField>companyinforNameTH</DataField>
         </Field>
         <Field Name="companyinforName2">
           <DataField>companyinforName2</DataField>
@@ -2990,27 +2959,6 @@ End Function
         </Field>
         <Field Name="companyinforVatNo">
           <DataField>companyinforVatNo</DataField>
-        </Field>
-        <Field Name="Enddate">
-          <DataField>Enddate</DataField>
-        </Field>
-        <Field Name="totalamountEx">
-          <DataField>totalamountEx</DataField>
-        </Field>
-        <Field Name="totalamountExFormat">
-          <DataField>totalamountExFormat</DataField>
-        </Field>
-        <Field Name="totalAmtVat">
-          <DataField>totalAmtVat</DataField>
-        </Field>
-        <Field Name="totalAmtVatFormat">
-          <DataField>totalAmtVatFormat</DataField>
-        </Field>
-        <Field Name="TotalAmtIncVat">
-          <DataField>TotalAmtIncVat</DataField>
-        </Field>
-        <Field Name="TotalAmtIncVatFormat">
-          <DataField>TotalAmtIncVatFormat</DataField>
         </Field>
         <Field Name="CustomerNO">
           <DataField>CustomerNO</DataField>
@@ -3053,6 +3001,60 @@ End Function
         </Field>
         <Field Name="VatID13">
           <DataField>VatID13</DataField>
+        </Field>
+        <Field Name="Enddate">
+          <DataField>Enddate</DataField>
+        </Field>
+        <Field Name="INV_No_">
+          <DataField>INV_No_</DataField>
+        </Field>
+        <Field Name="INV_Document_No_">
+          <DataField>INV_Document_No_</DataField>
+        </Field>
+        <Field Name="INV_Posting_Date">
+          <DataField>INV_Posting_Date</DataField>
+        </Field>
+        <Field Name="VatDescription">
+          <DataField>VatDescription</DataField>
+        </Field>
+        <Field Name="INV_VAT_Amount">
+          <DataField>INV_VAT_Amount</DataField>
+        </Field>
+        <Field Name="INV_VAT_AmountFormat">
+          <DataField>INV_VAT_AmountFormat</DataField>
+        </Field>
+        <Field Name="INV_Amount_Including_VAT">
+          <DataField>INV_Amount_Including_VAT</DataField>
+        </Field>
+        <Field Name="INV_Amount_Including_VATFormat">
+          <DataField>INV_Amount_Including_VATFormat</DataField>
+        </Field>
+        <Field Name="INV_Amount">
+          <DataField>INV_Amount</DataField>
+        </Field>
+        <Field Name="INV_AmountFormat">
+          <DataField>INV_AmountFormat</DataField>
+        </Field>
+        <Field Name="LineNo">
+          <DataField>LineNo</DataField>
+        </Field>
+        <Field Name="totalamountEx">
+          <DataField>totalamountEx</DataField>
+        </Field>
+        <Field Name="totalamountExFormat">
+          <DataField>totalamountExFormat</DataField>
+        </Field>
+        <Field Name="totalAmtVat">
+          <DataField>totalAmtVat</DataField>
+        </Field>
+        <Field Name="totalAmtVatFormat">
+          <DataField>totalAmtVatFormat</DataField>
+        </Field>
+        <Field Name="TotalAmtIncVat">
+          <DataField>TotalAmtIncVat</DataField>
+        </Field>
+        <Field Name="TotalAmtIncVatFormat">
+          <DataField>TotalAmtIncVatFormat</DataField>
         </Field>
         <Field Name="CR_No_">
           <DataField>CR_No_</DataField>

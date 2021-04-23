@@ -210,6 +210,37 @@ codeunit 60000 "INT_Even_Sub_SNY"
 
     end;
 
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Reporting Triggers", 'OnDocumentPrintReady', '', true, true)]
+    local procedure "Reporting Triggers_OnDocumentPrintReady"
+    (
+        ObjectType: Option;
+        ObjectId: Integer;
+        ObjectPayload: JsonObject;
+        DocumentStream: InStream;
+        var Success: Boolean
+    )
+    begin
+
+
+    end;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"ReportManagement", 'OnAfterDocumentPrintReady', '', true, true)]
+    local procedure "ReportManagement_OnAfterDocumentPrintReady"
+    (
+        ObjectType: Option;
+        ObjectID: Integer;
+        ObjectPayload: JsonObject;
+        DocumentStream: InStream;
+        var Success: Boolean
+    )
+    var
+        SalesHeaderReport: Record "Sales Header";
+    begin
+
+    end;
+
+
     var
         myInt: Integer;
 }

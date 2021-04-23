@@ -4,7 +4,8 @@ report 60003 "INT_AWB_Report_SYN"
     Caption = 'AWB Report';
     UsageCategory = Administration;
     ApplicationArea = Basic, Suite;
-
+    DefaultLayout = RDLC;
+    PreviewMode = PrintLayout;
 
     dataset
     {
@@ -31,9 +32,11 @@ report 60003 "INT_AWB_Report_SYN"
             column(shipaddress; shipadd1) { }
             column(shipaddress2; shipadd2) { }
             column(shipCity; shipcity) { }
-            column(shipCounty; shipCountry) { }
+            column(shipCountry; shipCountry) { }
             column(ShipPostcode; shippostcode) { }
+            column(shipCounty; shipCounty) { }
             column(shipPhoneNo; shipPhoneNo) { }
+            column(shipContact; shipContact) { }
             column(External_Document_No_; "External Document No.") { }
             column(Posting_Date; "Posting Date") { }
             column(BarCodePicture; BarCode.Picture) { }
@@ -106,12 +109,14 @@ report 60003 "INT_AWB_Report_SYN"
 
 
                 shipName := "Sell-to Customer Name" + "Sell-to Customer Name 2";
-                shipadd1 := "Sell-to Address";
-                shipadd2 := "Sell-to Address 2";
-                shipcity := "sell-to City";
-                shipCountry := "sell-to County";
-                shippostcode := "sell-to Post Code";
+                shipadd1 := "Bill-to Address";
+                shipadd2 := "bill-to Address 2";
+                shipcity := "bill-to City";
+                shipCountry := "bill-to County";
+                shipCounty := "Bill-to Country/Region Code";
+                shippostcode := "bill-to Post Code";
                 shipPhoneNo := "Sell-to Phone No.";
+                shipContact := "Bill-to Contact";
                 //end;
             end;
         }
@@ -157,6 +162,8 @@ report 60003 "INT_AWB_Report_SYN"
         shipadd2: text[100];
         shipcity: text[100];
         shipCountry: Text[100];
+        shipCounty: text[100];
         shippostcode: text[100];
         shipPhoneNo: Text[100];
+        shipContact: text[100];
 }

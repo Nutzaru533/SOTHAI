@@ -57,9 +57,13 @@ report 60001 "INT_TH_Sales_Invoice"
             column(ShopifyPaymentMethod; "Shopify Payment Method")
             {
             }
+            column(Payment_Method_Code; "Shopify Payment Method")
+            { }
             column(CompName; CompanyInfo.Name)
             {
             }
+            column(CompNameTH; CompanyInfo.INT_Name_TH_SNY)
+            { }
             column(CompName2; CompanyInfo."Name 2")
             {
             }
@@ -87,51 +91,15 @@ report 60001 "INT_TH_Sales_Invoice"
             column(Logo; CompanyInfo.Picture)
             {
             }
-            column(Branch1; CompanyInfo.Branch1)
-            { }
-            column(Branch2; CompanyInfo.Branch2)
-            { }
-            column(Branch3; CompanyInfo.Branch3)
-            { }
-            column(Branch4; CompanyInfo.Branch4)
-            { }
-            column(Branch5; CompanyInfo.Branch5)
-            { }
-            column(Branch6; CompanyInfo.Branch6)
-            { }
-            column(BranchAddress1; CompanyInfo."Branch Address 1")
-            { }
-            column(BranchAddress2; CompanyInfo."Branch Address 2")
-            { }
-            column(BranchAddress3; CompanyInfo."Branch Address 3")
-            { }
-            column(BranchAddress4; CompanyInfo."Branch Address 4")
-            { }
-            column(BranchAddress5; CompanyInfo."Branch Address 5")
-            { }
-            column(BranchAddress6; CompanyInfo."Branch Address 6")
-            { }
-            column(BranchContact1; CompanyInfo."Branch Contact 1")
-            { }
-            column(BranchContact2; CompanyInfo."Branch Contact 2")
-            { }
-            column(BranchContact3; CompanyInfo."Branch Contact 3")
-            { }
-            column(BranchContact4; CompanyInfo."Branch Contact 4")
-            { }
-            column(BranchContact5; CompanyInfo."Branch Contact 5")
-            { }
-            column(BranchContact6; CompanyInfo."Branch Contact 6")
-            { }
             column(Website; CompanyInfo.Website)
             { }
-            column(Sell_to_Customer_Name; "Bill-to Name") { }
+            column(Sell_to_Customer_Name; "Bill-to Contact") { }
             column(Sell_to_Address; "Bill-to Address") { }
             column(Sell_to_Address_2; "bill-to Address 2") { }
             column(Sell_to_City; "bill-to City") { }
             column(Sell_to_County; "bill-to County") { }
             column(Sell_to_Post_Code; "bill-to Post Code") { }
-            column(Sell_to_Phone_No_; contact."Phone No.") { }
+            column(Sell_to_Phone_No_; "Sell-to Phone No.") { }
             column(Sell_to_Country_Region_Code; "bill-to Country/Region Code") { }
             column(Branch; showBranch) { }
             column(Companybranch; Companybranch) { }
@@ -175,7 +143,7 @@ report 60001 "INT_TH_Sales_Invoice"
             {
                 DataItemLink = "Document Type" = FIELD("Document Type"), "Document No." = FIELD("No.");
                 DataItemLinkReference = Header;
-                DataItemTableView = SORTING("Document Type", "Document No.", "Line No.") where(Type = const(Item));
+                DataItemTableView = SORTING("Document Type", "Document No.", "Line No.");
 
                 column(LineNo; Line."Line No.")
                 {
@@ -225,13 +193,13 @@ report 60001 "INT_TH_Sales_Invoice"
                 column(LineDeliveryTime; LineDeliveryTime)
                 {
                 }
-
+                column(locationcode; locationcode) { }
 
 
                 trigger OnPreDataItem()
                 var
                 begin
-                    SetFilter(INT_RelatedItemType_SNY, '<>%1&<>%2&<>%3', Line.INT_RelatedItemType_SNY::"FOC Dummy", Line.INT_RelatedItemType_SNY::Package, Line.INT_RelatedItemType_SNY::"Main Delivery");
+                    //SetFilter(INT_RelatedItemType_SNY, '<>%1&<>%2&<>%3', Line.INT_RelatedItemType_SNY::"FOC Dummy", Line.INT_RelatedItemType_SNY::Package, Line.INT_RelatedItemType_SNY::"Main Delivery");
                 end;
 
                 trigger OnAfterGetRecord()
@@ -336,10 +304,10 @@ report 60001 "INT_TH_Sales_Invoice"
                     //fixline := 13;
                     //countLine := fixline - LineNo;
                     //SetRange(Number, countLine);
-                    IF countLine > 12 THEN
-                        countLine := (27 - countLine)
+                    IF countLine > 9 THEN
+                        countLine := (12 - countLine)
                     ELSE
-                        countLine := 12 - countLine;
+                        countLine := 9 - countLine;
                     SETRANGE(Number, 1, countLine);
                 end;
             }
@@ -395,36 +363,9 @@ report 60001 "INT_TH_Sales_Invoice"
                     until TotalSalesLine.Next() = 0;
                 TotalDeliveryCharges := Round(TotalDeliveryCharges, 0.01, '=');
 
-                /*
-                if "Ship-to Name" <> '' then begin
-                    shipName := "Ship-to Name";
-                    shipadd1 := "Ship-to Address";
-                    shipadd2 := "Ship-to Address 2";
-                    shipcity := "Ship-to City";
-                    shipCountry := "Ship-to County";
-                    shippostcode := "Ship-to Post Code";
-                end else begin
-                    */
-                if INT_Mask_SYN = true then begin
-                    //"Sell-to Address" := 'XXXXXX';
-                    //"Sell-to Address 2" := 'XXXXXX';
-                    //"Sell-to City" := 'XXXXXX';
-                    //"Sell-to County" := 'XXXXXX';
-                    //"Sell-to Post Code" := 'XXXXXX';
 
-                    //"bill-to Address" := 'XXXXXX';
-                    //"bill-to Address 2" := 'XXXXXX';
-                    //"bill-to City" := 'XXXXXX';
-                    //"bill-to County" := 'XXXXXX';
-                    //"bill-to Post Code" := 'XXXXXX';
 
-                    //"ship-to Address" := 'XXXXXX';
-                    //"ship-to Address 2" := 'XXXXXX';
-                    //"ship-to City" := 'XXXXXX';
-                    //"ship-to County" := 'XXXXXX';
-                    //"ship-to Post Code" := 'XXXXXX';
-                end;
-                shipName := "Sell-to Customer Name" + "Sell-to Customer Name 2";
+                shipName := "Sell-to Contact";
                 shipadd1 := "Sell-to Address";
                 shipadd2 := "Sell-to Address 2";
                 shipcity := "sell-to City";
@@ -456,7 +397,8 @@ report 60001 "INT_TH_Sales_Invoice"
                 if not contact.get("Bill-to Contact No.") then
                     contact.init;
 
-
+                IF "Location Code" <> '' then
+                    locationcode := "Location Code";
             end;
 
         }
@@ -501,11 +443,11 @@ report 60001 "INT_TH_Sales_Invoice"
         myInt: Integer;
     begin
         if Print then begin
-
             Header.INT_Print_Count_SNY := Header.INT_Print_Count_SNY + 1;
             Header.INT_Print_Date_Time_SNY := CurrentDateTime;
             Header.Modify();
         end;
+
     end;
 
     var
@@ -554,5 +496,7 @@ report 60001 "INT_TH_Sales_Invoice"
         Companybranch: Text[50];
 
         contact: Record Contact;
+
+        locationcode: code[20];
 
 }

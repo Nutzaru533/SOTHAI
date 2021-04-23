@@ -686,18 +686,17 @@
       <Width>8.13914in</Width>
       <Page>
         <PageHeader>
-          <Height>5.52717in</Height>
+          <Height>5.16014in</Height>
           <PrintOnFirstPage>true</PrintOnFirstPage>
           <PrintOnLastPage>true</PrintOnLastPage>
           <ReportItems>
             <Textbox Name="Textbox3">
-              <CanGrow>true</CanGrow>
               <KeepTogether>true</KeepTogether>
               <Paragraphs>
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=First(Fields!Sell_to_Contact.Value, "DataSet_Result")</Value>
+                      <Value>=First(Fields!Sell_to_Customer_No_.Value, "DataSet_Result")</Value>
                       <Style>
                         <FontFamily>AngsanaUPC</FontFamily>
                         <FontSize>18pt</FontSize>
@@ -712,94 +711,7 @@
               <Top>2.08563in</Top>
               <Left>0.09609in</Left>
               <Height>0.28309in</Height>
-              <Width>3.54948in</Width>
-              <Style>
-                <Border>
-                  <Style>None</Style>
-                </Border>
-              </Style>
-            </Textbox>
-            <Textbox Name="Textbox4">
-              <CanGrow>true</CanGrow>
-              <KeepTogether>true</KeepTogether>
-              <Paragraphs>
-                <Paragraph>
-                  <TextRuns>
-                    <TextRun>
-                      <Value>=First(Fields!Sell_to_Address.Value, "DataSet_Result")</Value>
-                      <Style>
-                        <FontFamily>AngsanaUPC</FontFamily>
-                        <FontSize>18pt</FontSize>
-                      </Style>
-                    </TextRun>
-                  </TextRuns>
-                  <Style />
-                </Paragraph>
-              </Paragraphs>
-              <rd:DefaultName>Textbox1</rd:DefaultName>
-              <Top>2.38261in</Top>
-              <Left>0.09609in</Left>
-              <Height>0.28309in</Height>
-              <Width>3.54948in</Width>
-              <ZIndex>1</ZIndex>
-              <Style>
-                <Border>
-                  <Style>None</Style>
-                </Border>
-              </Style>
-            </Textbox>
-            <Textbox Name="Textbox5">
-              <CanGrow>true</CanGrow>
-              <KeepTogether>true</KeepTogether>
-              <Paragraphs>
-                <Paragraph>
-                  <TextRuns>
-                    <TextRun>
-                      <Value>=First(Fields!Sell_to_City.Value, "DataSet_Result")+" "+First(Fields!Sell_to_County.Value, "DataSet_Result")</Value>
-                      <Style>
-                        <FontFamily>AngsanaUPC</FontFamily>
-                        <FontSize>18pt</FontSize>
-                      </Style>
-                    </TextRun>
-                  </TextRuns>
-                  <Style />
-                </Paragraph>
-              </Paragraphs>
-              <rd:DefaultName>Textbox1</rd:DefaultName>
-              <Top>2.66014in</Top>
-              <Left>0.09609in</Left>
-              <Height>0.28309in</Height>
-              <Width>3.54948in</Width>
-              <ZIndex>2</ZIndex>
-              <Style>
-                <Border>
-                  <Style>None</Style>
-                </Border>
-              </Style>
-            </Textbox>
-            <Textbox Name="Textbox10">
-              <CanGrow>true</CanGrow>
-              <KeepTogether>true</KeepTogether>
-              <Paragraphs>
-                <Paragraph>
-                  <TextRuns>
-                    <TextRun>
-                      <Value>="Tel. " + First(Fields!Sell_to_Phone_No_.Value, "DataSet_Result") + "  Contact Name " + First(Fields!Sell_to_Contact.Value, "DataSet_Result")</Value>
-                      <Style>
-                        <FontFamily>AngsanaUPC</FontFamily>
-                        <FontSize>18pt</FontSize>
-                      </Style>
-                    </TextRun>
-                  </TextRuns>
-                  <Style />
-                </Paragraph>
-              </Paragraphs>
-              <rd:DefaultName>Textbox1</rd:DefaultName>
-              <Top>2.94323in</Top>
-              <Left>0.0961in</Left>
-              <Height>0.28309in</Height>
-              <Width>3.54948in</Width>
-              <ZIndex>3</ZIndex>
+              <Width>3.84856in</Width>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -829,7 +741,7 @@
               <Left>0.09115in</Left>
               <Height>0.28309in</Height>
               <Width>2.30779in</Width>
-              <ZIndex>4</ZIndex>
+              <ZIndex>1</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -845,7 +757,7 @@
               <Left>4.51954in</Left>
               <Height>0.98774in</Height>
               <Width>3.37794in</Width>
-              <ZIndex>5</ZIndex>
+              <ZIndex>2</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -875,7 +787,7 @@
               <Left>0.09115in</Left>
               <Height>0.28309in</Height>
               <Width>2.30779in</Width>
-              <ZIndex>6</ZIndex>
+              <ZIndex>3</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -905,7 +817,7 @@
               <Left>0.09115in</Left>
               <Height>0.28309in</Height>
               <Width>2.30779in</Width>
-              <ZIndex>7</ZIndex>
+              <ZIndex>4</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -935,7 +847,7 @@
               <Left>0.09115in</Left>
               <Height>0.28309in</Height>
               <Width>2.30779in</Width>
-              <ZIndex>8</ZIndex>
+              <ZIndex>5</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -947,7 +859,7 @@
               <Left>0.0961in</Left>
               <Height>0in</Height>
               <Width>8.00138in</Width>
-              <ZIndex>9</ZIndex>
+              <ZIndex>6</ZIndex>
               <Style>
                 <Border>
                   <Style>Solid</Style>
@@ -977,7 +889,7 @@
               <Left>0.09609in</Left>
               <Height>0.33865in</Height>
               <Width>0.69546in</Width>
-              <ZIndex>10</ZIndex>
+              <ZIndex>7</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -1004,10 +916,10 @@
               </Paragraphs>
               <rd:DefaultName>Textbox1</rd:DefaultName>
               <Top>1.68563in</Top>
-              <Left>3.91975in</Left>
+              <Left>4.24892in</Left>
               <Height>0.33865in</Height>
               <Width>0.69546in</Width>
-              <ZIndex>11</ZIndex>
+              <ZIndex>8</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -1016,10 +928,10 @@
             </Textbox>
             <Line Name="Line2">
               <Top>1.56358in</Top>
-              <Left>3.79002in</Left>
+              <Left>4.0921in</Left>
               <Height>2.60915in</Height>
               <Width>0in</Width>
-              <ZIndex>12</ZIndex>
+              <ZIndex>9</ZIndex>
               <Style>
                 <Border>
                   <Style>Solid</Style>
@@ -1027,13 +939,12 @@
               </Style>
             </Line>
             <Textbox Name="Textbox6">
-              <CanGrow>true</CanGrow>
               <KeepTogether>true</KeepTogether>
               <Paragraphs>
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=First(Fields!shipName.Value, "DataSet_Result")</Value>
+                      <Value>=First(Fields!shipContact.Value, "DataSet_Result")</Value>
                       <Style>
                         <FontFamily>AngsanaUPC</FontFamily>
                         <FontSize>18pt</FontSize>
@@ -1046,10 +957,10 @@
               </Paragraphs>
               <rd:DefaultName>Textbox1</rd:DefaultName>
               <Top>2.08563in</Top>
-              <Left>3.91975in</Left>
+              <Left>4.24892in</Left>
               <Height>0.28309in</Height>
-              <Width>4.03606in</Width>
-              <ZIndex>13</ZIndex>
+              <Width>3.84856in</Width>
+              <ZIndex>10</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -1057,7 +968,6 @@
               </Style>
             </Textbox>
             <Textbox Name="Textbox7">
-              <CanGrow>true</CanGrow>
               <KeepTogether>true</KeepTogether>
               <Paragraphs>
                 <Paragraph>
@@ -1066,7 +976,7 @@
                       <Value>=First(Fields!shipaddress.Value, "DataSet_Result")</Value>
                       <Style>
                         <FontFamily>AngsanaUPC</FontFamily>
-                        <FontSize>18pt</FontSize>
+                        <FontSize>14pt</FontSize>
                       </Style>
                     </TextRun>
                   </TextRuns>
@@ -1075,10 +985,10 @@
               </Paragraphs>
               <rd:DefaultName>Textbox1</rd:DefaultName>
               <Top>2.39373in</Top>
-              <Left>3.91975in</Left>
+              <Left>4.24892in</Left>
               <Height>0.28309in</Height>
-              <Width>4.03606in</Width>
-              <ZIndex>14</ZIndex>
+              <Width>3.84856in</Width>
+              <ZIndex>11</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -1086,16 +996,15 @@
               </Style>
             </Textbox>
             <Textbox Name="Textbox8">
-              <CanGrow>true</CanGrow>
               <KeepTogether>true</KeepTogether>
               <Paragraphs>
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=First(Fields!shipaddress2.Value, "DataSet_Result")+" "+First(Fields!shipCity.Value, "DataSet_Result")+" "+First(Fields!shipCounty.Value, "DataSet_Result")+" "+First(Fields!ShipPostcode.Value, "DataSet_Result")</Value>
+                      <Value>=First(Fields!shipaddress2.Value, "DataSet_Result")+First(Fields!Sell_to_County.Value, "DataSet_Result")</Value>
                       <Style>
                         <FontFamily>AngsanaUPC</FontFamily>
-                        <FontSize>18pt</FontSize>
+                        <FontSize>14pt</FontSize>
                       </Style>
                     </TextRun>
                   </TextRuns>
@@ -1104,10 +1013,10 @@
               </Paragraphs>
               <rd:DefaultName>Textbox1</rd:DefaultName>
               <Top>2.67126in</Top>
-              <Left>3.91975in</Left>
+              <Left>4.24892in</Left>
               <Height>0.28309in</Height>
-              <Width>4.03606in</Width>
-              <ZIndex>15</ZIndex>
+              <Width>3.84856in</Width>
+              <ZIndex>12</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -1115,16 +1024,15 @@
               </Style>
             </Textbox>
             <Textbox Name="Textbox21">
-              <CanGrow>true</CanGrow>
               <KeepTogether>true</KeepTogether>
               <Paragraphs>
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>="Tel. "</Value>
+                      <Value>="Tel. "+First(Fields!Sell_to_Phone_No_.Value, "DataSet_Result")</Value>
                       <Style>
                         <FontFamily>AngsanaUPC</FontFamily>
-                        <FontSize>18pt</FontSize>
+                        <FontSize>14pt</FontSize>
                       </Style>
                     </TextRun>
                   </TextRuns>
@@ -1133,41 +1041,10 @@
               </Paragraphs>
               <rd:DefaultName>Textbox1</rd:DefaultName>
               <Top>2.95435in</Top>
-              <Left>3.91975in</Left>
+              <Left>4.24892in</Left>
               <Height>0.28309in</Height>
-              <Width>4.03606in</Width>
-              <ZIndex>16</ZIndex>
-              <Style>
-                <Border>
-                  <Style>None</Style>
-                </Border>
-              </Style>
-            </Textbox>
-            <Textbox Name="Textbox28">
-              <CanGrow>true</CanGrow>
-              <KeepTogether>true</KeepTogether>
-              <Paragraphs>
-                <Paragraph>
-                  <TextRuns>
-                    <TextRun>
-                      <Value>=First(Fields!Sell_to_Post_Code.Value, "DataSet_Result")</Value>
-                      <Style>
-                        <FontFamily>AngsanaUPC</FontFamily>
-                        <FontSize>24pt</FontSize>
-                      </Style>
-                    </TextRun>
-                  </TextRuns>
-                  <Style>
-                    <TextAlign>Center</TextAlign>
-                  </Style>
-                </Paragraph>
-              </Paragraphs>
-              <rd:DefaultName>Textbox1</rd:DefaultName>
-              <Top>3.41184in</Top>
-              <Left>1.03334in</Left>
-              <Height>0.43865in</Height>
-              <Width>1.89114in</Width>
-              <ZIndex>17</ZIndex>
+              <Width>3.84856in</Width>
+              <ZIndex>13</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -1175,7 +1052,6 @@
               </Style>
             </Textbox>
             <Textbox Name="Textbox29">
-              <CanGrow>true</CanGrow>
               <KeepTogether>true</KeepTogether>
               <Paragraphs>
                 <Paragraph>
@@ -1194,11 +1070,11 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox1</rd:DefaultName>
-              <Top>3.41184in</Top>
+              <Top>3.51184in</Top>
               <Left>5.17016in</Left>
               <Height>0.42753in</Height>
               <Width>1.84669in</Width>
-              <ZIndex>18</ZIndex>
+              <ZIndex>14</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -1210,7 +1086,7 @@
               <Left>0.09106in</Left>
               <Height>0in</Height>
               <Width>8.00642in</Width>
-              <ZIndex>19</ZIndex>
+              <ZIndex>15</ZIndex>
               <Style>
                 <Border>
                   <Style>Solid</Style>
@@ -1224,7 +1100,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>ขอบคุณที่ช้อปปิ้งกับ</Value>
+                      <Value>="ขอบคุณที่ช๊อปปิ้งกับ "+First(Fields!Sell_to_Customer_No_.Value, "DataSet_Result")+" กรุณาตรวจสอบสินค้าที่ได้รับ"</Value>
                       <Style>
                         <FontFamily>AngsanaUPC</FontFamily>
                         <FontSize>18pt</FontSize>
@@ -1238,11 +1114,43 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox1</rd:DefaultName>
-              <Top>4.29426in</Top>
+              <Top>4.26926in</Top>
               <Left>2.86306in</Left>
               <Height>0.33865in</Height>
               <Width>5.23442in</Width>
-              <ZIndex>20</ZIndex>
+              <ZIndex>16</ZIndex>
+              <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
+              </Style>
+            </Textbox>
+            <Textbox Name="Textbox20">
+              <CanGrow>true</CanGrow>
+              <KeepTogether>true</KeepTogether>
+              <Paragraphs>
+                <Paragraph>
+                  <TextRuns>
+                    <TextRun>
+                      <Value>="ก่อนกด  ฉันได้ตรวจสอบและยอมรับสินค้า"</Value>
+                      <Style>
+                        <FontFamily>AngsanaUPC</FontFamily>
+                        <FontSize>18pt</FontSize>
+                        <FontWeight>Bold</FontWeight>
+                      </Style>
+                    </TextRun>
+                  </TextRuns>
+                  <Style>
+                    <TextAlign>Center</TextAlign>
+                  </Style>
+                </Paragraph>
+              </Paragraphs>
+              <rd:DefaultName>Textbox1</rd:DefaultName>
+              <Top>4.62982in</Top>
+              <Left>2.86306in</Left>
+              <Height>0.33865in</Height>
+              <Width>5.23442in</Width>
+              <ZIndex>17</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -1367,14 +1275,20 @@ End Function
         <Field Name="shipCity">
           <DataField>shipCity</DataField>
         </Field>
-        <Field Name="shipCounty">
-          <DataField>shipCounty</DataField>
+        <Field Name="shipCountry">
+          <DataField>shipCountry</DataField>
         </Field>
         <Field Name="ShipPostcode">
           <DataField>ShipPostcode</DataField>
         </Field>
+        <Field Name="shipCounty">
+          <DataField>shipCounty</DataField>
+        </Field>
         <Field Name="shipPhoneNo">
           <DataField>shipPhoneNo</DataField>
+        </Field>
+        <Field Name="shipContact">
+          <DataField>shipContact</DataField>
         </Field>
         <Field Name="External_Document_No_">
           <DataField>External_Document_No_</DataField>
