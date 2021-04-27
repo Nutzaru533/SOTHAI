@@ -88,7 +88,7 @@ pageextension 60003 "INT_TH_Sales_Order" extends "Sales Order"
                 Image = PrintDocument;
                 Promoted = true;
                 PromotedCategory = Process;
-                Visible = false;
+                Visible = true;
 
                 trigger OnAction()
                 var
@@ -100,7 +100,7 @@ pageextension 60003 "INT_TH_Sales_Order" extends "Sales Order"
                     SalesHeaderReport.SetRange("Document Type", "Document Type");
                     SalesHeaderReport.SetRange("No.", "No.");
                     if SalesHeaderReport.findfirst() then
-                        Report.RunModal(60003, true, false, SalesHeaderReport);
+                        Report.RunModal(60003, true, true, SalesHeaderReport);
                 end;
             }
 
@@ -126,98 +126,20 @@ pageextension 60003 "INT_TH_Sales_Order" extends "Sales Order"
                     SalesHeader_lRec: Record "Sales Header";
                     TempBlob: Codeunit "Temp Blob";
                 begin
-
                     resetmask;
-
                     SalesHeaderReport.reset;
                     SalesHeaderReport.SetRange("Document Type", "Document Type");
                     SalesHeaderReport.SetRange("No.", "No.");
                     if SalesHeaderReport.findfirst() then begin
 
                         //REPORT.run(REPORT::INT_TH_Sales_Invoice, true, false, SalesHeaderReport);
-                        REPORT.run(REPORT::INT_TH_Sales_Invoice, false, false, SalesHeaderReport);
+                        REPORT.run(REPORT::INT_TH_Sales_Invoice, true, true, SalesHeaderReport);
                         CurrPage.Update(false);
                         Commit();
-
-                        //Sleep(10000);
-                        if (SalesHeaderReport.INT_DeliveryType_SNY = SalesHeaderReport.INT_DeliveryType_SNY::"DBS Home") then begin
-
-                            REPORT.RunModal(REPORT::INT_AWB_Report_SYN, true, false, SalesHeaderReport);
-                            CurrPage.Update(false);
-                            Commit();
-                            //INT_AWB_Report_SYN.SetTableView(SalesHeaderReport);
-                            //INT_AWB_Report_SYN.UseRequestPage(true);
-                            //INT_AWB_Report_SYN.Run();
-                        end;
-                        CurrPage.Update(false);
                     end;
                     MaskAddress;
                 end;
             }
-            action("Download Report")
-            {
-                ApplicationArea = All;
-                Image = ExportFile;
-                Caption = 'Test Download';
-                Promoted = true;
-                PromotedCategory = Process;
-                Visible = false;
-
-                trigger OnAction()
-                var
-                    TempBlob_lRec: Record TempBlob temporary;
-                    ReportOut: OutStream;
-                    ReportIn: InStream;
-                    RecRef: RecordRef;
-                    ReportOut2: OutStream;
-                    ReportIn2: InStream;
-                    RecRef2: RecordRef;
-                    FileManagement_lCdu: Codeunit "File Management";
-                    SalesHeader_lRec: Record "Sales Header";
-                    TempBlob: Codeunit "Temp Blob";
-                    MyPath: Text[100];
-                    MyPath2: Text[100];
-                    Temppath: Text[1000];
-                begin
-                    //TempBlob_lRec.Blob.CreateOutStream(Out, TEXTENCODING::UTF8);
-                    /*
-                    TempBlob.CreateOutStream(Out, TEXTENCODING::UTF8);
-                    SalesHeader_lRec.Reset;
-                    SalesHeader_lRec.SetRange("Document Type", "Document Type");
-                    SalesHeader_lRec.SetRange("No.", "No.");
-                    SalesHeader_lRec.FindFirst();
-                    RecRef.GetTable(SalesHeader_lRec);
-                    REPORT.SAVEAS(60001, '', REPORTFORMAT::Pdf, Out, RecRef);
-                    REPORT.SAVEAS(60003, '', REPORTFORMAT::Pdf, Out, RecRef);
-                    FileManagement_lCdu.BLOBExport(TempBlob, STRSUBSTNO('SalesOrder_%1.Pdf', "No."), TRUE);
-                    */
-                    SalesHeader_lRec.Reset;
-                    SalesHeader_lRec.SetRange("Document Type", "Document Type");
-                    SalesHeader_lRec.SetRange("No.", "No.");
-                    if SalesHeader_lRec.Find('-') then begin
-                        RecRef.GetTable(SalesHeader_lRec);
-                        TempBlob.CreateOutStream(ReportOut, TEXTENCODING::UTF8);
-                        REPORT.SAVEAS(60001, SalesHeader_lRec.GetFilters, REPORTFORMAT::Pdf, ReportOut, RecRef);
-                        TempBlob.CreateInStream(ReportIn, TEXTENCODING::UTF8);
-                        MyPath := 'SO.PDF';
-                        DownloadFromStream(ReportIn, '', '', '', MyPath);
-                    end;
-
-                    SalesHeader_lRec.Reset;
-                    SalesHeader_lRec.SetRange("Document Type", "Document Type");
-                    SalesHeader_lRec.SetRange("No.", "No.");
-                    if SalesHeader_lRec.Find('-') then begin
-                        RecRef2.GetTable(SalesHeader_lRec);
-
-                        TempBlob.CreateOutStream(ReportOut2, TEXTENCODING::UTF8);
-                        REPORT.SAVEAS(60003, SalesHeader_lRec.GetFilters, REPORTFORMAT::Pdf, ReportOut2, RecRef2);
-                        TempBlob.CreateInStream(ReportIn2, TEXTENCODING::UTF8);
-                        MyPath2 := 'AWB.PDF';
-                        DownloadFromStream(ReportIn2, '', '', '', MyPath2);
-                    end;
-                end;
-            }
-
         }
         addafter(INT_ProcessOrder_SNY)
         {
@@ -450,6 +372,8 @@ pageextension 60003 "INT_TH_Sales_Order" extends "Sales Order"
             }
         }
     }
+
+
     trigger OnOpenPage()
     var
         myInt: Integer;
@@ -464,9 +388,18 @@ pageextension 60003 "INT_TH_Sales_Order" extends "Sales Order"
     end;
 
     trigger OnAfterGetRecord()
-
     begin
         SetActionVisible();
+        resetmask();
+        MaskAddress();
+    end;
+
+    trigger OnAfterGetCurrRecord()
+    var
+        myInt: Integer;
+    begin
+        MaskAddress();
+        resetmask();
         MaskAddress();
     end;
 
@@ -493,6 +426,9 @@ pageextension 60003 "INT_TH_Sales_Order" extends "Sales Order"
         shiptocity: text[100];
         shiptocoulty: text[100];
         shiptopostcode: text[100];
+        check: Integer;
+
+        salesheader: Record "Sales Header";
 
     local procedure SetActionVisible()
     var
@@ -508,23 +444,27 @@ pageextension 60003 "INT_TH_Sales_Order" extends "Sales Order"
     local procedure intMaskAddress()
     var
     begin
-        selltoaddrss := "Sell-to Address";
-        selltoaddress2 := "sell-to Address 2";
-        selltocity := "Sell-to City";
-        selltocoulty := "Sell-to County";
-        selltopostcode := "Sell-to Post Code";
+        salesheader.reset;
+        if salesheader.get("Document Type", "No.") then begin
+            selltoaddrss := salesheader."Sell-to Address";
+            selltoaddress2 := salesheader."sell-to Address 2";
+            selltocity := salesheader."Sell-to City";
+            selltocoulty := salesheader."Sell-to County";
+            selltopostcode := salesheader."Sell-to Post Code";
 
-        billtoaddess := "Bill-to Address";
-        billtoaddress2 := "Bill-to Address 2";
-        billtocity := "Bill-to City";
-        billtocoulty := "Bill-to County";
-        billtopostcode := "Bill-to Post Code";
+            billtoaddess := salesheader."Bill-to Address";
+            billtoaddress2 := salesheader."Bill-to Address 2";
+            billtocity := salesheader."Bill-to City";
+            billtocoulty := salesheader."Bill-to County";
+            billtopostcode := salesheader."Bill-to Post Code";
 
-        shiptoaddress := "Ship-to Address";
-        shiptoaddress2 := "Ship-to Address 2";
-        shiptocity := "Ship-to City";
-        shiptocoulty := "Ship-to County";
-        shiptopostcode := "Ship-to Post Code";
+            shiptoaddress := salesheader."Ship-to Address";
+            shiptoaddress2 := salesheader."Ship-to Address 2";
+            shiptocity := salesheader."Ship-to City";
+            shiptocoulty := salesheader."Ship-to County";
+            shiptopostcode := salesheader."Ship-to Post Code";
+        end;
+
     end;
 
     local procedure MaskAddress()
@@ -561,6 +501,7 @@ pageextension 60003 "INT_TH_Sales_Order" extends "Sales Order"
             "ship-to Post Code" := 'XXXXXX';
         end;
         if MaskText = false then begin
+
             "Sell-to Address" := selltoaddrss;
             "Sell-to Address 2" := selltoaddress2;
             "Sell-to City" := selltocity;
@@ -582,27 +523,51 @@ pageextension 60003 "INT_TH_Sales_Order" extends "Sales Order"
         CurrPage.Update(false);
     end;
 
-    local procedure resetmask()
+
+    [ServiceEnabled]
+    procedure resetmask()
     var
         myInt: Integer;
     begin
-        "Sell-to Address" := selltoaddrss;
-        "Sell-to Address 2" := selltoaddress2;
-        "Sell-to City" := selltocity;
-        "Sell-to County" := selltocoulty;
-        "Sell-to Post Code" := selltopostcode;
+        salesheader.reset;
+        if salesheader.get("Document Type", "No.") then begin
+            "Sell-to Address" := salesheader."Sell-to Address";
+            "Sell-to Address 2" := salesheader."Sell-to Address 2";
+            "Sell-to City" := salesheader."Sell-to City";
+            "Sell-to County" := salesheader."Sell-to County";
+            "Sell-to Post Code" := salesheader."Sell-to Post Code";
 
-        "bill-to Address" := billtoaddess;
-        "bill-to Address 2" := billtoaddress2;
-        "bill-to City" := billtocity;
-        "bill-to County" := billtocoulty;
-        "bill-to Post Code" := billtopostcode;
+            "bill-to Address" := salesheader."bill-to Address";
+            "bill-to Address 2" := salesheader."bill-to Address 2";
+            "bill-to City" := salesheader."bill-to City";
+            "bill-to County" := salesheader."bill-to County";
+            "bill-to Post Code" := salesheader."bill-to Post Code";
 
-        "ship-to Address" := shiptoaddress;
-        "ship-to Address 2" := shiptoaddress2;
-        "ship-to City" := shiptocity;
-        "ship-to County" := shiptocoulty;
-        "ship-to Post Code" := shiptopostcode;
+            "ship-to Address" := salesheader."ship-to Address";
+            "ship-to Address 2" := salesheader."ship-to Address 2";
+            "ship-to City" := salesheader."ship-to City";
+            "ship-to County" := salesheader."ship-to County";
+            "ship-to Post Code" := salesheader."ship-to Post Code";
+
+            selltoaddrss := salesheader."Sell-to Address";
+            selltoaddress2 := salesheader."sell-to Address 2";
+            selltocity := salesheader."Sell-to City";
+            selltocoulty := salesheader."Sell-to County";
+            selltopostcode := salesheader."Sell-to Post Code";
+
+            billtoaddess := salesheader."Bill-to Address";
+            billtoaddress2 := salesheader."Bill-to Address 2";
+            billtocity := salesheader."Bill-to City";
+            billtocoulty := salesheader."Bill-to County";
+            billtopostcode := salesheader."Bill-to Post Code";
+
+            shiptoaddress := salesheader."Ship-to Address";
+            shiptoaddress2 := salesheader."Ship-to Address 2";
+            shiptocity := salesheader."Ship-to City";
+            shiptocoulty := salesheader."Ship-to County";
+            shiptopostcode := salesheader."Ship-to Post Code";
+
+        end;
         CurrPage.Update(false);
     end;
 

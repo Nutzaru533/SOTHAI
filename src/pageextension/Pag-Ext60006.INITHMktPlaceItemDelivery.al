@@ -67,6 +67,8 @@ pageextension 60006 "INI_TH_MktPlaceItem_Delivery" extends INT_MktPlaceItem_Deli
         {
             Visible = false;
         }
+
+
     }
 
     actions

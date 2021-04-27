@@ -696,10 +696,10 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=First(Fields!Sell_to_Customer_No_.Value, "DataSet_Result")</Value>
+                      <Value>="บริษัท เอ็มเอส ซัพพลาย เชน โซลูชั่นส์ (ประเทศไทย) จำกัด"</Value>
                       <Style>
                         <FontFamily>AngsanaUPC</FontFamily>
-                        <FontSize>18pt</FontSize>
+                        <FontSize>16pt</FontSize>
                         <FontWeight>Bold</FontWeight>
                       </Style>
                     </TextRun>
@@ -711,7 +711,7 @@
               <Top>2.08563in</Top>
               <Left>0.09609in</Left>
               <Height>0.28309in</Height>
-              <Width>3.84856in</Width>
+              <Width>3.92657in</Width>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -947,7 +947,7 @@
                       <Value>=First(Fields!shipContact.Value, "DataSet_Result")</Value>
                       <Style>
                         <FontFamily>AngsanaUPC</FontFamily>
-                        <FontSize>18pt</FontSize>
+                        <FontSize>16pt</FontSize>
                         <FontWeight>Bold</FontWeight>
                       </Style>
                     </TextRun>
@@ -1151,6 +1151,90 @@
               <Height>0.33865in</Height>
               <Width>5.23442in</Width>
               <ZIndex>17</ZIndex>
+              <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
+              </Style>
+            </Textbox>
+            <Textbox Name="Textbox10">
+              <KeepTogether>true</KeepTogether>
+              <Paragraphs>
+                <Paragraph>
+                  <TextRuns>
+                    <TextRun>
+                      <Value>="222/8-9 หมู่ 5 บางนา-ตลาด กม. 30 โครงการคลังสินค้า SKH"</Value>
+                      <Style>
+                        <FontFamily>AngsanaUPC</FontFamily>
+                        <FontSize>14pt</FontSize>
+                      </Style>
+                    </TextRun>
+                  </TextRuns>
+                  <Style />
+                </Paragraph>
+              </Paragraphs>
+              <rd:DefaultName>Textbox1</rd:DefaultName>
+              <Top>2.39373in</Top>
+              <Left>0.0961in</Left>
+              <Height>0.28309in</Height>
+              <Width>3.92656in</Width>
+              <ZIndex>18</ZIndex>
+              <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
+              </Style>
+            </Textbox>
+            <Textbox Name="Textbox22">
+              <KeepTogether>true</KeepTogether>
+              <Paragraphs>
+                <Paragraph>
+                  <TextRuns>
+                    <TextRun>
+                      <Value>="ตำบล บ้านระกาศ อำเภอ บางบ่อ จังหวัด สมุทรปราการ 10560"</Value>
+                      <Style>
+                        <FontFamily>AngsanaUPC</FontFamily>
+                        <FontSize>14pt</FontSize>
+                      </Style>
+                    </TextRun>
+                  </TextRuns>
+                  <Style />
+                </Paragraph>
+              </Paragraphs>
+              <rd:DefaultName>Textbox1</rd:DefaultName>
+              <Top>2.67126in</Top>
+              <Left>0.0961in</Left>
+              <Height>0.28309in</Height>
+              <Width>3.92656in</Width>
+              <ZIndex>19</ZIndex>
+              <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
+              </Style>
+            </Textbox>
+            <Textbox Name="Textbox23">
+              <KeepTogether>true</KeepTogether>
+              <Paragraphs>
+                <Paragraph>
+                  <TextRuns>
+                    <TextRun>
+                      <Value>="Tel 0617068526 Contact Name: คุณ นพสิทธิ์"</Value>
+                      <Style>
+                        <FontFamily>AngsanaUPC</FontFamily>
+                        <FontSize>14pt</FontSize>
+                      </Style>
+                    </TextRun>
+                  </TextRuns>
+                  <Style />
+                </Paragraph>
+              </Paragraphs>
+              <rd:DefaultName>Textbox1</rd:DefaultName>
+              <Top>2.95435in</Top>
+              <Left>0.0961in</Left>
+              <Height>0.28309in</Height>
+              <Width>3.92656in</Width>
+              <ZIndex>20</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>

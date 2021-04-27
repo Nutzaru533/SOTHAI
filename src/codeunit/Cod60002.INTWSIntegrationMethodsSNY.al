@@ -392,6 +392,8 @@ codeunit 60002 "INT_WS_Integration Methods_SNY"
     Var
         AttributeMaster: Record "Item Attribute";
         AttributeValueMaster: Record "Item Attribute Value";
+        AttributeValueMaster2: Record "Item Attribute Value";
+        AttributeValueMaster3: Record "Item Attribute Value";
         ItemAttributeMapping: Record "Item Attribute Value Mapping";
         CurrJsonObj: JsonObject;
         ItemNo: Code[20];
@@ -399,6 +401,8 @@ codeunit 60002 "INT_WS_Integration Methods_SNY"
         AttributeValue: Text[250];
         i: Integer;
         DataArrLen: Integer;
+        getlastID: Integer;
+
     begin
         DataArrLen := DataJsonArr.Count();
         for i := 0 to DataArrLen - 1 do begin
@@ -414,13 +418,106 @@ codeunit 60002 "INT_WS_Integration Methods_SNY"
             AttributeMaster.SetRange(Name, AttributeName);
             if AttributeMaster.IsEmpty() then Error('Attribute Name: %1 not exist in master!', AttributeName);
             AttributeMaster.FindFirst();
+
             //if (AttributeValueMaster.Value <> AttributeValue) or (AttributeMaster.Name <> AttributeName) then begin
-            AttributeValueMaster.Reset();
-            AttributeValueMaster.SetRange("Attribute ID", AttributeMaster.ID);
-            AttributeValueMaster.SetRange(Value, AttributeValue);
-            if AttributeValueMaster.IsEmpty() then Error('Attribute Name: %1, Attribute Value: %2 not exist in master!', AttributeMaster, AttributeValue);
-            AttributeValueMaster.FindFirst();
+            if AttributeMaster.Type = AttributeMaster.Type::Option then begin
+                AttributeValueMaster.Reset();
+                AttributeValueMaster.SetRange("Attribute ID", AttributeMaster.ID);
+                AttributeValueMaster.SetRange(Value, AttributeValue);
+                //if checkvalidation then //TH webservice
+                if AttributeValueMaster.IsEmpty() then begin
+                    Error('Attribute Name: %1, Attribute Value: %2 not exist in master!', AttributeMaster, AttributeValue);
+                end;
+                AttributeValueMaster.FindFirst();
+
+                if not ItemAttributeMapping.Get(Database::Item, ItemNo, AttributeMaster.ID) then begin
+                    ItemAttributeMapping.Init();
+                    ItemAttributeMapping."Table ID" := Database::Item;
+                    ItemAttributeMapping."No." := ItemNo;
+                    ItemAttributeMapping."Item Attribute ID" := AttributeMaster.ID;
+                    ItemAttributeMapping."Item Attribute Value ID" := AttributeValueMaster.ID;
+                    ItemAttributeMapping.Insert();
+                end
+                else begin
+                    ItemAttributeMapping."Item Attribute Value ID" := AttributeValueMaster.ID;
+                    ItemAttributeMapping.Modify();
+                end;
+            end else begin
+                //th
+                AttributeValueMaster.Reset();
+                AttributeValueMaster.SetRange("Attribute ID", AttributeMaster.ID);
+                AttributeValueMaster.SetRange(Value, AttributeValue);
+                if not AttributeValueMaster.find('-') then begin
+
+                    AttributeValueMaster2.reset;
+                    AttributeValueMaster2.SetCurrentKey(ID);
+                    //AttributeValueMaster2.SetFilter(ID, '<>%1', 0);
+                    if AttributeValueMaster2.FindLast() then begin
+                        getlastID := AttributeValueMaster2.ID + 1;
+                    end;
+                    AttributeValueMaster3.init;
+                    AttributeValueMaster3.id := getlastID;
+                    AttributeValueMaster3.validate("Attribute ID", AttributeMaster.ID);
+                    AttributeValueMaster3.Validate(Value, AttributeValue);
+                    if AttributeValueMaster3.insert then begin
+                        if not ItemAttributeMapping.Get(Database::Item, ItemNo, AttributeMaster.ID) then begin
+                            ItemAttributeMapping.Init();
+                            ItemAttributeMapping."Table ID" := Database::Item;
+                            ItemAttributeMapping."No." := ItemNo;
+                            ItemAttributeMapping."Item Attribute ID" := AttributeMaster.ID;
+                            ItemAttributeMapping."Item Attribute Value ID" := AttributeValueMaster3.ID;
+                            ItemAttributeMapping.Insert();
+                        end
+                        else begin
+                            ItemAttributeMapping."Table ID" := Database::Item;
+                            ItemAttributeMapping."No." := ItemNo;
+                            ItemAttributeMapping."Item Attribute ID" := AttributeMaster.ID;
+                            ItemAttributeMapping."Item Attribute Value ID" := AttributeValueMaster3.ID;
+                            ItemAttributeMapping.Modify();
+                        end;
+                        //th
+                    end else begin
+                        if not ItemAttributeMapping.Get(Database::Item, ItemNo, AttributeMaster.ID) then begin
+                            ItemAttributeMapping.Init();
+                            ItemAttributeMapping."Table ID" := Database::Item;
+                            ItemAttributeMapping."No." := ItemNo;
+                            ItemAttributeMapping."Item Attribute ID" := AttributeMaster.ID;
+                            ItemAttributeMapping."Item Attribute Value ID" := AttributeValueMaster3.ID;
+                            ItemAttributeMapping.Insert();
+                        end
+                        else begin
+                            ItemAttributeMapping."Table ID" := Database::Item;
+                            ItemAttributeMapping."No." := ItemNo;
+                            ItemAttributeMapping."Item Attribute ID" := AttributeMaster.ID;
+                            ItemAttributeMapping."Item Attribute Value ID" := AttributeValueMaster3.ID;
+                            ItemAttributeMapping.Modify();
+                        end;
+                        //th
+                    end;
+
+                end else begin
+                    if not ItemAttributeMapping.Get(Database::Item, ItemNo, AttributeMaster.ID) then begin
+                        ItemAttributeMapping.Init();
+                        ItemAttributeMapping."Table ID" := Database::Item;
+                        ItemAttributeMapping."No." := ItemNo;
+                        ItemAttributeMapping."Item Attribute ID" := AttributeMaster.ID;
+                        ItemAttributeMapping."Item Attribute Value ID" := AttributeValueMaster.ID;
+                        ItemAttributeMapping.Insert();
+                    end
+                    else begin
+                        ItemAttributeMapping."Item Attribute Value ID" := AttributeValueMaster.ID;
+                        ItemAttributeMapping.Modify();
+                    end;
+                    //th
+                end;
+
+
+
+            end;
+
+
             //end;
+            /* //old code
             if not ItemAttributeMapping.Get(Database::Item, ItemNo, AttributeMaster.ID) then begin
                 ItemAttributeMapping.Init();
                 ItemAttributeMapping."Table ID" := Database::Item;
@@ -433,6 +530,7 @@ codeunit 60002 "INT_WS_Integration Methods_SNY"
                 ItemAttributeMapping."Item Attribute Value ID" := AttributeValueMaster.ID;
                 ItemAttributeMapping.Modify();
             end;
+            */
         end;
     end;
 

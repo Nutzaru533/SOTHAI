@@ -2,7 +2,7 @@
   "id": "cdea56e9-bb1b-45e3-9174-1dbc71b600f8",
   "name": "TH_Ecom_Interface",
   "publisher": "Sony",
-  "version": "1.0.0.3",
+  "version": "1.0.0.5",
   "brief": "",
   "description": "",
   "privacyStatement": "",
@@ -27,13 +27,13 @@
     "id": "4dfe05ce-a809-4c13-a62f-9baa0d3d0a6f",
     "publisher": "Sony",
     "name": "Ecom_Interface",
-    "version": "1.0.0.0"
+    "version": "2.0.0.2"
     },
     {
       "id": "d212ff76-7041-4875-abcc-5545f32e219e",
       "name": "Web Service",
       "publisher": "Sony",
-      "version": "1.0.0.1"
+      "version": "2.0.0.0"
     },
     {
       "id": "5ecfc871-5d82-43f1-9c54-59685e82318d",
@@ -41,7 +41,6 @@
       "name": "LS Central",
       "version": "17.3.3.0"
     }
-
   ],
   "screenshots": [],
   "platform": "16.0.0.0",

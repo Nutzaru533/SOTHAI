@@ -150,6 +150,9 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
                                     ProcessReturnOrder2();
                                     FullfillmentReturnOrder(SalesHeader);
                                     ReturnExplodeOrder2();
+                                    //Generate Posting NO./ invoice No.
+                                    GeneratePostingNo;
+                                    //Generate Posting NO./ invoice No.
                                     //ReturnInsertDeliveryFee();
                                 end;
                                 /*
@@ -160,6 +163,9 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
                             end else
                                 if SalesHeader.INT_OrderStatus_SNY < SalesHeader.INT_OrderStatus_SNY::Processed then
                                     ProcessReturnOrder();
+                            //Generate Posting NO./ invoice No.
+                            GeneratePostingNo;
+                            //Generate Posting NO./ invoice No.
                         end;
                     //SOTHAI
                     until SalesLine2.next() = 0;
@@ -427,6 +433,7 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
                     //Generate Posting NO./ invoice No.
                     GeneratePostingNo();
                     //Generate Posting NO./ invoice No.   
+
                 end
 
         end else
@@ -438,6 +445,9 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
                         ProcessReturnOrder2();
                         FullfillmentReturnOrder(SalesHeader);
                         ReturnExplodeOrder2();
+                        //Generate Posting NO./ invoice No.
+                        GeneratePostingNo;
+                        //Generate Posting NO./ invoice No.
                         //ReturnInsertDeliveryFee();
                     end;
                     /*
@@ -448,6 +458,9 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
                 end else
                     if SalesHeader.INT_OrderStatus_SNY < SalesHeader.INT_OrderStatus_SNY::Processed then
                         ProcessReturnOrder();
+                //Generate Posting NO./ invoice No.
+                GeneratePostingNo;
+                //Generate Posting NO./ invoice No.
             end;
 
     end;
@@ -3048,9 +3061,24 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
         resetsalesline: Record "Sales Line";
 
     begin
+        //
+        resetsalesline.reset;
+        resetsalesline.SetRange("Document Type", SalesHeader."Document Type");
+        resetsalesline.SetRange("Document No.", SalesHeader."No.");
+        resetsalesline.SetRange(Type, resetsalesline.Type::Item);
+        resetsalesline.SetFilter(Quantity, '>%1', 0);
+        if resetsalesline.Find('-') then begin
+            repeat
+                if resetsalesline."Paid Price" = resetsalesline."Unit Price" then
+                    resetsalesline.validate("Unit Price", (resetsalesline."Paid Price" + resetsalesline."Seller Voucher Amount"));
+                resetsalesline.Modify();
+                Commit();
+            until resetsalesline.next = 0;
+        end;
+        //
+
         //reset linediscount
         resetsalesline.reset;
-
         resetsalesline.SetRange("Document Type", SalesHeader."Document Type");
         resetsalesline.SetRange("Document No.", SalesHeader."No.");
         resetsalesline.SetRange(Type, resetsalesline.Type::Item);
@@ -3063,6 +3091,7 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
                 Commit();
             until resetsalesline.next = 0;
         end;
+
         //reset linediscount
 
         //calculatediscount 
@@ -3184,6 +3213,36 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
                 end;
             end;
             //Second senario
+
+            //No Discount line
+            if checkLine = 0 then begin
+                SellVourcher := 0;
+                checkLine2 := 0;
+                INT_salesline3.reset;
+                INT_salesline3.SetCurrentKey("Amount Including VAT");
+                INT_salesline3.SetRange("Document Type", SalesHeader."Document Type");
+                INT_salesline3.SetRange("Document No.", SalesHeader."No.");
+                INT_salesline3.SetRange(Type, INT_salesline3.Type::Item);
+                INT_salesline3.SetFilter(Quantity, '>%1', 0);
+                INT_salesline3.SetRange(INT_Exclude_Discount_SNY, false);
+                if INT_salesline3.find('+') then begin
+                    repeat
+
+                        checkLine2 += 1;
+                        if checkLine = checkLine2 then begin
+                            INT_salesline3.Validate("Line Discount Amount", SalesHeader."Seller Voucher Amount" - SellVourcher);
+                        end else begin
+                            calculatelineamount := ((INT_salesline3."Line Amount" * SalesHeader."Seller Voucher Amount") / totalamount);
+                            INT_salesline3.Validate("Line Discount Amount", calculatelineamount);
+                            SellVourcher += calculatelineamount;
+                        end;
+                        INT_salesline3.Modify();
+                        Commit();
+
+                    until INT_salesline3.Next(-1) = 0;
+                end;
+            end;
+            //No Discount line
         end;
         //calculatediscount
     end;
@@ -3192,12 +3251,46 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
     var
         salessetup: Record "Sales & Receivables Setup";
         NoserialMgn: Codeunit NoSeriesManagement;
+        salesline: Record "Sales Line";
+        Handled: Boolean;
     begin
-        salessetup.get;
-        salessetup.TestField("Invoice Nos.");
-        if SalesHeader."Posting No." = '' then begin
-            SalesHeader."Posting No." := NoserialMgn.GetNextNo(salessetup."Invoice Nos.", WorkDate(), true);
-            SalesHeader.Modify();
+
+        if SalesHeader."Document Type" = SalesHeader."Document Type"::Order then begin
+            salessetup.get;
+            salessetup.TestField("Invoice Nos.");
+            if SalesHeader."Posting No." = '' then begin
+                SalesHeader."Posting No." := NoserialMgn.GetNextNo(salessetup."Invoice Nos.", WorkDate(), true);
+                SalesHeader.Modify();
+
+            end;
         end;
+        if SalesHeader."Document Type" = SalesHeader."Document Type"::"Return Order" then begin
+            salessetup.get;
+            salessetup.TestField("Credit Memo Nos.");
+            if SalesHeader."Posting No." = '' then begin
+                SalesHeader."Posting No." := NoserialMgn.GetNextNo(salessetup."Credit Memo Nos.", WorkDate(), true);
+                SalesHeader.Modify();
+            end;
+        end;
+        //send to connector
+        salesline.reset;
+        salesline.SetRange("Document type", SalesHeader."Document Type");
+        salesline.SetRange("Document No.", SalesHeader."No.");
+        SalesHeader.TestField("Posting No.");
+        INT_EcomInterface_SNY_onSetInvoiceNo(SalesHeader, salesline, SalesHeader."Posting No.", Handled);
+        //send to connector
     end;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"INT_EcomInterface_SNY", 'onSetInvoiceNo', '', true, true)]
+    local procedure "INT_EcomInterface_SNY_onSetInvoiceNo"
+    (
+        var SalesHeader: Record "Sales Header";
+        var SalesLine: Record "Sales Line";
+        InvoiceNo: Code[20];
+        var Handled: Boolean
+    )
+    begin
+
+    end;
+
 }

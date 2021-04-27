@@ -10,6 +10,11 @@ pageextension 60002 "INT_TH_Sales_Return_Order" extends "Sales Return Order"
                 Caption = 'Goods Received';
                 ApplicationArea = All;
             }
+            field("Posting No."; "Posting No.")
+            {
+                Caption = 'Posting No.';
+                ApplicationArea = all;
+            }
         }
         modify("Sell-to Address")
         {
@@ -73,8 +78,31 @@ pageextension 60002 "INT_TH_Sales_Return_Order" extends "Sales Return Order"
     {
 
         // Add changes to page actions here
+        modify(INT_ProcessOrder_SNY)
+        {
+            Visible = false;
+        }
+
         addbefore("INT_SyncToSAP_SNY")
         {
+            action("INT_ProcessOrder_SNY2")
+            {
+                ApplicationArea = All;
+                Image = CancelAllLines;
+                Caption = 'Process Order';
+                ToolTip = 'Incase of Manual Process Order or user need to push to SAP immediately';
+                Promoted = true;
+                Visible = show_ProcessOrder;
+                PromotedCategory = Process;
+                trigger OnAction()
+                var
+                    //OrderProcessing: Codeunit "INT_OrderProcesssSch._SNY";
+                    OrderProcessing: Codeunit INT_TH_OrderProcessing_SNY;
+                begin
+                    OrderProcessing.SetOrder(Rec);
+                    OrderProcessing.Run();
+                end;
+            }
             group("Confirm Order TH")
             {
                 action("Confirm Order")
@@ -198,6 +226,7 @@ pageextension 60002 "INT_TH_Sales_Return_Order" extends "Sales Return Order"
         shiptocity: text[100];
         shiptocoulty: text[100];
         shiptopostcode: text[100];
+        salesheader: Record "Sales Header";
 
     local procedure SetActionVisible()
     var
@@ -224,29 +253,43 @@ pageextension 60002 "INT_TH_Sales_Return_Order" extends "Sales Return Order"
     trigger OnAfterGetRecord()
     begin
         SetActionVisible();
+        resetmask();
+        MaskAddress();
+    end;
+
+    trigger OnAfterGetCurrRecord()
+    var
+        myInt: Integer;
+    begin
+        MaskAddress();
+        resetmask();
         MaskAddress();
     end;
 
     local procedure intMaskAddress()
     var
     begin
-        selltoaddrss := "Sell-to Address";
-        selltoaddress2 := "sell-to Address 2";
-        selltocity := "Sell-to City";
-        selltocoulty := "Sell-to County";
-        selltopostcode := "Sell-to Post Code";
+        salesheader.reset;
+        if salesheader.get("Document Type", "No.") then begin
+            selltoaddrss := salesheader."Sell-to Address";
+            selltoaddress2 := salesheader."sell-to Address 2";
+            selltocity := salesheader."Sell-to City";
+            selltocoulty := salesheader."Sell-to County";
+            selltopostcode := salesheader."Sell-to Post Code";
 
-        billtoaddess := "Bill-to Address";
-        billtoaddress2 := "Bill-to Address 2";
-        billtocity := "Bill-to City";
-        billtocoulty := "Bill-to County";
-        billtopostcode := "Bill-to Post Code";
+            billtoaddess := salesheader."Bill-to Address";
+            billtoaddress2 := salesheader."Bill-to Address 2";
+            billtocity := salesheader."Bill-to City";
+            billtocoulty := salesheader."Bill-to County";
+            billtopostcode := salesheader."Bill-to Post Code";
 
-        shiptoaddress := "Ship-to Address";
-        shiptoaddress2 := "Ship-to Address 2";
-        shiptocity := "Ship-to City";
-        shiptocoulty := "Ship-to County";
-        shiptopostcode := "Ship-to Post Code";
+            shiptoaddress := salesheader."Ship-to Address";
+            shiptoaddress2 := salesheader."Ship-to Address 2";
+            shiptocity := salesheader."Ship-to City";
+            shiptocoulty := salesheader."Ship-to County";
+            shiptopostcode := salesheader."Ship-to Post Code";
+        end;
+
     end;
 
     local procedure MaskAddress()
@@ -304,27 +347,49 @@ pageextension 60002 "INT_TH_Sales_Return_Order" extends "Sales Return Order"
         CurrPage.Update(false);
     end;
 
-    local procedure resetmask()
+    procedure resetmask()
     var
         myInt: Integer;
     begin
-        "Sell-to Address" := selltoaddrss;
-        "Sell-to Address 2" := selltoaddress2;
-        "Sell-to City" := selltocity;
-        "Sell-to County" := selltocoulty;
-        "Sell-to Post Code" := selltopostcode;
+        salesheader.reset;
+        if salesheader.get("Document Type", "No.") then begin
+            "Sell-to Address" := salesheader."Sell-to Address";
+            "Sell-to Address 2" := salesheader."Sell-to Address 2";
+            "Sell-to City" := salesheader."Sell-to City";
+            "Sell-to County" := salesheader."Sell-to County";
+            "Sell-to Post Code" := salesheader."Sell-to Post Code";
 
-        "bill-to Address" := billtoaddess;
-        "bill-to Address 2" := billtoaddress2;
-        "bill-to City" := billtocity;
-        "bill-to County" := billtocoulty;
-        "bill-to Post Code" := billtopostcode;
+            "bill-to Address" := salesheader."bill-to Address";
+            "bill-to Address 2" := salesheader."bill-to Address 2";
+            "bill-to City" := salesheader."bill-to City";
+            "bill-to County" := salesheader."bill-to County";
+            "bill-to Post Code" := salesheader."bill-to Post Code";
 
-        "ship-to Address" := shiptoaddress;
-        "ship-to Address 2" := shiptoaddress2;
-        "ship-to City" := shiptocity;
-        "ship-to County" := shiptocoulty;
-        "ship-to Post Code" := shiptopostcode;
+            "ship-to Address" := salesheader."ship-to Address";
+            "ship-to Address 2" := salesheader."ship-to Address 2";
+            "ship-to City" := salesheader."ship-to City";
+            "ship-to County" := salesheader."ship-to County";
+            "ship-to Post Code" := salesheader."ship-to Post Code";
+
+            selltoaddrss := salesheader."Sell-to Address";
+            selltoaddress2 := salesheader."sell-to Address 2";
+            selltocity := salesheader."Sell-to City";
+            selltocoulty := salesheader."Sell-to County";
+            selltopostcode := salesheader."Sell-to Post Code";
+
+            billtoaddess := salesheader."Bill-to Address";
+            billtoaddress2 := salesheader."Bill-to Address 2";
+            billtocity := salesheader."Bill-to City";
+            billtocoulty := salesheader."Bill-to County";
+            billtopostcode := salesheader."Bill-to Post Code";
+
+            shiptoaddress := salesheader."Ship-to Address";
+            shiptoaddress2 := salesheader."Ship-to Address 2";
+            shiptocity := salesheader."Ship-to City";
+            shiptocoulty := salesheader."Ship-to County";
+            shiptopostcode := salesheader."Ship-to Post Code";
+
+        end;
         CurrPage.Update(false);
     end;
 }

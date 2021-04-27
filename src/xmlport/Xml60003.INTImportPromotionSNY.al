@@ -40,31 +40,16 @@ xmlport 60003 "INT_ImportPromotion_SNY"
                 textelement(gDes)
                 {
                 }
-                textelement(gStartingDate)
-                {
-                }
-                textelement(gEndingDate)
-                {
-                }
                 textelement(gLineItemNo)
                 {
                 }
                 textelement(gQty)
                 {
                 }
-                textelement(gSRPPriece)
-                {
-                }
                 textelement(gPromotionalPrice)
                 {
                 }
 
-                textelement(gRelated_Item_Type)
-                {
-                }
-                textelement(gRelated_Item_No)
-                {
-                }
                 textelement(gInclude_FOC)
                 {
 
@@ -108,6 +93,20 @@ xmlport 60003 "INT_ImportPromotion_SNY"
                                     if gPromotionType = 'Item Discount' then
                                         PromotionType := PromotionType::"Item Discount";
 
+
+                    if (gPromotionType = 'Item Discount') and (gMarketplace = 'Lazada') then
+                        error('Item Discount apply only for Shopee and JD Please check your file.');
+
+                    if (gPromotionType = 'Item Discount') then begin
+                        marketplace.reset;
+                        marketplace.SetRange(marketplace, gMarketplace);
+                        if marketplace.Find('-') then begin
+                            if marketplace."Have Item Discount" = false then
+                                error('Item Discount not have in this marketplace');
+                        end;
+                    end;
+
+
                     if EntryNo > 1 then begin
                         gImpFOCHeader2.reset; //check document
                         gImpFOCHeader2.SetRange(Type, DocType);
@@ -141,17 +140,28 @@ xmlport 60003 "INT_ImportPromotion_SNY"
                             if marketplace.Find('-') then begin
                                 gImpFOCHeader.Channel := marketplace.Channel;
                             end;
-                            gImpFOCHeader.Description := gDes;
-                            gImpFOCHeader.Validate("Item No.", gItemNo);
+                            if gItemNo <> '' then
+                                gImpFOCHeader.Validate("Item No.", gItemNo);
+                            if gDes <> '' then
+                                gImpFOCHeader.Description := gDes;
+
                             if not item.get(gItemNo) then
                                 item.init;
                             gImpFOCHeader."Item Description" := item.Description;
-                            gImpFOCHeader."Promotion Type" := PromotionType;
+                            if gPromotionType <> '' then
+                                gImpFOCHeader."Promotion Type" := PromotionType;
 
-                            gImpFOCHeader."Period Start" := ConvertTextToDateTime(gPeriodStart);
-                            gImpFOCHeader."Period End" := ConvertTextToDateTime(gPeriodEnd);
-                            gImpFOCHeader."Starting Date" := ConvertTextToDate(gStartingDate);
-                            gImpFOCHeader."Ending Date" := ConvertTextToDate(gEndingDate);
+                            if gPeriodStart <> '' then begin
+                                gImpFOCHeader."Period Start" := ConvertTextToDateTime(gPeriodStart);
+                                gImpFOCHeader."Starting Date" := ConvertTextToDate(gPeriodStart);
+                            end;
+
+                            if gPeriodEnd <> '' then begin
+                                gImpFOCHeader."Period End" := ConvertTextToDateTime(gPeriodEnd);
+                                gImpFOCHeader."Ending Date" := ConvertTextToDate(gPeriodEnd);
+                            end;
+
+
                             if gImpFOCHeader.Insert() then begin
                                 lineNo += 10000;
                                 gImpFOCLine.init;
@@ -165,37 +175,18 @@ xmlport 60003 "INT_ImportPromotion_SNY"
                                     item.init;
                                 gImpFOCLine."Item Description" := item.Description;
                                 gImpFOCLine.Validate(UOM, item."Base Unit of Measure");
+
                                 if gQty <> '' then
                                     Evaluate(qty, gQty);
                                 gImpFOCLine.Validate(Quantity, qty);
-                                if gSRPPriece <> '' then
-                                    Evaluate(SrpPrice, gSRPPriece);
-                                gImpFOCLine."SRP Price" := SrpPrice;
-                                if gPromotionalPrice <> '' then
-                                    Evaluate(promotionprice, gPromotionalPrice);
-                                gImpFOCLine."Promotional Price" := promotionprice;
-                                //gImpFOCLine."Storage Location" := gStorageLocation;
-                                gImpFOCLine."Free Gift ID" := gImpFOCHeader."Free Gift ID";
-                                if gRelated_Item_Type = 'FOC' then
-                                    gImpFOCLine."Related Item Type" := gImpFOCLine."Related Item Type"::FOC
-                                else
-                                    if gRelated_Item_Type = 'FOC Dummy' then
-                                        gImpFOCLine."Related Item Type" := gImpFOCLine."Related Item Type"::"FOC Dummy"
-                                    else
-                                        if gRelated_Item_Type = 'Main' then
-                                            gImpFOCLine."Related Item Type" := gImpFOCLine."Related Item Type"::Main
-                                        else
-                                            if gRelated_Item_Type = 'Main Delivery' then
-                                                gImpFOCLine."Related Item Type" := gImpFOCLine."Related Item Type"::"Main Delivery"
-                                            else
-                                                if gRelated_Item_Type = 'Package' then
-                                                    gImpFOCLine."Related Item Type" := gImpFOCLine."Related Item Type"::Package
-                                                else
-                                                    if gRelated_Item_Type = 'Package Dummy' then
-                                                        gImpFOCLine."Related Item Type" := gImpFOCLine."Related Item Type"::"Package Dummy";
 
-                                if gRelated_Item_No <> '' then
-                                    gImpFOCLine.Validate("Related Item No.", gRelated_Item_No);
+                                if gPromotionalPrice <> '' then begin
+                                    Evaluate(promotionprice, gPromotionalPrice);
+                                    gImpFOCLine."Promotional Price" := promotionprice;
+                                    //gImpFOCLine."Storage Location" := gStorageLocation;
+                                end;
+                                gImpFOCLine."Free Gift ID" := gImpFOCHeader."Free Gift ID";
+
                                 if (gInclude_FOC = 'Yes') or (gInclude_FOC = 'YES') then
                                     gImpFOCLine."Explode FOC Item" := true
                                 else
@@ -233,34 +224,14 @@ xmlport 60003 "INT_ImportPromotion_SNY"
                             if gQty <> '' then
                                 Evaluate(qty, gQty);
                             gImpFOCLine.Validate(Quantity, qty);
-                            if gSRPPriece <> '' then
-                                Evaluate(SrpPrice, gSRPPriece);
-                            gImpFOCLine."SRP Price" := SrpPrice;
-                            if gPromotionalPrice <> '' then
+
+                            if gPromotionalPrice <> '' then begin
                                 Evaluate(promotionprice, gPromotionalPrice);
-                            gImpFOCLine."Promotional Price" := promotionprice;
+                                gImpFOCLine."Promotional Price" := promotionprice;
+                            end;
                             //gImpFOCLine."Storage Location" := gStorageLocation;
                             gImpFOCLine."Free Gift ID" := gImpFOCHeader."Free Gift ID";
-                            if gRelated_Item_Type = 'FOC' then
-                                gImpFOCLine."Related Item Type" := gImpFOCLine."Related Item Type"::FOC
-                            else
-                                if gRelated_Item_Type = 'FOC Dummy' then
-                                    gImpFOCLine."Related Item Type" := gImpFOCLine."Related Item Type"::"FOC Dummy"
-                                else
-                                    if gRelated_Item_Type = 'Main' then
-                                        gImpFOCLine."Related Item Type" := gImpFOCLine."Related Item Type"::Main
-                                    else
-                                        if gRelated_Item_Type = 'Main Delivery' then
-                                            gImpFOCLine."Related Item Type" := gImpFOCLine."Related Item Type"::"Main Delivery"
-                                        else
-                                            if gRelated_Item_Type = 'Package' then
-                                                gImpFOCLine."Related Item Type" := gImpFOCLine."Related Item Type"::Package
-                                            else
-                                                if gRelated_Item_Type = 'Package Dummy' then
-                                                    gImpFOCLine."Related Item Type" := gImpFOCLine."Related Item Type"::"Package Dummy";
 
-                            if gRelated_Item_No <> '' then
-                                gImpFOCLine.Validate("Related Item No.", gRelated_Item_No);
                             if (gInclude_FOC = 'Yes') or (gInclude_FOC = 'YES') then
                                 gImpFOCLine."Explode FOC Item" := true
                             else
@@ -301,6 +272,7 @@ xmlport 60003 "INT_ImportPromotion_SNY"
         //Delete Ext Doc
         FOCExt.reset;
         FOCExt.SetRange("No.", OldNo);
+        FOCExt.SetFilter(INT_External_SYN, '<>%1', '');
         if FOCExt.Find('-') then begin
             FOCExt.INT_External_SYN := '';
             FOCExt.Modify();

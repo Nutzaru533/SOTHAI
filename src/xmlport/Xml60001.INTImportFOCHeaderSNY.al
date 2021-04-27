@@ -118,12 +118,14 @@ xmlport 60001 "INT_ImportFOCHeader_SNY"
                                     item.init;
                                 gImpFOCLine."Item Description" := item.Description;
                                 gImpFOCLine.Validate(UOM, item."Base Unit of Measure");
-                                if gQty <> '' then
+                                if gQty <> '' then begin
                                     Evaluate(qty, gQty);
-                                gImpFOCLine.Validate(Quantity, qty);
-                                if gSRPPriece <> '' then
+                                    gImpFOCLine.Validate(Quantity, qty);
+                                end;
+                                if gSRPPriece <> '' then begin
                                     Evaluate(SrpPrice, gSRPPriece);
-                                gImpFOCLine."SRP Price" := SrpPrice;
+                                    gImpFOCLine."SRP Price" := SrpPrice;
+                                end;
                                 if gPromotionalPrice <> '' then
                                     Evaluate(promotionprice, gPromotionalPrice);
                                 gImpFOCLine."Promotional Price" := promotionprice;
@@ -174,12 +176,14 @@ xmlport 60001 "INT_ImportFOCHeader_SNY"
                             if gQty <> '' then
                                 Evaluate(qty, gQty);
                             gImpFOCLine.Validate(Quantity, qty);
-                            if gSRPPriece <> '' then
+                            if gSRPPriece <> '' then begin
                                 Evaluate(SrpPrice, gSRPPriece);
-                            gImpFOCLine."SRP Price" := SrpPrice;
-                            if gPromotionalPrice <> '' then
+                                gImpFOCLine."SRP Price" := SrpPrice;
+                            end;
+                            if gPromotionalPrice <> '' then begin
                                 Evaluate(promotionprice, gPromotionalPrice);
-                            gImpFOCLine."Promotional Price" := promotionprice;
+                                gImpFOCLine."Promotional Price" := promotionprice;
+                            end;
                             gImpFOCLine."Storage Location" := gStorageLocation;
                             gImpFOCLine."Free Gift ID" := gImpFOCHeader."Free Gift ID";
                             if gRelated_Item_Type = 'FOC' then

@@ -240,7 +240,6 @@ codeunit 60000 "INT_Even_Sub_SNY"
 
     end;
 
-
     var
         myInt: Integer;
 }
