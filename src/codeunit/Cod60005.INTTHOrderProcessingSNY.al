@@ -18,7 +18,9 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
         SalesHeader.INT_ProcessErr_SNY := '';
         SalesHeader.Modify();
         Commit();
-
+        //send to connector
+        SalesHeaderConnector.get(SalesHeader."Document Type", SalesHeader."No.");
+        //send to connector
         if SalesHeader."Document Type" = SalesHeader."Document Type"::Order then begin
             MarketPlace.Get(SalesHeader.INT_MarketPlace_SNY);
 
@@ -143,7 +145,16 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
                         GeneratePostingNo;
                         //Generate Posting NO./ invoice No.
                         if SalesHeader."Document Type" = SalesHeader."Document Type"::"Return Order" then begin
-
+                            //get posting no. from so
+                            SalesOrder.Reset();
+                            SalesOrder.SetRange("Document Type", SalesOrder."Document Type"::Order);
+                            SalesOrder.SetRange("No.", SalesHeader.INT_BCOrderNo_SNY);
+                            if SalesOrder.Find('-') then begin
+                                SalesHeader."INT_BC Order Invoice No_SYN" := SalesOrder."Posting No.";
+                                SalesHeader.Modify();
+                                Commit();
+                            end;
+                            //get posting no. from so
                             MarketPlace.Get(SalesHeader.INT_MarketPlace_SNY);
                             if MarketPlace."Process ID" = 1 then begin
                                 if SalesHeader.INT_OrderStatus_SNY < SalesHeader.INT_OrderStatus_SNY::Processed then begin
@@ -335,7 +346,9 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
 
                     if SalesHeader.INT_SAPOrderID_SNY <> '' then
                         PostingShipments();
-
+                    //posting no.
+                    GeneratePostingNo();
+                    //Potting no.
                 end else begin   //Regular/LAZADA Process
                     if SalesHeader.INT_InternalProcessing_SNY = SalesHeader.INT_InternalProcessing_SNY::"Not Started" then begin
                         SalesHeader.INT_OrderStatus_SNY := SalesHeader.INT_OrderStatus_SNY::"In-Process";
@@ -438,7 +451,17 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
 
         end else
             if SalesHeader."Document Type" = SalesHeader."Document Type"::"Return Order" then begin
-
+                //get posting no. from so
+                SalesOrder.Reset();
+                SalesOrder.SetRange("Document Type", SalesOrder."Document Type"::Order);
+                SalesOrder.SetRange("No.", SalesHeader.INT_BCOrderNo_SNY);
+                if SalesOrder.Find('-') then begin
+                    SalesHeader."INT_BC Order Invoice No_SYN" := SalesOrder."Posting No.";
+                    SalesHeader.Modify();
+                    Commit();
+                end;
+                //get posting no. from so
+                //
                 MarketPlace.Get(SalesHeader.INT_MarketPlace_SNY);
                 if MarketPlace."Process ID" = 1 then begin
                     if SalesHeader.INT_OrderStatus_SNY < SalesHeader.INT_OrderStatus_SNY::Processed then begin
@@ -467,6 +490,9 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
 
     var
         SalesHeader: Record "Sales Header";
+        SalesHeaderConnector: Record "Sales Header";
+        SalesLineConnector: Record "Sales Header";
+
         OrderCollectionForReReun: Record "Sales Header" temporary;
         JobQueueEntry: Record "Job Queue Entry";
 
@@ -479,6 +505,8 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
         INT_item: Record item;
         SellVourcher: Decimal;
         calculatelineamount: Decimal;
+
+        SalesOrder: Record "Sales Header";
 
     local procedure PostingShipments()
     var
@@ -1606,6 +1634,9 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
         if SalesHeader.INT_SAPOrderID_SNY <> '' then
             PostingShipments();
 
+        //posting no.
+        GeneratePostingNo();
+        //Potting no.
     end;
 
     procedure ReprocessSalesOrder3(SH: Record "Sales Header")
@@ -1686,7 +1717,9 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
 
         if SalesHeader.INT_SAPOrderID_SNY <> '' then
             PostingShipments();
-
+        //posting no.
+        GeneratePostingNo();
+        //Potting no.
     end;
 
     procedure DeleteSystemCreatedSalesLine()
@@ -2565,7 +2598,9 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
 
         if SalesHeader.INT_SAPOrderID_SNY <> '' then
             PostingShipments();
-
+        //posting no.
+        GeneratePostingNo();
+        //Potting no.
     end;
 
     procedure FullfillmentReturnOrder(ReturnSalesHeader: Record "Sales Header")
@@ -3253,32 +3288,37 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
         NoserialMgn: Codeunit NoSeriesManagement;
         salesline: Record "Sales Line";
         Handled: Boolean;
+        INT_EcomInterface_SNY: Codeunit INT_EcomInterface_SNY;
     begin
-
-        if SalesHeader."Document Type" = SalesHeader."Document Type"::Order then begin
-            salessetup.get;
-            salessetup.TestField("Invoice Nos.");
-            if SalesHeader."Posting No." = '' then begin
-                SalesHeader."Posting No." := NoserialMgn.GetNextNo(salessetup."Invoice Nos.", WorkDate(), true);
-                SalesHeader.Modify();
-
+        if SalesHeader.INT_InternalProcessing_SNY = SalesHeader.INT_InternalProcessing_SNY::"Inventory Checked" then begin
+            if SalesHeader."Document Type" = SalesHeader."Document Type"::Order then begin
+                salessetup.get;
+                salessetup.TestField("Invoice Nos.");
+                if SalesHeader."Posting No." = '' then begin
+                    SalesHeader."Posting No." := NoserialMgn.GetNextNo(salessetup."Invoice Nos.", WorkDate(), true);
+                    Commit();
+                    SalesHeader.Modify();
+                end;
             end;
-        end;
-        if SalesHeader."Document Type" = SalesHeader."Document Type"::"Return Order" then begin
-            salessetup.get;
-            salessetup.TestField("Credit Memo Nos.");
-            if SalesHeader."Posting No." = '' then begin
-                SalesHeader."Posting No." := NoserialMgn.GetNextNo(salessetup."Credit Memo Nos.", WorkDate(), true);
-                SalesHeader.Modify();
+            if SalesHeader."Document Type" = SalesHeader."Document Type"::"Return Order" then begin
+                salessetup.get;
+                salessetup.TestField("Credit Memo Nos.");
+                if SalesHeader."Posting No." = '' then begin
+                    SalesHeader."Posting No." := NoserialMgn.GetNextNo(salessetup."Credit Memo Nos.", WorkDate(), true);
+                    Commit();
+                    SalesHeader.Modify();
+                end;
             end;
+            //send to connector
+
+            salesline.reset;
+            salesline.SetRange("Document type", SalesHeader."Document Type");
+            salesline.SetRange("Document No.", SalesHeader."No.");
+            SalesHeader.TestField("Posting No.");
+            INT_EcomInterface_SNY.onSetInvoiceNo(SalesHeader, salesline, SalesHeader."Posting No.", Handled);
+            //INT_EcomInterface_SNY_onSetInvoiceNo(SalesHeader, salesline, SalesHeader."Posting No.", Handled);
+            //send to connector
         end;
-        //send to connector
-        salesline.reset;
-        salesline.SetRange("Document type", SalesHeader."Document Type");
-        salesline.SetRange("Document No.", SalesHeader."No.");
-        SalesHeader.TestField("Posting No.");
-        INT_EcomInterface_SNY_onSetInvoiceNo(SalesHeader, salesline, SalesHeader."Posting No.", Handled);
-        //send to connector
     end;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"INT_EcomInterface_SNY", 'onSetInvoiceNo', '', true, true)]
@@ -3290,7 +3330,7 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
         var Handled: Boolean
     )
     begin
-
+        //send to connector
     end;
 
 }

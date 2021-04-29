@@ -25,6 +25,7 @@ pageextension 60017 "IN_SalesOrder_SNY" extends "Sales Order List"
                 Caption = 'Receipt / Tax Invoice';
                 Image = PrintDocument;
                 Promoted = true;
+                Visible = false;
                 PromotedCategory = Report;
                 trigger OnAction()
                 var
@@ -35,7 +36,7 @@ pageextension 60017 "IN_SalesOrder_SNY" extends "Sales Order List"
                     CurrPage.SetSelectionFilter(salesheader);
                     if salesheader.FindSet() then
                         repeat
-                            Message('%1', salesheader."No.");
+                            //Message('%1', salesheader."No.");
                             Report.RunModal(60001, false, false, salesheader);
                             if (salesheader.INT_DeliveryType_SNY = salesheader.INT_DeliveryType_SNY::"DBS Home") then
                                 Report.RunModal(60003, false, false, salesheader);

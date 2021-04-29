@@ -98,7 +98,7 @@ pageextension 60005 "INT_TH_FOCBundleCard_SN" extends INT_FOCBundleCard_SNY
 
                 trigger OnAction()
                 begin
-
+                    CheckAmount2;
                     "Is Active" := true;
                     "Activated By" := UserId;
                     "Activated Date" := today;
@@ -120,6 +120,23 @@ pageextension 60005 "INT_TH_FOCBundleCard_SN" extends INT_FOCBundleCard_SNY
                     "Activated Date" := 0D;
                     Modify();
                     CurrPage.Update(false);
+                end;
+            }
+            action(Copy)
+            {
+                ApplicationArea = All;
+                Caption = 'Copy FOC';
+                Image = CopyBOM;
+
+                trigger OnAction()
+                var
+                    CopyPackage: REport INT_CopyFOCBundle_SNY;
+                begin
+                    TestField("No.");
+                    Clear(CopyPackage);
+                    CopyPackage.InitPackageNo(Type, "No.");
+                    CopyPackage.RunModal();
+                    CurrPage.Update(true);
                 end;
             }
         }

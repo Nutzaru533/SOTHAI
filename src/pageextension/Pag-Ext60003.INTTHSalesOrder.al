@@ -2,78 +2,265 @@ pageextension 60003 "INT_TH_Sales_Order" extends "Sales Order"
 {
     layout
     {
-        // Add changes to page layout here
-        addafter("Sell-to Address 2")
-        {
-            //field("Sell-to County"; "Sell-to County")
-            //{
-            //    Caption = 'County';
-            //    ApplicationArea = all;
-            // }
-        }
-        addafter("Assigned User ID")
-        {
-            field("Posting No."; "Posting No.")
-            {
-                ApplicationArea = all;
-            }
-        }
         modify("Sell-to Address")
         {
-            Editable = not MaskText;
+            Visible = false;
         }
         modify("Sell-to Address 2")
         {
-            Editable = not MaskText;
+            Visible = false;
         }
         modify("Sell-to City")
         {
-            Editable = not MaskText;
+            Visible = false;
         }
         modify("Sell-to County")
         {
-            Editable = not MaskText;
+            Visible = false;
         }
         modify("Sell-to Post Code")
         {
-            Editable = not MaskText;
+            Visible = false;
         }
         modify("bill-to Address")
         {
-            Editable = not MaskText;
+            Visible = false;
         }
         modify("bill-to Address 2")
         {
-            Editable = not MaskText;
+            Visible = false;
         }
         modify("bill-to County")
         {
-            Editable = not MaskText;
+            Visible = false;
         }
         modify("bill-to Post Code")
         {
-            Editable = not MaskText;
+            Visible = false;
         }
         modify("ship-to Address")
         {
-            Editable = not MaskText;
+            Visible = false;
         }
         modify("ship-to Address 2")
         {
-            Editable = not MaskText;
+            Visible = false;
         }
         modify("ship-to City")
         {
-            Editable = not MaskText;
+            Visible = false;
         }
         modify("ship-to County")
         {
-            Editable = not MaskText;
+            Visible = false;
         }
         modify("ship-to Post Code")
         {
-            Editable = not MaskText;
+            Visible = false;
         }
+
+        addafter("Sell-to Address")
+        {
+            group(MaskSell)
+            {
+                Visible = MaskText;
+                field("MSell-to Address"; "Sell-to Address")
+                {
+                    ApplicationArea = all;
+                    ExtendedDatatype = Masked;
+                }
+                field("MSell-to Address2"; "Sell-to Address 2")
+                {
+                    ApplicationArea = all;
+                    ExtendedDatatype = Masked;
+                }
+                field("MSell-to City"; "Sell-to City")
+                {
+                    ApplicationArea = all;
+                    ExtendedDatatype = Masked;
+                }
+                field("MSell-to Country/Region Code"; "Sell-to Country/Region Code")
+                {
+                    ApplicationArea = all;
+                    ExtendedDatatype = Masked;
+                }
+                field("MSell-to County"; "Sell-to County")
+                {
+                    ApplicationArea = all;
+                    ExtendedDatatype = Masked;
+                }
+
+            }
+            group(UnMaskSell)
+            {
+                Visible = not MaskText;
+                field("UMSell-to Address"; "Sell-to Address")
+                {
+
+                    ApplicationArea = all;
+                }
+                field("UMSell-to Address3"; "Sell-to Address 2")
+                {
+
+                    ApplicationArea = all;
+                }
+                field("UMSell-to City"; "Sell-to City")
+                {
+
+                    ApplicationArea = all;
+                }
+                field("UMSell-to Country/Region Code"; "Sell-to Country/Region Code")
+                {
+
+                    ApplicationArea = all;
+                }
+                field("UMSell-to County"; "Sell-to County")
+                {
+
+                    ApplicationArea = all;
+                }
+            }
+        }
+        addafter("Ship-to Address")
+        {
+            group(MaskShip)
+            {
+                Visible = MaskText;
+                field("Mship-to Address"; "ship-to Address")
+                {
+                    ApplicationArea = all;
+                    ExtendedDatatype = Masked;
+                }
+                field("Mship-to Address2"; "ship-to Address 2")
+                {
+                    ApplicationArea = all;
+                    ExtendedDatatype = Masked;
+                }
+                field("Mship-to City"; "ship-to City")
+                {
+                    ApplicationArea = all;
+                    ExtendedDatatype = Masked;
+                }
+                field("Mship-to Country/Region Code"; "ship-to Country/Region Code")
+                {
+                    ApplicationArea = all;
+                    ExtendedDatatype = Masked;
+                }
+                field("Mship-to County"; "ship-to County")
+                {
+                    ApplicationArea = all;
+                    ExtendedDatatype = Masked;
+                }
+
+            }
+            group(UnMaskShip)
+            {
+                Visible = not MaskText;
+                field("UMship-to Address"; "ship-to Address")
+                {
+
+                    ApplicationArea = all;
+                }
+                field("UMship-to Address3"; "ship-to Address 2")
+                {
+
+                    ApplicationArea = all;
+                }
+                field("UMship-to City"; "ship-to City")
+                {
+
+                    ApplicationArea = all;
+                }
+                field("UMship-to Country/Region Code"; "ship-to Country/Region Code")
+                {
+
+                    ApplicationArea = all;
+                }
+                field("UMship-to County"; "ship-to County")
+                {
+
+                    ApplicationArea = all;
+                }
+            }
+
+        }
+        addafter("Bill-to Address")
+        {
+            group(MaskBill)
+            {
+                Visible = MaskText;
+                field("MBill-to Address"; "Bill-to Address")
+                {
+                    ApplicationArea = all;
+                    ExtendedDatatype = Masked;
+                }
+                field("MBill-to Address2"; "Bill-to Address 2")
+                {
+                    ApplicationArea = all;
+                    ExtendedDatatype = Masked;
+                }
+                field("MBill-to City"; "Bill-to City")
+                {
+                    ApplicationArea = all;
+                    ExtendedDatatype = Masked;
+                }
+                field("MBill-to Country/Region Code"; "Bill-to Country/Region Code")
+                {
+                    ApplicationArea = all;
+                    ExtendedDatatype = Masked;
+                }
+                field("MBill-to County"; "Bill-to County")
+                {
+                    ApplicationArea = all;
+                    ExtendedDatatype = Masked;
+                }
+            }
+            group(UnMaskBill)
+            {
+                Visible = not MaskText;
+                field("UMBill-to Address"; "Bill-to Address")
+                {
+
+                    ApplicationArea = all;
+                }
+                field("UMBill-to Address3"; "Bill-to Address 2")
+                {
+
+                    ApplicationArea = all;
+                }
+                field("UMBill-to City"; "Bill-to City")
+                {
+
+                    ApplicationArea = all;
+                }
+                field("UMBill-to Country/Region Code"; "Bill-to Country/Region Code")
+                {
+
+                    ApplicationArea = all;
+                }
+                field("UMBill-to County"; "Bill-to County")
+                {
+
+                    ApplicationArea = all;
+                }
+            }
+
+        }
+
+        // Add changes to page layout here
+        addafter("Assigned User ID")
+        {
+
+
+            field("Posting No.2"; "Posting No.")
+            {
+                ApplicationArea = all;
+                //Visible = not MaskText;
+            }
+            //}
+
+        }
+
 
     }
     actions
@@ -88,7 +275,7 @@ pageextension 60003 "INT_TH_Sales_Order" extends "Sales Order"
                 Image = PrintDocument;
                 Promoted = true;
                 PromotedCategory = Process;
-                Visible = true;
+                Visible = false;
 
                 trigger OnAction()
                 var
@@ -100,7 +287,37 @@ pageextension 60003 "INT_TH_Sales_Order" extends "Sales Order"
                     SalesHeaderReport.SetRange("Document Type", "Document Type");
                     SalesHeaderReport.SetRange("No.", "No.");
                     if SalesHeaderReport.findfirst() then
-                        Report.RunModal(60003, true, true, SalesHeaderReport);
+                        Report.RunModal(60003, true, false, SalesHeaderReport);
+                end;
+            }
+            action("INT_PrintDocument_SNY2")
+            {
+                ApplicationArea = All;
+                Image = PrintDocument;
+                Promoted = true;
+                PromotedCategory = Process;
+                Caption = 'AWB';
+                Visible = show_PrintDocument;
+                trigger OnAction()
+                var
+                    EcomInterface: Codeunit INT_Even_Sub_SNY;
+                    SalesHeaderReport: Record "Sales Header";
+                    SalesInvoiceReport: Report "INT_Sales Invoice_SNY";
+
+                begin
+
+                    CurrPage.Update(false);
+                    if rec.INT_MarketPlace_SNY = 'SONY STORE ONLINE' then begin
+                        SalesHeaderReport.reset;
+                        SalesHeaderReport.SetRange("Document Type", "Document Type");
+                        SalesHeaderReport.SetRange("No.", "No.");
+                        if SalesHeaderReport.findfirst() then
+                            Report.RunModal(70003, true, false, SalesHeaderReport);
+                    end
+                    else
+                        EcomInterface.PrintDocument(Rec);
+
+                    CurrPage.Update(false);
                 end;
             }
 
@@ -126,7 +343,7 @@ pageextension 60003 "INT_TH_Sales_Order" extends "Sales Order"
                     SalesHeader_lRec: Record "Sales Header";
                     TempBlob: Codeunit "Temp Blob";
                 begin
-                    resetmask;
+
                     SalesHeaderReport.reset;
                     SalesHeaderReport.SetRange("Document Type", "Document Type");
                     SalesHeaderReport.SetRange("No.", "No.");
@@ -137,7 +354,7 @@ pageextension 60003 "INT_TH_Sales_Order" extends "Sales Order"
                         CurrPage.Update(false);
                         Commit();
                     end;
-                    MaskAddress;
+
                 end;
             }
         }
@@ -178,7 +395,7 @@ pageextension 60003 "INT_TH_Sales_Order" extends "Sales Order"
                             end
                         until salesline.Next = 0;
                         */
-                    resetmask;
+
                     CurrPage.Update(false);
                     SalesHeader.Reset();
                     SalesHeader.SetRange("Document Type", rec."Document Type");
@@ -186,7 +403,7 @@ pageextension 60003 "INT_TH_Sales_Order" extends "Sales Order"
                     SalesHeader.FindFirst();
                     OrderProcessing.SetOrder(SalesHeader);
                     OrderProcessing.Run();
-                    MaskAddress;
+
                     CurrPage.Update(false);
                 end;
             }
@@ -209,7 +426,7 @@ pageextension 60003 "INT_TH_Sales_Order" extends "Sales Order"
                     SalesHeader: Record "Sales Header";
                     MarketPlace: Record INT_MarketPlaces_SNY;
                 begin
-                    resetmask;
+
                     CurrPage.Update(false);
                     SalesHeader.Reset();
                     SalesHeader.SetRange("Document Type", rec."Document Type");
@@ -221,7 +438,7 @@ pageextension 60003 "INT_TH_Sales_Order" extends "Sales Order"
                         OrderProcessing.DeliveryConfirm2(true)
                     else
                         OrderProcessing.DeliveryConfirm(true);
-                    MaskAddress;
+
                     CurrPage.Update(false);
                 end;
             }
@@ -243,7 +460,7 @@ pageextension 60003 "INT_TH_Sales_Order" extends "Sales Order"
                     MarketPlace: Record INT_MarketPlaces_SNY;
                 begin
                     CurrPage.Update(false);
-                    resetmask;
+
                     SalesHeader.Reset();
                     SalesHeader.SetRange("Document Type", rec."Document Type");
                     SalesHeader.SetRange("No.", rec."No.");
@@ -254,7 +471,7 @@ pageextension 60003 "INT_TH_Sales_Order" extends "Sales Order"
                         OrderProcessing.FullfillmentCollectConfirm(true)
                     else
                         OrderProcessing.CollectConfirm(true);
-                    MaskAddress;
+
                     CurrPage.Update(false);
                 end;
             }
@@ -278,7 +495,7 @@ pageextension 60003 "INT_TH_Sales_Order" extends "Sales Order"
                     OrderProcessing: Codeunit "INT_TH_OrderProcessing_SNY";
                     MarketPlace: Record INT_MarketPlaces_SNY;
                 begin
-                    resetmask;
+
                     CurrPage.Update(false);
                     SalesHeader.Reset();
                     SalesHeader.SetRange("Document Type", rec."Document Type");
@@ -293,43 +510,14 @@ pageextension 60003 "INT_TH_Sales_Order" extends "Sales Order"
                         else
                             OrderProcessing.ReprocessSalesOrder(SalesHeader);
                     // OrderProcessing.Run();
-                    MaskAddress;
+
                     CurrPage.Update(false);
                 end;
             }
         }
         addafter("INT_PrintDocument_SNY")
         {
-            action("INT_PrintDocument_SNY2")
-            {
-                ApplicationArea = All;
-                Image = PrintDocument;
-                Promoted = true;
-                PromotedCategory = Process;
-                Caption = 'Print Document';
-                Visible = show_PrintDocument;
-                trigger OnAction()
-                var
-                    EcomInterface: Codeunit INT_Even_Sub_SNY;
-                    SalesHeaderReport: Record "Sales Header";
-                    SalesInvoiceReport: Report "INT_Sales Invoice_SNY";
 
-                begin
-                    resetmask;
-                    CurrPage.Update(false);
-                    if rec.INT_MarketPlace_SNY = 'SONY STORE ONLINE' then begin
-                        SalesHeaderReport.reset;
-                        SalesHeaderReport.SetRange("Document Type", "Document Type");
-                        SalesHeaderReport.SetRange("No.", "No.");
-                        if SalesHeaderReport.findfirst() then
-                            Report.RunModal(70003, true, false, SalesHeaderReport);
-                    end
-                    else
-                        EcomInterface.PrintDocument(Rec);
-                    MaskAddress;
-                    CurrPage.Update(false);
-                end;
-            }
         }
         modify("INT_PrintDocument_SNY")
         {
@@ -367,7 +555,7 @@ pageextension 60003 "INT_TH_Sales_Order" extends "Sales Order"
                         usersetup.TestField(INT_Unmark_SNY);
                         MaskText := false;
                     end;
-                    MaskAddress();
+
                 end;
             }
         }
@@ -383,24 +571,32 @@ pageextension 60003 "INT_TH_Sales_Order" extends "Sales Order"
         //Modify();
         //Commit();
         //CurrPage.Update(false);
-        intMaskAddress();
-        MaskAddress();
+        //intMaskAddress();
+        //MaskAddress();
     end;
+
 
     trigger OnAfterGetRecord()
     begin
         SetActionVisible();
-        resetmask();
-        MaskAddress();
+        //resetmask();
+        //MaskAddress();
     end;
 
     trigger OnAfterGetCurrRecord()
     var
         myInt: Integer;
     begin
-        MaskAddress();
-        resetmask();
-        MaskAddress();
+        //MaskAddress();
+        //resetmask();
+        //MaskAddress();
+    end;
+
+    trigger OnModifyRecord(): Boolean;
+    begin
+        //MaskAddress();
+        //resetmask();
+        //MaskAddress();
     end;
 
     var
@@ -411,24 +607,7 @@ pageextension 60003 "INT_TH_Sales_Order" extends "Sales Order"
         show_ConfirmCollect: Boolean;
         Show_ReprocessOrder: Boolean;
         MaskText: Boolean;
-        selltoaddrss: Text[100];
-        selltoaddress2: Text[100];
-        selltocity: text[100];
-        selltocoulty: text[100];
-        selltopostcode: text[100];
-        billtoaddess: Text[100];
-        billtoaddress2: text[100];
-        billtocity: text[100];
-        billtocoulty: text[100];
-        billtopostcode: text[100];
-        shiptoaddress: text[100];
-        shiptoaddress2: text[100];
-        shiptocity: text[100];
-        shiptocoulty: text[100];
-        shiptopostcode: text[100];
-        check: Integer;
 
-        salesheader: Record "Sales Header";
 
     local procedure SetActionVisible()
     var
@@ -441,134 +620,8 @@ pageextension 60003 "INT_TH_Sales_Order" extends "Sales Order"
         Show_ReprocessOrder := UserActionCtrl.ActionShow(Page::"Sales Order", 110);
     end;
 
-    local procedure intMaskAddress()
-    var
-    begin
-        salesheader.reset;
-        if salesheader.get("Document Type", "No.") then begin
-            selltoaddrss := salesheader."Sell-to Address";
-            selltoaddress2 := salesheader."sell-to Address 2";
-            selltocity := salesheader."Sell-to City";
-            selltocoulty := salesheader."Sell-to County";
-            selltopostcode := salesheader."Sell-to Post Code";
-
-            billtoaddess := salesheader."Bill-to Address";
-            billtoaddress2 := salesheader."Bill-to Address 2";
-            billtocity := salesheader."Bill-to City";
-            billtocoulty := salesheader."Bill-to County";
-            billtopostcode := salesheader."Bill-to Post Code";
-
-            shiptoaddress := salesheader."Ship-to Address";
-            shiptoaddress2 := salesheader."Ship-to Address 2";
-            shiptocity := salesheader."Ship-to City";
-            shiptocoulty := salesheader."Ship-to County";
-            shiptopostcode := salesheader."Ship-to Post Code";
-        end;
-
-    end;
-
-    local procedure MaskAddress()
-    var
-        usersetup: Record "User Setup";
-    begin
-        //
-
-        //
-        //if usersetup.get(userid) then begin
-        //if usersetup.INT_Unmark_SNY then
-        //MaskText := true
-        //else
-        //MaskText := false;
-        //end;
-
-        if MaskText = true then begin
-            "Sell-to Address" := 'XXXXXX';
-            "Sell-to Address 2" := 'XXXXXX';
-            "Sell-to City" := 'XXXXXX';
-            "Sell-to County" := 'XXXXXX';
-            "Sell-to Post Code" := 'XXXXXX';
-
-            "bill-to Address" := 'XXXXXX';
-            "bill-to Address 2" := 'XXXXXX';
-            "bill-to City" := 'XXXXXX';
-            "bill-to County" := 'XXXXXX';
-            "bill-to Post Code" := 'XXXXXX';
-
-            "ship-to Address" := 'XXXXXX';
-            "ship-to Address 2" := 'XXXXXX';
-            "ship-to City" := 'XXXXXX';
-            "ship-to County" := 'XXXXXX';
-            "ship-to Post Code" := 'XXXXXX';
-        end;
-        if MaskText = false then begin
-
-            "Sell-to Address" := selltoaddrss;
-            "Sell-to Address 2" := selltoaddress2;
-            "Sell-to City" := selltocity;
-            "Sell-to County" := selltocoulty;
-            "Sell-to Post Code" := selltopostcode;
-
-            "bill-to Address" := billtoaddess;
-            "bill-to Address 2" := billtoaddress2;
-            "bill-to City" := billtocity;
-            "bill-to County" := billtocoulty;
-            "bill-to Post Code" := billtopostcode;
-
-            "ship-to Address" := shiptoaddress;
-            "ship-to Address 2" := shiptoaddress2;
-            "ship-to City" := shiptocity;
-            "ship-to County" := shiptocoulty;
-            "ship-to Post Code" := shiptopostcode;
-        end;
-        CurrPage.Update(false);
-    end;
 
 
-    [ServiceEnabled]
-    procedure resetmask()
-    var
-        myInt: Integer;
-    begin
-        salesheader.reset;
-        if salesheader.get("Document Type", "No.") then begin
-            "Sell-to Address" := salesheader."Sell-to Address";
-            "Sell-to Address 2" := salesheader."Sell-to Address 2";
-            "Sell-to City" := salesheader."Sell-to City";
-            "Sell-to County" := salesheader."Sell-to County";
-            "Sell-to Post Code" := salesheader."Sell-to Post Code";
 
-            "bill-to Address" := salesheader."bill-to Address";
-            "bill-to Address 2" := salesheader."bill-to Address 2";
-            "bill-to City" := salesheader."bill-to City";
-            "bill-to County" := salesheader."bill-to County";
-            "bill-to Post Code" := salesheader."bill-to Post Code";
-
-            "ship-to Address" := salesheader."ship-to Address";
-            "ship-to Address 2" := salesheader."ship-to Address 2";
-            "ship-to City" := salesheader."ship-to City";
-            "ship-to County" := salesheader."ship-to County";
-            "ship-to Post Code" := salesheader."ship-to Post Code";
-
-            selltoaddrss := salesheader."Sell-to Address";
-            selltoaddress2 := salesheader."sell-to Address 2";
-            selltocity := salesheader."Sell-to City";
-            selltocoulty := salesheader."Sell-to County";
-            selltopostcode := salesheader."Sell-to Post Code";
-
-            billtoaddess := salesheader."Bill-to Address";
-            billtoaddress2 := salesheader."Bill-to Address 2";
-            billtocity := salesheader."Bill-to City";
-            billtocoulty := salesheader."Bill-to County";
-            billtopostcode := salesheader."Bill-to Post Code";
-
-            shiptoaddress := salesheader."Ship-to Address";
-            shiptoaddress2 := salesheader."Ship-to Address 2";
-            shiptocity := salesheader."Ship-to City";
-            shiptocoulty := salesheader."Ship-to County";
-            shiptopostcode := salesheader."Ship-to Post Code";
-
-        end;
-        CurrPage.Update(false);
-    end;
 
 }

@@ -24,6 +24,11 @@ tableextension 60003 "INT_TH_Sales_Header_SNY" extends "Sales Header"
             Caption = 'Mask';
             DataClassification = ToBeClassified;
         }
+        field(60005; "INT_BC Order Invoice No_SYN"; code[20])
+        {
+            caption = 'BC Order Invoice No.';
+            DataClassification = ToBeClassified;
+        }
 
     }
 

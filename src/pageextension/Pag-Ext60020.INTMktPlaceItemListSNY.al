@@ -1,6 +1,5 @@
 pageextension 60020 "INT_MktPlaceItemList_SNY" extends INT_MktPlaceItemList_SNY
 {
-    caption = 'Marketplaces';
 
     layout
     {

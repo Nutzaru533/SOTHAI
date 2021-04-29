@@ -1,5 +1,7 @@
 pageextension 60015 "INT_MarketplacesList_SNY" extends INT_MarketplacesList_SNY
 {
+    caption = 'Marketplaces';
+
     //CardPageID = "INT_Marketplace Card_SNY";
     layout
     {

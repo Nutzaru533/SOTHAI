@@ -161,20 +161,30 @@ codeunit 60000 "INT_Even_Sub_SNY"
         SelectedOption: Integer;
         Handled: Boolean;
         INT_EcomInterface_SNY: Codeunit INT_EcomInterface_SNY;
+        SalesHeaderReport: Record "Sales Header";
     begin
         case SalesHeader.INT_MarketPlace_SNY of
             'LAZADA':
                 begin
-                    SelectedOption := StrMenu(MenuStringLbl, 0);
-                    if SelectedOption > 0 then
-                        case SelectedOption of
-                            1:
-                                INT_EcomInterface_SNY.OnPrintDocument(SalesHeader, SalesLine, 'shippingLabel', Handled);
-                            2:
-                                INT_EcomInterface_SNY.OnPrintDocument(SalesHeader, SalesLine, 'invoice', Handled);
-                            3:
-                                INT_EcomInterface_SNY.OnPrintDocument(SalesHeader, SalesLine, 'carrierManifest', Handled);
-                        End;
+                    //SelectedOption := StrMenu(MenuStringLbl, 0);
+                    //if SelectedOption > 0 then
+                    //case SelectedOption of
+                    //1:
+                    //begin
+                    if SalesHeader.INT_DeliveryType_SNY = SalesHeader.INT_DeliveryType_SNY::"DBS Home" then begin
+                        SalesHeaderReport.reset;
+                        SalesHeaderReport.SetRange("Document Type", SalesHeader."Document Type");
+                        SalesHeaderReport.SetRange("No.", SalesHeader."No.");
+                        if SalesHeaderReport.findfirst() then
+                            Report.RunModal(60003, true, false, SalesHeaderReport);
+                    end else
+                        INT_EcomInterface_SNY.OnPrintDocument(SalesHeader, SalesLine, 'shippingLabel', Handled);
+                    //end;
+                    //2:
+                    //    INT_EcomInterface_SNY.OnPrintDocument(SalesHeader, SalesLine, 'invoice', Handled);
+                    //3:
+                    //    INT_EcomInterface_SNY.OnPrintDocument(SalesHeader, SalesLine, 'carrierManifest', Handled);
+                    //End;
                     //OnPrintDocument(SalesHeader, SalesLine, 'shippingLabel', Handled);
                 end;
         /* 'SONY STORE ONLINE':
