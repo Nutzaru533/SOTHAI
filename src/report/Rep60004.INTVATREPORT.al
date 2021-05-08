@@ -7,10 +7,167 @@ report 60004 "INT_VAT_REPORT"
 
     dataset
     {
-        dataitem(Integer; Integer)
+        dataitem(Integer; integer)
         {
+            DataItemTableView = sorting(number) where(number = filter(1));
 
-            DataItemTableView = sorting(number) where(Number = filter(1));
+
+            dataitem("Sales Invoice Line"; "Sales Invoice Line")
+            {
+                DataItemTableView = sorting("Posting Date");
+
+                trigger OnPreDataItem()
+                var
+                    myInt: Integer;
+                begin
+                    //"Sales Invoice Line".SetFilter(INT_ma);
+                    SetFilter("Bill-to Customer No.", CustomerNO);
+                    SetFilter("Posting Date", '%1..%2', startDate, Enddate);
+
+                end;
+
+                trigger OnAfterGetRecord()
+
+                begin
+                    //if "Sell-to Customer No." <> CustomerNO then
+                    //    CurrReport.Skip();
+
+                    if SalesINV.get("Document No.") then begin
+                        if not paymentmethod.get(SalesINV."Payment Method Code") then
+                            paymentmethod.init;
+
+                    end;
+
+                    if "Sales Invoice Line"."Document No." <> '' then begin
+                        lineno += 1;
+                        //temp insert
+                        //tempsalesline.init;
+                        tempsalesline."Document Type" := tempsalesline."Document Type"::Invoice;
+                        tempsalesline."Document No." := "Document No.";
+                        tempsalesline."Line No." := "Line No.";
+                        tempsalesline.Type := type;
+                        tempsalesline."No." := "No.";
+                        tempsalesline.Description := paymentmethod.Description;
+                        if Description <> '' then
+                            tempsalesline."Description 2" := Description
+                        else begin
+                            if not item.get("No.") then
+                                item.init;
+                            tempsalesline."Description 2" := item.Description;
+                        end;
+                        tempsalesline.Amount := Amount;
+                        tempsalesline."Amount Including VAT" := "Amount Including VAT";
+                        tempsalesline."VAT Base Amount" := "Amount Including VAT" - Amount;
+                        tempsalesline."Shipment Date" := "Posting Date";
+                        tempsalesline.Insert();
+                        //temp insert
+
+                        //Message('%1 %2 %3', totalamountEx, totalAmtVat, TotalAmtIncVat);
+                    end;
+
+                    if companyinfor."VAT Registration No." <> '' then begin
+                        VatID[1] := CopyStr(Format(companyinfor."VAT Registration No."), 1, 1);
+                        VatID[2] := CopyStr(Format(companyinfor."VAT Registration No."), 2, 1);
+                        VatID[3] := CopyStr(Format(companyinfor."VAT Registration No."), 3, 1);
+                        VatID[4] := CopyStr(Format(companyinfor."VAT Registration No."), 4, 1);
+                        VatID[5] := CopyStr(Format(companyinfor."VAT Registration No."), 5, 1);
+                        VatID[6] := CopyStr(Format(companyinfor."VAT Registration No."), 6, 1);
+                        VatID[7] := CopyStr(Format(companyinfor."VAT Registration No."), 7, 1);
+                        VatID[8] := CopyStr(Format(companyinfor."VAT Registration No."), 8, 1);
+                        VatID[9] := CopyStr(Format(companyinfor."VAT Registration No."), 9, 1);
+                        VatID[10] := CopyStr(Format(companyinfor."VAT Registration No."), 10, 1);
+                        VatID[11] := CopyStr(Format(companyinfor."VAT Registration No."), 11, 1);
+                        VatID[12] := CopyStr(Format(companyinfor."VAT Registration No."), 12, 1);
+                        VatID[13] := CopyStr(Format(companyinfor."VAT Registration No."), 13, 1);
+                    end;
+
+
+                end;
+            }
+            dataitem("Sales Cr.Memo Line"; "Sales Cr.Memo Line")
+            {
+                DataItemTableView = sorting("Posting Date");
+
+                trigger OnPreDataItem()
+                var
+                    myInt: Integer;
+                begin
+                    SetFilter("Bill-to Customer No.", CustomerNO);
+                    SetFilter("Posting Date", '%1..%2', startDate, Enddate);
+                end;
+
+                trigger OnAfterGetRecord()
+
+                begin
+                    //if "Sell-to Customer No." <> CustomerNO then
+                    //    CurrReport.Skip();
+
+                    if SalesCr.get("Document No.") then begin
+                        if not paymentmethod.get(SalesCr."Payment Method Code") then
+                            paymentmethod.init;
+
+                    end;
+                    if "Sales Cr.Memo Line"."Document No." <> '' then begin
+                        lineno += 1;
+                        //temp insert
+                        //tempsalesline.init;
+                        tempsalesline."Document Type" := tempsalesline."Document Type"::"Credit Memo";
+                        tempsalesline."Document No." := "Document No.";
+
+                        tempsalesline."Line No." := "Line No.";
+                        tempsalesline.Type := type;
+                        tempsalesline."No." := "No.";
+                        tempsalesline.Description := paymentmethod.Description;
+                        if Description <> '' then
+                            tempsalesline."Description 2" := Description
+                        else begin
+                            if not item.get("No.") then
+                                item.init;
+                            tempsalesline."Description 2" := item.Description;
+                        end;
+                        tempsalesline.Amount := Amount * -1;
+                        tempsalesline."Amount Including VAT" := "Amount Including VAT" * -1;
+                        tempsalesline."VAT Base Amount" := ("Amount Including VAT" - Amount) * -1;
+                        tempsalesline."Shipment Date" := "Posting Date";
+                        tempsalesline.Insert();
+                        //temp insert
+                    end;
+
+                end;
+            }
+            trigger OnPreDataItem()
+            var
+            begin
+                companyinfor.get;
+                if companyinfor."VAT Registration No." <> '' then begin
+                    VatID[1] := CopyStr(Format(companyinfor."VAT Registration No."), 1, 1);
+                    VatID[2] := CopyStr(Format(companyinfor."VAT Registration No."), 2, 1);
+                    VatID[3] := CopyStr(Format(companyinfor."VAT Registration No."), 3, 1);
+                    VatID[4] := CopyStr(Format(companyinfor."VAT Registration No."), 4, 1);
+                    VatID[5] := CopyStr(Format(companyinfor."VAT Registration No."), 5, 1);
+                    VatID[6] := CopyStr(Format(companyinfor."VAT Registration No."), 6, 1);
+                    VatID[7] := CopyStr(Format(companyinfor."VAT Registration No."), 7, 1);
+                    VatID[8] := CopyStr(Format(companyinfor."VAT Registration No."), 8, 1);
+                    VatID[9] := CopyStr(Format(companyinfor."VAT Registration No."), 9, 1);
+                    VatID[10] := CopyStr(Format(companyinfor."VAT Registration No."), 10, 1);
+                    VatID[11] := CopyStr(Format(companyinfor."VAT Registration No."), 11, 1);
+                    VatID[12] := CopyStr(Format(companyinfor."VAT Registration No."), 12, 1);
+                    VatID[13] := CopyStr(Format(companyinfor."VAT Registration No."), 13, 1);
+                end;
+            end;
+
+            trigger OnAfterGetRecord()
+            var
+                myInt: Integer;
+            begin
+
+            end;
+        }
+        dataitem(tempsalesline; "Sales Line")
+        {
+            DataItemTableView = sorting("shipment Date");
+            UseTemporary = true;
+
             column(companyinforName; companyinfor.Name) { }
             column(companyinforNameTH; companyinfor.INT_Name_TH_SNY) { }
             column(companyinforName2; companyinfor."Name 2") { }
@@ -35,131 +192,22 @@ report 60004 "INT_VAT_REPORT"
             column(VatID12; VatID[12]) { }
             column(VatID13; VatID[13]) { }
             column(Enddate; Enddate) { }
-            dataitem("Sales Invoice Line"; "Sales Invoice Line")
-            {
-                DataItemTableView = sorting("No.");
-                column(INV_No_; "No.") { }
-                column(INV_Document_No_; "Document No.") { }
-                column(INV_Posting_Date; "Posting Date") { }
-                column(VatDescription; VatDescription) { }
-                column(INV_VAT_Amount; abs("Amount Including VAT" - Amount)) { }
-                column(INV_Amount_Including_VAT; "Amount Including VAT") { }
-                column(INV_Amount; Amount) { }
-                column(LineNo; LineNo) { }
-                column(totalamountEx; totalamountEx) { }
-                column(totalAmtVat; totalAmtVat) { }
-                column(TotalAmtIncVat; TotalAmtIncVat) { }
+            column(DocumentNo; tempsalesline."Document No.") { }
+            column(PostingDate; tempsalesline."Shipment Date") { }
+            column(Des; tempsalesline.Description) { }
+            column(Des2; tempsalesline."Description 2") { }
+            column(Amount; tempsalesline.Amount) { }
+            column(VatAmount; tempsalesline."VAT Base Amount") { }
+            column(AmountIncVat; tempsalesline."Amount Including VAT") { }
 
-
-                trigger OnPreDataItem()
-                var
-                    myInt: Integer;
-                begin
-                    //"Sales Invoice Line".SetFilter(INT_ma);
-                    SetFilter("Bill-to Customer No.", CustomerNO);
-                    SetFilter("Posting Date", '%1..%2', startDate, Enddate);
-
-                end;
-
-                trigger OnAfterGetRecord()
-
-                begin
-                    //if "Sell-to Customer No." <> CustomerNO then
-                    //    CurrReport.Skip();
-                    companyinfor.get;
-                    if SalesINV.get("Document No.") then begin
-                        if paymentmethod.get(SalesINV."Payment Method Code") then begin
-                            VatDescription := paymentmethod.Description + ' ' + Description;
-                        end;
-                    end;
-
-                    if "Sales Invoice Line"."Document No." <> '' then begin
-                        LineNo += 1;
-                        totalamountEx += "Sales Invoice Line".Amount;
-                        totalAmtVat += ("Sales Invoice Line"."Amount Including VAT" - "Sales Invoice Line".Amount);
-                        TotalAmtIncVat += "Sales Invoice Line"."Amount Including VAT";
-                    end;
-
-                    if companyinfor."VAT Registration No." <> '' then begin
-                        VatID[1] := CopyStr(Format(companyinfor."VAT Registration No."), 1, 1);
-                        VatID[2] := CopyStr(Format(companyinfor."VAT Registration No."), 2, 1);
-                        VatID[3] := CopyStr(Format(companyinfor."VAT Registration No."), 3, 1);
-                        VatID[4] := CopyStr(Format(companyinfor."VAT Registration No."), 4, 1);
-                        VatID[5] := CopyStr(Format(companyinfor."VAT Registration No."), 5, 1);
-                        VatID[6] := CopyStr(Format(companyinfor."VAT Registration No."), 6, 1);
-                        VatID[7] := CopyStr(Format(companyinfor."VAT Registration No."), 7, 1);
-                        VatID[8] := CopyStr(Format(companyinfor."VAT Registration No."), 8, 1);
-                        VatID[9] := CopyStr(Format(companyinfor."VAT Registration No."), 9, 1);
-                        VatID[10] := CopyStr(Format(companyinfor."VAT Registration No."), 10, 1);
-                        VatID[11] := CopyStr(Format(companyinfor."VAT Registration No."), 11, 1);
-                        VatID[12] := CopyStr(Format(companyinfor."VAT Registration No."), 12, 1);
-                        VatID[13] := CopyStr(Format(companyinfor."VAT Registration No."), 13, 1);
-                    end;
-
-
-                end;
-            }
-            dataitem("Sales Cr.Memo Line"; "Sales Cr.Memo Line")
-            {
-                DataItemTableView = sorting("No.");
-                column(CR_No_; "No.") { }
-                column(VatDescription2; VatDescription2) { }
-                column(CR_Document_No_; "Document No.") { }
-                column(CR_Posting_Date; "Posting Date") { }
-                column(CR_VAT_Amount; ABS("Amount Including VAT" - Amount) * -1) { }
-                column(CR_Amount_Including_VAT; "Amount Including VAT" * -1) { }
-                column(CR_Amount; Amount * -1) { }
-
-                trigger OnPreDataItem()
-                var
-                    myInt: Integer;
-                begin
-                    SetFilter("Bill-to Customer No.", CustomerNO);
-                    SetFilter("Posting Date", '%1..%2', startDate, Enddate);
-                end;
-
-                trigger OnAfterGetRecord()
-
-                begin
-                    //if "Sell-to Customer No." <> CustomerNO then
-                    //    CurrReport.Skip();
-
-                    if SalesCr.get("Document No.") then begin
-                        if paymentmethod.get(SalesCr."Payment Method Code") then begin
-                            VatDescription2 := paymentmethod.Description + ' ' + Description;
-                        end;
-
-                    end;
-                    if "Sales Cr.Memo Line"."Document No." <> '' then begin
-                        LineNo += 1;
-                        totalamountEx -= "Sales Cr.Memo Line".Amount;
-                        totalAmtVat -= ("Sales Cr.Memo Line"."Amount Including VAT" - "Sales Cr.Memo Line".Amount);
-                        TotalAmtIncVat -= "Sales Cr.Memo Line"."Amount Including VAT";
-                    end;
-
-                end;
-            }
-            trigger OnPreDataItem()
+            trigger OnAfterGetRecord()
             var
                 myInt: Integer;
             begin
-                if companyinfor."VAT Registration No." <> '' then begin
-                    VatID[1] := CopyStr(Format(companyinfor."VAT Registration No."), 1, 1);
-                    VatID[2] := CopyStr(Format(companyinfor."VAT Registration No."), 2, 1);
-                    VatID[3] := CopyStr(Format(companyinfor."VAT Registration No."), 3, 1);
-                    VatID[4] := CopyStr(Format(companyinfor."VAT Registration No."), 4, 1);
-                    VatID[5] := CopyStr(Format(companyinfor."VAT Registration No."), 5, 1);
-                    VatID[6] := CopyStr(Format(companyinfor."VAT Registration No."), 6, 1);
-                    VatID[7] := CopyStr(Format(companyinfor."VAT Registration No."), 7, 1);
-                    VatID[8] := CopyStr(Format(companyinfor."VAT Registration No."), 8, 1);
-                    VatID[9] := CopyStr(Format(companyinfor."VAT Registration No."), 9, 1);
-                    VatID[10] := CopyStr(Format(companyinfor."VAT Registration No."), 10, 1);
-                    VatID[11] := CopyStr(Format(companyinfor."VAT Registration No."), 11, 1);
-                    VatID[12] := CopyStr(Format(companyinfor."VAT Registration No."), 12, 1);
-                    VatID[13] := CopyStr(Format(companyinfor."VAT Registration No."), 13, 1);
-                end;
+                //Message('%1', tempsalesline."Posting Date");
             end;
         }
+
     }
 
     requestpage
@@ -212,7 +260,7 @@ report 60004 "INT_VAT_REPORT"
     var
         myInt: Integer;
     begin
-        LineNo := 0;
+
         companyinfor.get;
         if CustomerNO = '' then
             Error('Please Select Marketplace !');
@@ -220,9 +268,6 @@ report 60004 "INT_VAT_REPORT"
         if (startDate = 0D) or (Enddate = 0D) then
             Error('Plase Filter Date !');
 
-        totalamountEx := 0;
-        totalAmtVat := 0;
-        TotalAmtIncVat := 0;
 
     end;
 
@@ -230,16 +275,13 @@ report 60004 "INT_VAT_REPORT"
         SalesINV: Record "Sales Invoice Header";
         SalesCr: Record "Sales Cr.Memo Header";
         paymentmethod: Record "Payment Method";
-        VatDescription: Text[100];
-        VatDescription2: Text[100];
-        LineNo: Integer;
         startDate: date;
         Enddate: date;
         companyinfor: Record "Company Information";
-        totalamountEx: Decimal;
-        totalAmtVat: Decimal;
-        TotalAmtIncVat: Decimal;
         CustomerNO: Code[20];
         VatID: array[13] of text[20];
         customer: Record Customer;
+        item: Record item;
+        //tempsalesline: Record "Sales Line" temporary;
+        lineno: Integer;
 }

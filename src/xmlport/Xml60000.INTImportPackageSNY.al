@@ -285,10 +285,10 @@ xmlport 60000 "INT_ImportPackage_SNY"
         lyear: Integer;
     begin
         if Txt <> '' then begin
-            //EVALUATE(lday, COPYSTR(Txt, 1, 2));
-            //EVALUATE(lmonth, COPYSTR(Txt, 4, 2));
-            EVALUATE(lmonth, COPYSTR(Txt, 1, 2));
-            EVALUATE(lday, COPYSTR(Txt, 4, 2));
+            EVALUATE(lday, COPYSTR(Txt, 1, 2));
+            EVALUATE(lmonth, COPYSTR(Txt, 4, 2));
+            //EVALUATE(lmonth, COPYSTR(Txt, 1, 2));
+            //EVALUATE(lday, COPYSTR(Txt, 4, 2));
             EVALUATE(lyear, COPYSTR(Txt, 7, 4));
             exit(DMY2Date(lday, lmonth, lyear));
         end else

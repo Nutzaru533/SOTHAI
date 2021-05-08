@@ -26,6 +26,11 @@ pageextension 60005 "INT_TH_FOCBundleCard_SN" extends INT_FOCBundleCard_SNY
                 begin
                     if "No." = '' then
                         NewDoc;
+
+                    if xRec.Marketplace <> Marketplace then begin
+                        modify;
+                        Commit();
+                    end;
                     CurrPage.Update(false);
                 end;
             }

@@ -45,6 +45,7 @@ pageextension 60011 "INT_FOCBundleList_SNY" extends INT_FOCBundleList_SNY
                     PromotedCategory = Process;
                     ApplicationArea = all;
                     Image = Import;
+                    Visible = false;
                     RunObject = xmlport INT_ImportFOCHeader_SNY;
                     trigger OnAction()
                     var
@@ -53,6 +54,51 @@ pageextension 60011 "INT_FOCBundleList_SNY" extends INT_FOCBundleList_SNY
                         //XMLPORT.RUN(60001, true, FALSE);
                         CurrPage.Update(false);
                     end;
+                }
+                action(INT_ImportFOCHeader_SNY3)
+                {
+                    caption = 'Import FOC';
+                    Promoted = true;
+                    PromotedOnly = true;
+                    PromotedCategory = Process;
+                    ApplicationArea = all;
+                    Image = Import;
+                    RunObject = xmlport INT_ImportFOCTemp_SNY;
+                    trigger OnAction()
+                    var
+                        myInt: Integer;
+                    begin
+                        //XMLPORT.RUN(60001, true, FALSE);
+                        CurrPage.Update(false);
+                    end;
+                }
+                group(Checkerror)
+                {
+                    Caption = 'Check Error Import';
+                    action(CheckErrorPage)
+                    {
+                        caption = 'Check Error';
+                        Promoted = true;
+                        PromotedOnly = true;
+                        PromotedCategory = Process;
+                        ApplicationArea = all;
+                        Image = Import;
+
+                        trigger OnAction()
+                        var
+                            INT_Temptableforimport: Record INT_Temptableforimport;
+                            Checkerrorimport: Page Checkerrorimport;
+                        begin
+                            Clear(Checkerrorimport);
+                            INT_Temptableforimport.reset;
+                            INT_Temptableforimport.SetRange(foc, true);
+                            INT_Temptableforimport.SetRange(error, true);
+                            INT_Temptableforimport.SetFilter(errordes, '<>%1', '');
+                            Checkerrorimport.SetTableView(INT_Temptableforimport);
+                            Checkerrorimport.run;
+                            CurrPage.Update(false);
+                        end;
+                    }
                 }
 
             }

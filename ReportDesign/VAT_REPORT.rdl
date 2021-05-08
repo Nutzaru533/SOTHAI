@@ -19,22 +19,22 @@
             <TablixBody>
               <TablixColumns>
                 <TablixColumn>
-                  <Width>1in</Width>
+                  <Width>0.98403in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1.38612in</Width>
+                  <Width>1.37015in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1.68001in</Width>
+                  <Width>1.66404in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1.39845in</Width>
+                  <Width>1.38248in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1in</Width>
+                  <Width>0.98403in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1.47501in</Width>
+                  <Width>1.45904in</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
@@ -378,7 +378,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Customer/Service Receipent</Value>
+                                  <Value>Customer/Service Recipient</Value>
                                   <Style>
                                     <FontFamily>AngsanaUPC</FontFamily>
                                     <FontSize>12pt</FontSize>
@@ -561,25 +561,65 @@
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="INV_Posting_Date3">
+                        <Textbox Name="PostingDate">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!INV_Posting_Date.Value</Value>
+                                  <Value>=Fields!PostingDate.Value</Value>
                                   <Style>
                                     <FontFamily>AngsanaUPC</FontFamily>
                                     <FontSize>12pt</FontSize>
-                                    <Format>d</Format>
+                                    <Format>dd/MM/yyyy</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>INV_Posting_Date</rd:DefaultName>
+                          <rd:DefaultName>PostingDate</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                            </Border>
+                            <BottomBorder>
+                              <Color>Black</Color>
+                              <Width>1pt</Width>
+                            </BottomBorder>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="DocumentNo">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!DocumentNo.Value</Value>
+                                  <Style>
+                                    <FontFamily>AngsanaUPC</FontFamily>
+                                    <FontSize>12pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>DocumentNo</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>Solid</Style>
@@ -614,14 +654,13 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="INV_Document_No_2">
-                          <CanGrow>true</CanGrow>
+                        <Textbox Name="Textbox47">
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!INV_Document_No_.Value</Value>
+                                  <Value>=Fields!Des.Value+" "+Fields!Des2.Value</Value>
                                   <Style>
                                     <FontFamily>AngsanaUPC</FontFamily>
                                     <FontSize>12pt</FontSize>
@@ -631,31 +670,11 @@
                               <Style />
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>INV_Document_No_1</rd:DefaultName>
+                          <rd:DefaultName>Textbox47</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>Solid</Style>
                             </Border>
-                            <TopBorder>
-                              <Color>Black</Color>
-                              <Style>Solid</Style>
-                              <Width>1pt</Width>
-                            </TopBorder>
-                            <BottomBorder>
-                              <Color>Black</Color>
-                              <Style>Solid</Style>
-                              <Width>1pt</Width>
-                            </BottomBorder>
-                            <LeftBorder>
-                              <Color>Black</Color>
-                              <Style>Solid</Style>
-                              <Width>1pt</Width>
-                            </LeftBorder>
-                            <RightBorder>
-                              <Color>Black</Color>
-                              <Style>Solid</Style>
-                              <Width>1pt</Width>
-                            </RightBorder>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -666,70 +685,18 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="VatDescription">
+                        <Textbox Name="Amount">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!VatDescription.Value</Value>
+                                  <Value>=sum(Fields!Amount.Value)</Value>
                                   <Style>
                                     <FontFamily>AngsanaUPC</FontFamily>
                                     <FontSize>12pt</FontSize>
-                                  </Style>
-                                </TextRun>
-                              </TextRuns>
-                              <Style />
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>VatDescription</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Style>Solid</Style>
-                            </Border>
-                            <TopBorder>
-                              <Color>Black</Color>
-                              <Style>Solid</Style>
-                              <Width>1pt</Width>
-                            </TopBorder>
-                            <BottomBorder>
-                              <Color>Black</Color>
-                              <Style>Solid</Style>
-                              <Width>1pt</Width>
-                            </BottomBorder>
-                            <LeftBorder>
-                              <Color>Black</Color>
-                              <Style>Solid</Style>
-                              <Width>1pt</Width>
-                            </LeftBorder>
-                            <RightBorder>
-                              <Color>Black</Color>
-                              <Style>Solid</Style>
-                              <Width>1pt</Width>
-                            </RightBorder>
-                            <PaddingLeft>2pt</PaddingLeft>
-                            <PaddingRight>2pt</PaddingRight>
-                            <PaddingTop>2pt</PaddingTop>
-                            <PaddingBottom>2pt</PaddingBottom>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="INV_Amount">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>=Fields!INV_Amount.Value</Value>
-                                  <Style>
-                                    <FontFamily>AngsanaUPC</FontFamily>
-                                    <FontSize>12pt</FontSize>
-                                    <Format>#,0.00;(#,0.00);''</Format>
+                                    <Format>#,0.00;-#,0.00;''</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -738,7 +705,7 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>INV_Amount</rd:DefaultName>
+                          <rd:DefaultName>Amount</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>Solid</Style>
@@ -753,18 +720,18 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="INV_VAT_Amount1">
+                        <Textbox Name="VatAmount">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!INV_VAT_Amount.Value</Value>
+                                  <Value>=sum(Fields!VatAmount.Value)</Value>
                                   <Style>
                                     <FontFamily>AngsanaUPC</FontFamily>
                                     <FontSize>12pt</FontSize>
-                                    <Format>#,0.00;(#,0.00);''</Format>
+                                    <Format>#,0.00;-#,0.00;''</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -773,7 +740,7 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>INV_VAT_Amount1</rd:DefaultName>
+                          <rd:DefaultName>VatAmount</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>Solid</Style>
@@ -788,18 +755,18 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="INV_Amount_Including_VAT">
+                        <Textbox Name="AmountIncVat">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!INV_Amount_Including_VAT.Value</Value>
+                                  <Value>=sum(Fields!AmountIncVat.Value)</Value>
                                   <Style>
                                     <FontFamily>AngsanaUPC</FontFamily>
                                     <FontSize>12pt</FontSize>
-                                    <Format>#,0.00;(#,0.00);''</Format>
+                                    <Format>#,0.00;-#,0.00;''</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -808,7 +775,7 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>INV_Amount_Including_VAT</rd:DefaultName>
+                          <rd:DefaultName>AmountIncVat</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>Solid</Style>
@@ -828,274 +795,7 @@
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="CR_Posting_Date">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>=Fields!CR_Posting_Date.Value</Value>
-                                  <Style>
-                                    <FontFamily>AngsanaUPC</FontFamily>
-                                    <FontSize>12pt</FontSize>
-                                    <Format>d</Format>
-                                  </Style>
-                                </TextRun>
-                              </TextRuns>
-                              <Style />
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>CR_Posting_Date</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Style>Solid</Style>
-                            </Border>
-                            <TopBorder>
-                              <Color>Black</Color>
-                              <Style>Solid</Style>
-                              <Width>1pt</Width>
-                            </TopBorder>
-                            <BottomBorder>
-                              <Color>Black</Color>
-                              <Style>Solid</Style>
-                              <Width>1pt</Width>
-                            </BottomBorder>
-                            <LeftBorder>
-                              <Color>Black</Color>
-                              <Style>Solid</Style>
-                              <Width>1pt</Width>
-                            </LeftBorder>
-                            <RightBorder>
-                              <Color>Black</Color>
-                              <Style>Solid</Style>
-                              <Width>1pt</Width>
-                            </RightBorder>
-                            <PaddingLeft>2pt</PaddingLeft>
-                            <PaddingRight>2pt</PaddingRight>
-                            <PaddingTop>2pt</PaddingTop>
-                            <PaddingBottom>2pt</PaddingBottom>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="CR_Document_No_">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>=Fields!CR_Document_No_.Value</Value>
-                                  <Style>
-                                    <FontFamily>AngsanaUPC</FontFamily>
-                                    <FontSize>12pt</FontSize>
-                                  </Style>
-                                </TextRun>
-                              </TextRuns>
-                              <Style />
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>CR_Document_No_</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Style>Solid</Style>
-                            </Border>
-                            <TopBorder>
-                              <Color>Black</Color>
-                              <Style>Solid</Style>
-                              <Width>1pt</Width>
-                            </TopBorder>
-                            <BottomBorder>
-                              <Color>Black</Color>
-                              <Style>Solid</Style>
-                              <Width>1pt</Width>
-                            </BottomBorder>
-                            <LeftBorder>
-                              <Color>Black</Color>
-                              <Style>Solid</Style>
-                              <Width>1pt</Width>
-                            </LeftBorder>
-                            <RightBorder>
-                              <Color>Black</Color>
-                              <Style>Solid</Style>
-                              <Width>1pt</Width>
-                            </RightBorder>
-                            <PaddingLeft>2pt</PaddingLeft>
-                            <PaddingRight>2pt</PaddingRight>
-                            <PaddingTop>2pt</PaddingTop>
-                            <PaddingBottom>2pt</PaddingBottom>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="VatDescription2">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>=Fields!VatDescription2.Value</Value>
-                                  <Style>
-                                    <FontFamily>AngsanaUPC</FontFamily>
-                                    <FontSize>12pt</FontSize>
-                                  </Style>
-                                </TextRun>
-                              </TextRuns>
-                              <Style />
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>VatDescription2</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Style>Solid</Style>
-                            </Border>
-                            <TopBorder>
-                              <Color>Black</Color>
-                              <Style>Solid</Style>
-                              <Width>1pt</Width>
-                            </TopBorder>
-                            <BottomBorder>
-                              <Color>Black</Color>
-                              <Style>Solid</Style>
-                              <Width>1pt</Width>
-                            </BottomBorder>
-                            <LeftBorder>
-                              <Color>Black</Color>
-                              <Style>Solid</Style>
-                              <Width>1pt</Width>
-                            </LeftBorder>
-                            <RightBorder>
-                              <Color>Black</Color>
-                              <Style>Solid</Style>
-                              <Width>1pt</Width>
-                            </RightBorder>
-                            <PaddingLeft>2pt</PaddingLeft>
-                            <PaddingRight>2pt</PaddingRight>
-                            <PaddingTop>2pt</PaddingTop>
-                            <PaddingBottom>2pt</PaddingBottom>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="CR_Amount">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>=Fields!CR_Amount.Value</Value>
-                                  <Style>
-                                    <FontFamily>AngsanaUPC</FontFamily>
-                                    <FontSize>12pt</FontSize>
-                                    <Format>#,0.00;(#,0.00);''</Format>
-                                  </Style>
-                                </TextRun>
-                              </TextRuns>
-                              <Style>
-                                <TextAlign>Right</TextAlign>
-                              </Style>
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>CR_Amount</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Style>Solid</Style>
-                            </Border>
-                            <PaddingLeft>2pt</PaddingLeft>
-                            <PaddingRight>2pt</PaddingRight>
-                            <PaddingTop>2pt</PaddingTop>
-                            <PaddingBottom>2pt</PaddingBottom>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="CR_VAT_Amount">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>=Fields!CR_VAT_Amount.Value</Value>
-                                  <Style>
-                                    <FontFamily>AngsanaUPC</FontFamily>
-                                    <FontSize>12pt</FontSize>
-                                    <Format>#,0.00;(#,0.00);''</Format>
-                                  </Style>
-                                </TextRun>
-                              </TextRuns>
-                              <Style>
-                                <TextAlign>Right</TextAlign>
-                              </Style>
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>CR_VAT_Amount</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Style>Solid</Style>
-                            </Border>
-                            <PaddingLeft>2pt</PaddingLeft>
-                            <PaddingRight>2pt</PaddingRight>
-                            <PaddingTop>2pt</PaddingTop>
-                            <PaddingBottom>2pt</PaddingBottom>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="CR_Amount_Including_VAT">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>=Fields!CR_Amount_Including_VAT.Value</Value>
-                                  <Style>
-                                    <FontFamily>AngsanaUPC</FontFamily>
-                                    <FontSize>12pt</FontSize>
-                                    <Format>#,0.00;(#,0.00);''</Format>
-                                  </Style>
-                                </TextRun>
-                              </TextRuns>
-                              <Style>
-                                <TextAlign>Right</TextAlign>
-                              </Style>
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>CR_Amount_Including_VAT</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Style>Solid</Style>
-                            </Border>
-                            <PaddingLeft>2pt</PaddingLeft>
-                            <PaddingRight>2pt</PaddingRight>
-                            <PaddingTop>2pt</PaddingTop>
-                            <PaddingBottom>2pt</PaddingBottom>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
-                  </TablixCells>
-                </TablixRow>
-                <TablixRow>
-                  <Height>0.25in</Height>
-                  <TablixCells>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="Textbox36">
+                        <Textbox Name="Textbox25">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -1109,10 +809,12 @@
                                   </Style>
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox36</rd:DefaultName>
+                          <rd:DefaultName>Textbox25</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>None</Style>
@@ -1141,7 +843,9 @@
                                   </Style>
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox37</rd:DefaultName>
@@ -1192,18 +896,18 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="totalamountEx">
+                        <Textbox Name="Textbox61">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=sum(Fields!INV_Amount.Value)+SUm(Fields!CR_Amount.Value)</Value>
+                                  <Value>=Sum(Fields!Amount.Value, "DataSet_Result")</Value>
                                   <Style>
                                     <FontFamily>AngsanaUPC</FontFamily>
                                     <FontSize>14pt</FontSize>
-                                    <Format>#,0.00;(#,0.00);''</Format>
+                                    <Format>#,0.00;-#,0.00;''</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1212,7 +916,7 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>totalamountEx</rd:DefaultName>
+                          <rd:DefaultName>Textbox61</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>Solid</Style>
@@ -1227,18 +931,18 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="totalAmtVat">
+                        <Textbox Name="Textbox62">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=sum(Fields!INV_VAT_Amount.Value)+sum(Fields!CR_VAT_Amount.Value)</Value>
+                                  <Value>=SUM(Fields!VatAmount.Value, "DataSet_Result")</Value>
                                   <Style>
                                     <FontFamily>AngsanaUPC</FontFamily>
                                     <FontSize>14pt</FontSize>
-                                    <Format>#,0.00;(#,0.00);''</Format>
+                                    <Format>#,0.00;-#,0.00;''</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1247,7 +951,7 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>totalAmtVat</rd:DefaultName>
+                          <rd:DefaultName>Textbox62</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>Solid</Style>
@@ -1262,18 +966,18 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="TotalAmtIncVat">
+                        <Textbox Name="Textbox63">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Sum(Fields!INV_Amount_Including_VAT.Value)+sum(Fields!CR_Amount_Including_VAT.Value)</Value>
+                                  <Value>=Sum(Fields!AmountIncVat.Value, "DataSet_Result")</Value>
                                   <Style>
                                     <FontFamily>AngsanaUPC</FontFamily>
                                     <FontSize>14pt</FontSize>
-                                    <Format>#,0.00;(#,0.00);''</Format>
+                                    <Format>#,0.00;-#,0.00;''</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1282,7 +986,7 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>TotalAmtIncVat</rd:DefaultName>
+                          <rd:DefaultName>Textbox63</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>Solid</Style>
@@ -1323,26 +1027,16 @@
                 <TablixMember>
                   <Group Name="Details1">
                     <GroupExpressions>
-                      <GroupExpression>=Fields!INV_Document_No_.Value</GroupExpression>
-                    </GroupExpressions>
-                  </Group>
-                  <Visibility>
-                    <Hidden>=Fields!INV_Document_No_.Value=""</Hidden>
-                  </Visibility>
-                </TablixMember>
-                <TablixMember>
-                  <Group Name="CR_No_">
-                    <GroupExpressions>
-                      <GroupExpression>=Fields!CR_Document_No_.Value</GroupExpression>
+                      <GroupExpression>=Fields!DocumentNo.Value</GroupExpression>
                     </GroupExpressions>
                   </Group>
                   <SortExpressions>
                     <SortExpression>
-                      <Value>=Fields!CR_No_.Value</Value>
+                      <Value>=Fields!PostingDate.Value</Value>
                     </SortExpression>
                   </SortExpressions>
                   <Visibility>
-                    <Hidden>=Fields!CR_Document_No_.Value=""</Hidden>
+                    <Hidden>=Fields!DocumentNo.Value=""</Hidden>
                   </Visibility>
                 </TablixMember>
                 <TablixMember>
@@ -1352,9 +1046,9 @@
             </TablixRowHierarchy>
             <DataSetName>DataSet_Result</DataSetName>
             <Top>0.11333in</Top>
-            <Left>0.13333in</Left>
-            <Height>1.25in</Height>
-            <Width>7.93959in</Width>
+            <Left>0.22917in</Left>
+            <Height>1in</Height>
+            <Width>7.84377in</Width>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -1362,13 +1056,13 @@
             </Style>
           </Tablix>
         </ReportItems>
-        <Height>1.505in</Height>
+        <Height>1.18624in</Height>
         <Style />
       </Body>
       <Width>8.12501in</Width>
       <Page>
         <PageHeader>
-          <Height>2.425in</Height>
+          <Height>2.40416in</Height>
           <PrintOnFirstPage>true</PrintOnFirstPage>
           <PrintOnLastPage>true</PrintOnLastPage>
           <ReportItems>
@@ -1549,7 +1243,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>Name of VAT Operation</Value>
+                      <Value>Name of VAT Operator</Value>
                       <Style>
                         <FontFamily>AngsanaUPC</FontFamily>
                         <FontSize>14pt</FontSize>
@@ -1563,7 +1257,7 @@
               </Paragraphs>
               <rd:DefaultName>Textbox1</rd:DefaultName>
               <Top>0.92778in</Top>
-              <Left>0.65417in</Left>
+              <Left>0.22917in</Left>
               <Height>0.275in</Height>
               <Width>1.41528in</Width>
               <ZIndex>5</ZIndex>
@@ -1595,7 +1289,7 @@
               </Paragraphs>
               <rd:DefaultName>Textbox1</rd:DefaultName>
               <Top>0.92778in</Top>
-              <Left>2.11111in</Left>
+              <Left>1.68611in</Left>
               <Height>0.23888in</Height>
               <Width>3.81389in</Width>
               <ZIndex>6</ZIndex>
@@ -2324,8 +2018,8 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox1</rd:DefaultName>
-              <Top>1.24444in</Top>
-              <Left>0.65417in</Left>
+              <Top>1.49444in</Top>
+              <Left>0.22917in</Left>
               <Height>0.275in</Height>
               <Width>1.86528in</Width>
               <ZIndex>21</ZIndex>
@@ -2355,8 +2049,8 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox1</rd:DefaultName>
-              <Top>1.48611in</Top>
-              <Left>0.65417in</Left>
+              <Top>1.73611in</Top>
+              <Left>0.22917in</Left>
               <Height>0.275in</Height>
               <Width>0.65695in</Width>
               <ZIndex>22</ZIndex>
@@ -2754,8 +2448,8 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox1</rd:DefaultName>
-              <Top>1.24444in</Top>
-              <Left>2.11111in</Left>
+              <Top>1.49444in</Top>
+              <Left>1.68611in</Left>
               <Height>0.22778in</Height>
               <Width>3.37222in</Width>
               <ZIndex>31</ZIndex>
@@ -2790,8 +2484,8 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox1</rd:DefaultName>
-              <Top>1.52778in</Top>
-              <Left>1.13333in</Left>
+              <Top>1.77778in</Top>
+              <Left>0.70833in</Left>
               <Height>0.22778in</Height>
               <Width>4.35in</Width>
               <ZIndex>32</ZIndex>
@@ -2826,8 +2520,8 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox1</rd:DefaultName>
-              <Top>1.76111in</Top>
-              <Left>0.65417in</Left>
+              <Top>2.01111in</Top>
+              <Left>0.22917in</Left>
               <Height>0.22778in</Height>
               <Width>4.82916in</Width>
               <ZIndex>33</ZIndex>
@@ -2842,14 +2536,14 @@
                 </BottomBorder>
               </Style>
             </Textbox>
-            <Textbox Name="Textbox52">
+            <Textbox Name="Textbox65">
               <CanGrow>true</CanGrow>
               <KeepTogether>true</KeepTogether>
               <Paragraphs>
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value EvaluationMode="Constant" />
+                      <Value EvaluationMode="Constant">Marketplace</Value>
                       <Style>
                         <FontFamily>AngsanaUPC</FontFamily>
                         <FontSize>14pt</FontSize>
@@ -2862,11 +2556,43 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox1</rd:DefaultName>
-              <Top>1.98889in</Top>
-              <Left>0.65417in</Left>
-              <Height>0.22778in</Height>
-              <Width>4.82916in</Width>
+              <Top>1.19166in</Top>
+              <Left>0.22917in</Left>
+              <Height>0.275in</Height>
+              <Width>1.41528in</Width>
               <ZIndex>34</ZIndex>
+              <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
+              </Style>
+            </Textbox>
+            <Textbox Name="Textbox66">
+              <CanGrow>true</CanGrow>
+              <KeepTogether>true</KeepTogether>
+              <Paragraphs>
+                <Paragraph>
+                  <TextRuns>
+                    <TextRun>
+                      <Value>=First(Fields!CustomerNO.Value, "DataSet_Result")</Value>
+                      <Style>
+                        <FontFamily>AngsanaUPC</FontFamily>
+                        <FontSize>14pt</FontSize>
+                        <TextDecoration>None</TextDecoration>
+                      </Style>
+                    </TextRun>
+                  </TextRuns>
+                  <Style>
+                    <TextAlign>Left</TextAlign>
+                  </Style>
+                </Paragraph>
+              </Paragraphs>
+              <rd:DefaultName>Textbox1</rd:DefaultName>
+              <Top>1.19166in</Top>
+              <Left>1.68611in</Left>
+              <Height>0.23888in</Height>
+              <Width>3.81389in</Width>
+              <ZIndex>35</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -2885,6 +2611,48 @@
             </Border>
           </Style>
         </PageHeader>
+        <PageFooter>
+          <Height>0.38542in</Height>
+          <PrintOnFirstPage>true</PrintOnFirstPage>
+          <PrintOnLastPage>true</PrintOnLastPage>
+          <ReportItems>
+            <Textbox Name="Textbox64">
+              <CanGrow>true</CanGrow>
+              <KeepTogether>true</KeepTogether>
+              <Paragraphs>
+                <Paragraph>
+                  <TextRuns>
+                    <TextRun>
+                      <Value>="Page no ."+format(Globals!PageNumber)+"/"+format(Globals!TotalPages)</Value>
+                      <Style>
+                        <FontFamily>AngsanaUPC</FontFamily>
+                        <FontSize>14pt</FontSize>
+                      </Style>
+                    </TextRun>
+                  </TextRuns>
+                  <Style>
+                    <TextAlign>Right</TextAlign>
+                  </Style>
+                </Paragraph>
+              </Paragraphs>
+              <rd:DefaultName>Textbox1</rd:DefaultName>
+              <Top>0.04167in</Top>
+              <Left>7.28542in</Left>
+              <Height>0.275in</Height>
+              <Width>0.7875in</Width>
+              <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
+              </Style>
+            </Textbox>
+          </ReportItems>
+          <Style>
+            <Border>
+              <Style>None</Style>
+            </Border>
+          </Style>
+        </PageFooter>
         <PageHeight>11.69in</PageHeight>
         <PageWidth>8.27in</PageWidth>
         <Style />
@@ -3005,86 +2773,35 @@ End Function
         <Field Name="Enddate">
           <DataField>Enddate</DataField>
         </Field>
-        <Field Name="INV_No_">
-          <DataField>INV_No_</DataField>
+        <Field Name="DocumentNo">
+          <DataField>DocumentNo</DataField>
         </Field>
-        <Field Name="INV_Document_No_">
-          <DataField>INV_Document_No_</DataField>
+        <Field Name="PostingDate">
+          <DataField>PostingDate</DataField>
         </Field>
-        <Field Name="INV_Posting_Date">
-          <DataField>INV_Posting_Date</DataField>
+        <Field Name="Des">
+          <DataField>Des</DataField>
         </Field>
-        <Field Name="VatDescription">
-          <DataField>VatDescription</DataField>
+        <Field Name="Des2">
+          <DataField>Des2</DataField>
         </Field>
-        <Field Name="INV_VAT_Amount">
-          <DataField>INV_VAT_Amount</DataField>
+        <Field Name="Amount">
+          <DataField>Amount</DataField>
         </Field>
-        <Field Name="INV_VAT_AmountFormat">
-          <DataField>INV_VAT_AmountFormat</DataField>
+        <Field Name="AmountFormat">
+          <DataField>AmountFormat</DataField>
         </Field>
-        <Field Name="INV_Amount_Including_VAT">
-          <DataField>INV_Amount_Including_VAT</DataField>
+        <Field Name="VatAmount">
+          <DataField>VatAmount</DataField>
         </Field>
-        <Field Name="INV_Amount_Including_VATFormat">
-          <DataField>INV_Amount_Including_VATFormat</DataField>
+        <Field Name="VatAmountFormat">
+          <DataField>VatAmountFormat</DataField>
         </Field>
-        <Field Name="INV_Amount">
-          <DataField>INV_Amount</DataField>
+        <Field Name="AmountIncVat">
+          <DataField>AmountIncVat</DataField>
         </Field>
-        <Field Name="INV_AmountFormat">
-          <DataField>INV_AmountFormat</DataField>
-        </Field>
-        <Field Name="LineNo">
-          <DataField>LineNo</DataField>
-        </Field>
-        <Field Name="totalamountEx">
-          <DataField>totalamountEx</DataField>
-        </Field>
-        <Field Name="totalamountExFormat">
-          <DataField>totalamountExFormat</DataField>
-        </Field>
-        <Field Name="totalAmtVat">
-          <DataField>totalAmtVat</DataField>
-        </Field>
-        <Field Name="totalAmtVatFormat">
-          <DataField>totalAmtVatFormat</DataField>
-        </Field>
-        <Field Name="TotalAmtIncVat">
-          <DataField>TotalAmtIncVat</DataField>
-        </Field>
-        <Field Name="TotalAmtIncVatFormat">
-          <DataField>TotalAmtIncVatFormat</DataField>
-        </Field>
-        <Field Name="CR_No_">
-          <DataField>CR_No_</DataField>
-        </Field>
-        <Field Name="VatDescription2">
-          <DataField>VatDescription2</DataField>
-        </Field>
-        <Field Name="CR_Document_No_">
-          <DataField>CR_Document_No_</DataField>
-        </Field>
-        <Field Name="CR_Posting_Date">
-          <DataField>CR_Posting_Date</DataField>
-        </Field>
-        <Field Name="CR_VAT_Amount">
-          <DataField>CR_VAT_Amount</DataField>
-        </Field>
-        <Field Name="CR_VAT_AmountFormat">
-          <DataField>CR_VAT_AmountFormat</DataField>
-        </Field>
-        <Field Name="CR_Amount_Including_VAT">
-          <DataField>CR_Amount_Including_VAT</DataField>
-        </Field>
-        <Field Name="CR_Amount_Including_VATFormat">
-          <DataField>CR_Amount_Including_VATFormat</DataField>
-        </Field>
-        <Field Name="CR_Amount">
-          <DataField>CR_Amount</DataField>
-        </Field>
-        <Field Name="CR_AmountFormat">
-          <DataField>CR_AmountFormat</DataField>
+        <Field Name="AmountIncVatFormat">
+          <DataField>AmountIncVatFormat</DataField>
         </Field>
       </Fields>
       <Query>

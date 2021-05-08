@@ -3,6 +3,7 @@ pageextension 60021 "INT_OMSRoleCenter_SNY" extends INT_OMSRoleCenter_SNY
     layout
     {
         // Add changes to page layout here
+
     }
 
     actions
@@ -17,7 +18,23 @@ pageextension 60021 "INT_OMSRoleCenter_SNY" extends INT_OMSRoleCenter_SNY
                 RunObject = Page INT_FlashSalesPrice_SNY;
                 ApplicationArea = All;
             }
+        }
+        addafter(Setup)
+        {
+            group(Repoprt)
+            {
+                Caption = 'Report';
+                ToolTip = 'Marketplaces List';
+                Image = Report;
+                action(VaTReport)
+                {
+                    Caption = 'Vat Report';
+                    ToolTip = 'Marketplaces List';
+                    RunObject = report INT_VAT_REPORT;
+                    ApplicationArea = All;
 
+                }
+            }
         }
     }
 

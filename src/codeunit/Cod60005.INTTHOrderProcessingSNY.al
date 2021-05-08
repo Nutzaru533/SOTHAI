@@ -61,6 +61,7 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
                             Commit();
                         end;
 
+                        SetupPaidprice();
                         //Copy from Here for reprocess umang
                         if SalesHeader.INT_InternalProcessing_SNY = SalesHeader.INT_InternalProcessing_SNY::"PSG/BUN Split" then begin
                             ExplodeOrder();
@@ -115,6 +116,10 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
                             SynctoSAP(false);
                         end;
                         */
+                        //Generate Posting NO./ invoice No.
+                        GeneratePostingNo;
+                        //Generate Posting NO./ invoice No.
+
                         if InterfaceSetup."Auto Set Lazada Inv" then
                             if SalesHeader.INT_InvCheck_SNY then begin
                                 Commit();
@@ -141,9 +146,7 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
                         if SalesHeader.INT_SAPOrderID_SNY <> '' then
                             PostingShipments();
 
-                        //Generate Posting NO./ invoice No.
-                        GeneratePostingNo;
-                        //Generate Posting NO./ invoice No.
+
                         if SalesHeader."Document Type" = SalesHeader."Document Type"::"Return Order" then begin
                             //get posting no. from so
                             SalesOrder.Reset();
@@ -153,6 +156,17 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
                                 SalesHeader."INT_BC Order Invoice No_SYN" := SalesOrder."Posting No.";
                                 SalesHeader.Modify();
                                 Commit();
+                            end;
+                            if SalesHeader."INT_BC Order Invoice No_SYN" = '' then begin
+                                SalesOrder.Reset();
+                                SalesOrder.SetRange("Document Type", SalesOrder."Document Type"::Order);
+                                SalesOrder.SetRange("External Document No.", SalesHeader."External Document No.");
+                                if SalesOrder.Find('-') then begin
+                                    SalesHeader."INT_BC Order Invoice No_SYN" := SalesOrder."Posting No.";
+                                    SalesHeader.INT_BCOrderNo_SNY := SalesOrder."No.";
+                                    SalesHeader.Modify();
+                                    Commit();
+                                end;
                             end;
                             //get posting no. from so
                             MarketPlace.Get(SalesHeader.INT_MarketPlace_SNY);
@@ -269,6 +283,7 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
                     end;
 
                     //Copy from Here for reprocess umang
+                    SetupPaidprice();
                     if SalesHeader.INT_InternalProcessing_SNY = SalesHeader.INT_InternalProcessing_SNY::"PSG/BUN Split" then begin
                         ExplodeOrder2();
                         Commit();
@@ -320,6 +335,9 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
                         SynctoSAP(false);
                     end;
                     */
+                    //posting no.
+                    GeneratePostingNo();
+                    //Potting no.
 
                     if InterfaceSetup."Auto Set Lazada Inv" then
                         if SalesHeader.INT_InvCheck_SNY then begin
@@ -346,9 +364,7 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
 
                     if SalesHeader.INT_SAPOrderID_SNY <> '' then
                         PostingShipments();
-                    //posting no.
-                    GeneratePostingNo();
-                    //Potting no.
+
                 end else begin   //Regular/LAZADA Process
                     if SalesHeader.INT_InternalProcessing_SNY = SalesHeader.INT_InternalProcessing_SNY::"Not Started" then begin
                         SalesHeader.INT_OrderStatus_SNY := SalesHeader.INT_OrderStatus_SNY::"In-Process";
@@ -363,6 +379,7 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
                     end;
 
                     //Copy from Here for reprocess umang
+                    SetupPaidprice();
                     if SalesHeader.INT_InternalProcessing_SNY = SalesHeader.INT_InternalProcessing_SNY::"PSG/BUN Split" then begin
                         ExplodeOrder();
                         Commit();
@@ -416,6 +433,9 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
                         SynctoSAP(false);
                     end;
                     */
+                    //Generate Posting NO./ invoice No.
+                    GeneratePostingNo();
+                    //Generate Posting NO./ invoice No.   
 
                     if InterfaceSetup."Auto Set Lazada Inv" then
                         if SalesHeader.INT_InvCheck_SNY then begin
@@ -443,9 +463,7 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
                     if SalesHeader.INT_SAPOrderID_SNY <> '' then
                         PostingShipments();
 
-                    //Generate Posting NO./ invoice No.
-                    GeneratePostingNo();
-                    //Generate Posting NO./ invoice No.   
+
 
                 end
 
@@ -459,6 +477,17 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
                     SalesHeader."INT_BC Order Invoice No_SYN" := SalesOrder."Posting No.";
                     SalesHeader.Modify();
                     Commit();
+                end;
+                if SalesHeader."INT_BC Order Invoice No_SYN" = '' then begin
+                    SalesOrder.Reset();
+                    SalesOrder.SetRange("Document Type", SalesOrder."Document Type"::Order);
+                    SalesOrder.SetRange("External Document No.", SalesHeader."External Document No.");
+                    if SalesOrder.Find('-') then begin
+                        SalesHeader."INT_BC Order Invoice No_SYN" := SalesOrder."Posting No.";
+                        SalesHeader.INT_BCOrderNo_SNY := SalesOrder."No.";
+                        SalesHeader.Modify();
+                        Commit();
+                    end;
                 end;
                 //get posting no. from so
                 //
@@ -937,6 +966,7 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
     procedure ExplodeOrder()
     var
         SalesLine: Record "Sales Line";
+        SalesLine2: Record "Sales Line";
         BundleHeader: Record INT_BundleHeader_SNY;
         BundleLine: Record INT_BundleLine_SNY;
         FocBundleHeader: Record INT_BundleHeader_SNY;
@@ -1078,14 +1108,16 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
 
                         until BundleLine.Next() = 0;
 
-
-                    if BundleAmount <> SalesLine.Amount then begin
+                    //if BundleAmount <> SalesLine."Line Amount" then begin //oldcode
+                    if BundleAmount <> SalesLine."Line Amount" then begin
                         if MainModelLineNo = 0 then
                             Error('Bundle Main Model Not Defined');
                         NewSalesLine.get(SalesLine."Document Type", SalesLine."Document No.", MainModelLineNo);
-                        NewSalesLine.Validate("Unit Price", (NewSalesLine."Line Amount" - (BundleAmount - SalesLine.Amount)) / NewSalesLine.Quantity);
+                        NewSalesLine.Validate("Unit Price", (NewSalesLine."Line Amount" - (BundleAmount - SalesLine."Line Amount")) / NewSalesLine.Quantity);
                         NewSalesLine.Modify(true);
                     end;
+
+
                     SalesLine.Original_Quantity := SalesLine.Quantity;
                     SalesLine.Validate(Quantity, 0);
                     SalesLine.Modify(true);
@@ -1398,6 +1430,9 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
             SalesHeader.INT_InternalProcessing_SNY := SalesHeader.INT_InternalProcessing_SNY::"Inventory Checked";
             SalesHeader.INT_OrderStatus_SNY := SalesHeader.INT_OrderStatus_SNY::Processed;
             SalesHeader.Modify(true);
+            //posting no.
+            GeneratePostingNo();
+            //Potting no.
         end else begin
             /*
                 JobQueueEntry."Parameter String" := 'CHECK_INVENTORY';
@@ -1568,6 +1603,7 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
         SalesHeader.Modify();
         DeleteSystemCreatedSalesLine();
         InterfaceSetup.Get();
+        SetupPaidprice();
         if SalesHeader.INT_InternalProcessing_SNY = SalesHeader.INT_InternalProcessing_SNY::"PSG/BUN Split" then begin
             ExplodeOrder();
             Commit();
@@ -1608,6 +1644,9 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
             SynctoSAP(false);
         end;
         */
+        //posting no.
+        GeneratePostingNo();
+        //Potting no.
         if InterfaceSetup."Auto Set Lazada Inv" then
             if SalesHeader.INT_InvCheck_SNY then begin
                 Commit();
@@ -1634,9 +1673,7 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
         if SalesHeader.INT_SAPOrderID_SNY <> '' then
             PostingShipments();
 
-        //posting no.
-        GeneratePostingNo();
-        //Potting no.
+
     end;
 
     procedure ReprocessSalesOrder3(SH: Record "Sales Header")
@@ -1652,6 +1689,7 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
         SalesHeader.Modify();
         DeleteSystemCreatedSalesLine();
         InterfaceSetup.Get();
+        SetupPaidprice();
         if SalesHeader.INT_InternalProcessing_SNY = SalesHeader.INT_InternalProcessing_SNY::"PSG/BUN Split" then begin
             ExplodeOrder();
             Commit();
@@ -1692,6 +1730,9 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
             SynctoSAP(false);
         end;
         */
+        //posting no.
+        GeneratePostingNo();
+        //Potting no.
         if InterfaceSetup."Auto Set Lazada Inv" then
             if SalesHeader.INT_InvCheck_SNY then begin
                 Commit();
@@ -1717,9 +1758,7 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
 
         if SalesHeader.INT_SAPOrderID_SNY <> '' then
             PostingShipments();
-        //posting no.
-        GeneratePostingNo();
-        //Potting no.
+
     end;
 
     procedure DeleteSystemCreatedSalesLine()
@@ -1829,6 +1868,9 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
             SalesHeader.INT_InternalProcessing_SNY := SalesHeader.INT_InternalProcessing_SNY::"Inventory Checked";
             SalesHeader.INT_OrderStatus_SNY := SalesHeader.INT_OrderStatus_SNY::Processed;
             SalesHeader.Modify(true);
+            //posting no.
+            GeneratePostingNo();
+            //Potting no.
         end else begin
             /*
                 JobQueueEntry."Parameter String" := 'CHECK_INVENTORY';
@@ -2351,11 +2393,13 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
                         until BundleLine.Next() = 0;
 
 
-                    if BundleAmount <> SalesLine.Amount then begin
+                    //if BundleAmount <> SalesLine.Amount then begin
+                    if BundleAmount <> SalesLine."Line Amount" then begin
                         if MainModelLineNo = 0 then
                             Error('Bundle Main Model Not Defined');
                         NewSalesLine.get(SalesLine."Document Type", SalesLine."Document No.", MainModelLineNo);
-                        NewSalesLine.Validate("Unit Price", (NewSalesLine."Line Amount" - (BundleAmount - SalesLine.Amount)) / NewSalesLine.Quantity);
+                        //NewSalesLine.Validate("Unit Price", (NewSalesLine."Line Amount" - (BundleAmount - SalesLine.Amount)) / NewSalesLine.Quantity);
+                        NewSalesLine.Validate("Unit Price", (NewSalesLine."Line Amount" - (BundleAmount - SalesLine."Line Amount")) / NewSalesLine.Quantity);
                         NewSalesLine.Modify(true);
                     end;
                     SalesLine.Original_Quantity := SalesLine.Quantity;
@@ -2573,6 +2617,9 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
             SynctoSAP(false);
         end;
         */
+        //posting no.
+        GeneratePostingNo();
+        //Potting no.
         if InterfaceSetup."Auto Set Lazada Inv" then
             if SalesHeader.INT_InvCheck_SNY then begin
                 Commit();
@@ -2598,9 +2645,7 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
 
         if SalesHeader.INT_SAPOrderID_SNY <> '' then
             PostingShipments();
-        //posting no.
-        GeneratePostingNo();
-        //Potting no.
+
     end;
 
     procedure FullfillmentReturnOrder(ReturnSalesHeader: Record "Sales Header")
@@ -3282,6 +3327,26 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
         //calculatediscount
     end;
 
+    procedure SetupPaidprice()
+    var
+        resetsalesline: Record "Sales Line";
+    begin
+        resetsalesline.reset;
+        resetsalesline.SetRange("Document Type", SalesHeader."Document Type");
+        resetsalesline.SetRange("Document No.", SalesHeader."No.");
+        resetsalesline.SetRange(Type, resetsalesline.Type::Item);
+        resetsalesline.SetFilter(Quantity, '>%1', 0);
+        if resetsalesline.Find('-') then begin
+            repeat
+                if resetsalesline."Paid Price" = resetsalesline."Unit Price" then
+                    resetsalesline.validate("Unit Price", (resetsalesline."Paid Price" + resetsalesline."Seller Voucher Amount"));
+                resetsalesline.Modify();
+                Commit();
+            until resetsalesline.next = 0;
+        end;
+        //
+    end;
+
     local procedure GeneratePostingNo()
     var
         salessetup: Record "Sales & Receivables Setup";
@@ -3300,26 +3365,29 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
                     SalesHeader.Modify();
                 end;
             end;
-            if SalesHeader."Document Type" = SalesHeader."Document Type"::"Return Order" then begin
-                salessetup.get;
-                salessetup.TestField("Credit Memo Nos.");
-                if SalesHeader."Posting No." = '' then begin
-                    SalesHeader."Posting No." := NoserialMgn.GetNextNo(salessetup."Credit Memo Nos.", WorkDate(), true);
-                    Commit();
-                    SalesHeader.Modify();
-                end;
-            end;
-            //send to connector
-
-            salesline.reset;
-            salesline.SetRange("Document type", SalesHeader."Document Type");
-            salesline.SetRange("Document No.", SalesHeader."No.");
-            SalesHeader.TestField("Posting No.");
-            INT_EcomInterface_SNY.onSetInvoiceNo(SalesHeader, salesline, SalesHeader."Posting No.", Handled);
-            //INT_EcomInterface_SNY_onSetInvoiceNo(SalesHeader, salesline, SalesHeader."Posting No.", Handled);
-            //send to connector
         end;
+        if SalesHeader."Document Type" = SalesHeader."Document Type"::"Return Order" then begin
+            salessetup.get;
+            salessetup.TestField("Credit Memo Nos.");
+            if SalesHeader."Posting No." = '' then begin
+                SalesHeader."Posting No." := NoserialMgn.GetNextNo(salessetup."Credit Memo Nos.", WorkDate(), true);
+                Commit();
+                SalesHeader.Modify();
+            end;
+        end;
+        //send to connector
+        /*
+        salesline.reset;
+        salesline.SetRange("Document type", SalesHeader."Document Type");
+        salesline.SetRange("Document No.", SalesHeader."No.");
+        if SalesHeader."Posting No." <> '' then
+            INT_EcomInterface_SNY.onSetInvoiceNo(SalesHeader, salesline, SalesHeader."Posting No.", Handled);
+*/
+        //INT_EcomInterface_SNY_onSetInvoiceNo(SalesHeader, salesline, SalesHeader."Posting No.", Handled);
+        //send to connector
     end;
+
+
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"INT_EcomInterface_SNY", 'onSetInvoiceNo', '', true, true)]
     local procedure "INT_EcomInterface_SNY_onSetInvoiceNo"

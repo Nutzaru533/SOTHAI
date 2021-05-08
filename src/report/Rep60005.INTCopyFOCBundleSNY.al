@@ -110,7 +110,7 @@ report 60005 "INT_CopyFOCBundle_SNY"
             ToBundleLine.Delete(true);
 
         //Copy Headers
-        ToBundleHeader.Marketplace := FromBundleHeader.Marketplace;
+        //ToBundleHeader.Marketplace := FromBundleHeader.Marketplace;
         ToBundleHeader.Validate("Item No.", FromBundleHeader."Item No.");
         ToBundleHeader.Description := FromBundleHeader.Description;
         ToBundleHeader."Starting Date" := StartingDate;
