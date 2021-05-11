@@ -140,7 +140,7 @@ table 60003 "INT_Temptableforimport"
         }
         field(25; SortNo; Integer)
         {
-            Caption = 'Sort No.';
+            Caption = 'Excel Line number';
             DataClassification = ToBeClassified;
         }
 
@@ -153,6 +153,9 @@ table 60003 "INT_Temptableforimport"
         key(Key1; entryno)
         {
             Clustered = true;
+        }
+        key(sort; SortNo)
+        {
         }
     }
 

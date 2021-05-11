@@ -5,7 +5,7 @@ page 60008 "Checkerrorimport_Package"
     ApplicationArea = All;
     UsageCategory = Administration;
     SourceTable = INT_Temptableforimport;
-
+    SourceTableView = sorting(sortno);
     layout
     {
         area(content)

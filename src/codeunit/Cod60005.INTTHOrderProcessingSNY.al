@@ -87,7 +87,12 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
 
                             Commit();
                         end;
-
+                        // external no.
+                        if (SalesHeader.INT_DeliveryType_SNY = SalesHeader.INT_DeliveryType_SNY::"DBS Home") or (SalesHeader.INT_DeliveryType_SNY = SalesHeader.INT_DeliveryType_SNY::"DBS Standard") then begin
+                            UpdateTrackingNumber();
+                            Commit();
+                        end;
+                        //
                         if SalesHeader.INT_InternalProcessing_SNY = SalesHeader.INT_InternalProcessing_SNY::"Inventory N/A" then begin
                             CheckInventory();
                             Commit();
@@ -397,7 +402,12 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
                         SellVoucherCalculate();
                     end;
                     //SellVoucherCalculate test1
-
+                    // external no.
+                    if (SalesHeader.INT_DeliveryType_SNY = SalesHeader.INT_DeliveryType_SNY::"DBS Home") or (SalesHeader.INT_DeliveryType_SNY = SalesHeader.INT_DeliveryType_SNY::"DBS Standard") then begin
+                        UpdateTrackingNumber();
+                        Commit();
+                    end;
+                    //
                     if (SalesHeader.INT_InternalProcessing_SNY in [SalesHeader.INT_InternalProcessing_SNY::"Explode SO", SalesHeader.INT_InternalProcessing_SNY::Presales])
                             and (SalesHeader.INT_OrderType_SNY = SalesHeader.INT_OrderType_SNY::Presale) then begin
                         ProcessPreslaesOrder();
@@ -1167,6 +1177,9 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
                                         NewSalesLine.INT_OrderId_SNY := SalesLine.INT_OrderId_SNY;
                                         NewSalesLine.INT_MktOrderLineID_SNY := SalesLine.INT_MktOrderLineID_SNY;
                                         NewSalesLine.INT_DeliverFee_SNY := 0;
+                                        //add new 10.05.21
+                                        //NewSalesLine."INT_Companant Line_SNY" := true;
+                                        //add new 10.05.21
                                         NewSalesLine.Modify(true);
                                     until BundleLine.Next() = 0;
                             end;
@@ -1602,6 +1615,9 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
         salesheader.INT_ProcessErr_SNY := '';
         SalesHeader.Modify();
         DeleteSystemCreatedSalesLine();
+        //add new 10.05.21
+        //DeleteSystemCreatedSalesLine2();
+        //add new 10.05.21
         InterfaceSetup.Get();
         SetupPaidprice();
         if SalesHeader.INT_InternalProcessing_SNY = SalesHeader.INT_InternalProcessing_SNY::"PSG/BUN Split" then begin
@@ -1614,7 +1630,12 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
             skipInsertDeliveryFee();
             Commit();
         end;
-
+        // external no.
+        if (SalesHeader.INT_DeliveryType_SNY = SalesHeader.INT_DeliveryType_SNY::"DBS Home") or (SalesHeader.INT_DeliveryType_SNY = SalesHeader.INT_DeliveryType_SNY::"DBS Standard") then begin
+            UpdateTrackingNumber();
+            Commit();
+        end;
+        //
         if (SalesHeader.INT_InternalProcessing_SNY in [SalesHeader.INT_InternalProcessing_SNY::"Explode SO", SalesHeader.INT_InternalProcessing_SNY::Presales])
                 and (SalesHeader.INT_OrderType_SNY = SalesHeader.INT_OrderType_SNY::Presale) then begin
             ProcessPreslaesOrder();
@@ -1688,6 +1709,9 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
         salesheader.INT_ProcessErr_SNY := '';
         SalesHeader.Modify();
         DeleteSystemCreatedSalesLine();
+        //add new 10.05.21
+        //DeleteSystemCreatedSalesLine2();
+        //add new 10.05.21
         InterfaceSetup.Get();
         SetupPaidprice();
         if SalesHeader.INT_InternalProcessing_SNY = SalesHeader.INT_InternalProcessing_SNY::"PSG/BUN Split" then begin
@@ -1768,6 +1792,34 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
         SalesLine.SetRange("Document Type", SalesHeader."Document Type");
         SalesLine.SetRange("Document No.", SalesHeader."No.");
         SalesLine.SetFilter(INT_RelatedItemType_SNY, '%1|%2|%3|%4|%5', SalesLine.INT_RelatedItemType_SNY::"Main Delivery", SalesLine.INT_RelatedItemType_SNY::"Package", SalesLine.INT_RelatedItemType_SNY::"FOC", SalesLine.INT_RelatedItemType_SNY::"Package Dummy", SalesLine.INT_RelatedItemType_SNY::"FOC Dummy");
+        if SalesLine.FindSet() then
+            SalesLine.DeleteAll();
+        SalesLine.reset;
+        SalesLine.SetRange("Document Type", SalesHeader."Document Type");
+        SalesLine.SetRange("Document No.", SalesHeader."No.");
+        // SalesLine.SetFilter(INT_RelatedItemType_SNY, '%1|%2|%3|%4|%5', SalesLine.INT_RelatedItemType_SNY::"Main Delivery", SalesLine.INT_RelatedItemType_SNY::"Package", SalesLine.INT_RelatedItemType_SNY::"FOC", SalesLine.INT_RelatedItemType_SNY::"Package Dummy", SalesLine.INT_RelatedItemType_SNY::"FOC Dummy");
+        if SalesLine.FindSet() then
+            repeat
+                if SalesLine.Quantity = 0 then begin
+                    if SalesLine.Original_Quantity <> 0 then begin
+                        SalesLine.SetHideValidationDialog(true);
+                        SalesLine.Validate(Quantity, SalesLine.Original_Quantity);
+
+                    end;
+                end;
+                SalesLine.INT_RelatedItemType_SNY := SalesLine.Org_INT_RelatedItemType_SNY;
+                SalesLine.Modify();
+            until SalesLine.Next() = 0;
+
+    end;
+
+    procedure DeleteSystemCreatedSalesLine2()
+    var
+        SalesLine: Record "Sales Line";
+    begin
+        SalesLine.SetRange("Document Type", SalesHeader."Document Type");
+        SalesLine.SetRange("Document No.", SalesHeader."No.");
+        //SalesLine.SetRange("INT_Companant Line_SNY", true);
         if SalesLine.FindSet() then
             SalesLine.DeleteAll();
         SalesLine.reset;
@@ -2455,6 +2507,9 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
                                         NewSalesLine.INT_OrderId_SNY := SalesLine.INT_OrderId_SNY;
                                         NewSalesLine.INT_MktOrderLineID_SNY := SalesLine.INT_MktOrderLineID_SNY;
                                         NewSalesLine.INT_DeliverFee_SNY := 0;
+                                        //add new 10.05.21
+                                        //NewSalesLine."INT_Companant Line_SNY" := true;
+                                        //add new 10.05.21
                                         NewSalesLine.Modify(true);
                                     until BundleLine.Next() = 0;
                             end;
@@ -2574,6 +2629,9 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
         salesheader.INT_ProcessErr_SNY := '';
         SalesHeader.Modify();
         DeleteSystemCreatedSalesLine();
+        //add new 10.05.21
+        //DeleteSystemCreatedSalesLine2();
+        //add new 10.05.21
         InterfaceSetup.Get();
         if SalesHeader.INT_InternalProcessing_SNY = SalesHeader.INT_InternalProcessing_SNY::"PSG/BUN Split" then begin
             ExplodeOrder2();
@@ -3122,6 +3180,9 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
                                         NewSalesLine.INT_OrderId_SNY := SalesLine.INT_OrderId_SNY;
                                         NewSalesLine.INT_MktOrderLineID_SNY := SalesLine.INT_MktOrderLineID_SNY;
                                         NewSalesLine.INT_DeliverFee_SNY := 0;
+                                        //add new 10.05.21
+                                        //NewSalesLine."INT_Companant Line_SNY" := true;
+                                        //add new 10.05.21
                                         NewSalesLine.Modify(true);
                                     until BundleLine.Next() = 0;
                             end;
@@ -3132,6 +3193,19 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
             until SalesLine.Next() = 0;
         // SalesHeader.INT_InternalProcessing_SNY := SalesHeader.INT_InternalProcessing_SNY::"Explode SO";
         // SalesHeader.Modify(true);
+    end;
+
+    local procedure UpdateTrackingNumber()
+    var
+        myInt: Integer;
+    begin
+        //Message('%1', SalesHeader."External Document No.");
+        if SalesHeader."Package Tracking No." = '' then begin
+            SalesHeader."Package Tracking No." := SalesHeader."External Document No.";
+            SalesHeader.Modify();
+            Commit();
+        end;
+
     end;
 
     procedure SellVoucherCalculate()

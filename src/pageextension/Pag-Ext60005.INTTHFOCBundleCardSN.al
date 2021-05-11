@@ -107,6 +107,7 @@ pageextension 60005 "INT_TH_FOCBundleCard_SN" extends INT_FOCBundleCard_SNY
                     "Is Active" := true;
                     "Activated By" := UserId;
                     "Activated Date" := today;
+                    TestField("Item No.");
                     Modify();
                     CurrPage.Update(false);
                 end;
@@ -123,6 +124,7 @@ pageextension 60005 "INT_TH_FOCBundleCard_SN" extends INT_FOCBundleCard_SNY
                     "Is Active" := false;
                     "Activated By" := '';
                     "Activated Date" := 0D;
+                    TestField("Item No.");
                     Modify();
                     CurrPage.Update(false);
                 end;

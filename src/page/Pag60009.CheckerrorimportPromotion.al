@@ -5,6 +5,8 @@ page 60009 "Checkerrorimport_Promotion"
     ApplicationArea = All;
     UsageCategory = Administration;
     SourceTable = INT_Temptableforimport;
+    SourceTableView = sorting(sortno);
+
 
     layout
     {

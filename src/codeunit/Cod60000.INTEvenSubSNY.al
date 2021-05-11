@@ -187,6 +187,53 @@ codeunit 60000 "INT_Even_Sub_SNY"
                     //End;
                     //OnPrintDocument(SalesHeader, SalesLine, 'shippingLabel', Handled);
                 end;
+            'JD':
+                begin
+                    //SelectedOption := StrMenu(MenuStringLbl, 0);
+                    //if SelectedOption > 0 then
+                    //case SelectedOption of
+                    //1:
+                    //begin
+                    if SalesHeader.INT_DeliveryType_SNY = SalesHeader.INT_DeliveryType_SNY::"DBS Home" then begin
+                        SalesHeaderReport.reset;
+                        SalesHeaderReport.SetRange("Document Type", SalesHeader."Document Type");
+                        SalesHeaderReport.SetRange("No.", SalesHeader."No.");
+                        if SalesHeaderReport.findfirst() then
+                            Report.RunModal(60003, true, false, SalesHeaderReport);
+                    end else
+                        INT_EcomInterface_SNY.OnPrintDocument(SalesHeader, SalesLine, 'shippingLabel', Handled);
+                    //end;
+                    //2:
+                    //    INT_EcomInterface_SNY.OnPrintDocument(SalesHeader, SalesLine, 'invoice', Handled);
+                    //3:
+                    //    INT_EcomInterface_SNY.OnPrintDocument(SalesHeader, SalesLine, 'carrierManifest', Handled);
+                    //End;
+                    //OnPrintDocument(SalesHeader, SalesLine, 'shippingLabel', Handled);
+                end;
+            'SHOPEE':
+                begin
+                    //SelectedOption := StrMenu(MenuStringLbl, 0);
+                    //if SelectedOption > 0 then
+                    //case SelectedOption of
+                    //1:
+                    //begin
+                    if SalesHeader.INT_DeliveryType_SNY = SalesHeader.INT_DeliveryType_SNY::"DBS Home" then begin
+                        SalesHeaderReport.reset;
+                        SalesHeaderReport.SetRange("Document Type", SalesHeader."Document Type");
+                        SalesHeaderReport.SetRange("No.", SalesHeader."No.");
+                        if SalesHeaderReport.findfirst() then
+                            Report.RunModal(60003, true, false, SalesHeaderReport);
+                    end else
+                        INT_EcomInterface_SNY.OnPrintDocument(SalesHeader, SalesLine, 'shippingLabel', Handled);
+                    //end;
+                    //2:
+                    //    INT_EcomInterface_SNY.OnPrintDocument(SalesHeader, SalesLine, 'invoice', Handled);
+                    //3:
+                    //    INT_EcomInterface_SNY.OnPrintDocument(SalesHeader, SalesLine, 'carrierManifest', Handled);
+                    //End;
+                    //OnPrintDocument(SalesHeader, SalesLine, 'shippingLabel', Handled);
+                end;
+
         /* 'SONY STORE ONLINE':
             begin
                 Report.RunModal(70003, true, false, SalesHeader);

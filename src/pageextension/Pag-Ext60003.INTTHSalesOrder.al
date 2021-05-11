@@ -344,6 +344,7 @@ pageextension 60003 "INT_TH_Sales_Order" extends "Sales Order"
                     TempBlob: Codeunit "Temp Blob";
                 begin
 
+                    TestField("Posting No.");
                     SalesHeaderReport.reset;
                     SalesHeaderReport.SetRange("Document Type", "Document Type");
                     SalesHeaderReport.SetRange("No.", "No.");

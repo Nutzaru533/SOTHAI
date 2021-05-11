@@ -91,6 +91,7 @@ xmlport 60005 "INT_ImportPromotionTemp_SNY"
                         //check item
                         INT_Temptableforimport.gItemNo := gItemNo;
                         INT_Temptableforimport.gPromotionType := gPromotionType;
+                        INT_Temptableforimport.gPromotionalPrice := gPromotionalPrice;
                         INT_Temptableforimport.gPeriodStart := gPeriodStart;
                         INT_Temptableforimport.gPeriodEnd := gPeriodEnd;
                         INT_Temptableforimport.gDes := gDes;
@@ -323,10 +324,6 @@ xmlport 60005 "INT_ImportPromotionTemp_SNY"
 
                                 gImpFOCHeader.Status := gImpFOCHeader.Status::"Config WIP";
                                 if gImpFOCHeader.Insert() then begin
-                                    INT_Temptableforimport3.Type := format(gImpFOCHeader.Type);
-                                    INT_Temptableforimport3.DocNo := gImpFOCHeader."No.";
-                                    INT_Temptableforimport3.Modify();
-                                    commit;
                                     lineNo += 10000;
                                     gImpFOCLine.init;
                                     gImpFOCLine.type := DocType;
@@ -348,6 +345,7 @@ xmlport 60005 "INT_ImportPromotionTemp_SNY"
                                         //gImpFOCLine."Storage Location" := gStorageLocation;
                                     end;
                                     if gImpFOCLine."SRP Price" < gImpFOCLine."Promotional Price" then begin
+                                        INT_Temptableforimport3.gSRPPriece := format(gImpFOCLine."SRP Price");
                                         INT_Temptableforimport3.error := true;
                                         INT_Temptableforimport3.ErrorDes := 'SRP Price should be greater then Promotion Price !!';
                                     end;
@@ -370,6 +368,9 @@ xmlport 60005 "INT_ImportPromotionTemp_SNY"
                                         gImpFOCLine."Related Item Type" := gImpFOCLine."Related Item Type"::FOC;
 
                                     gImpFOCLine.Insert();
+                                    INT_Temptableforimport3.Type := format(gImpFOCHeader.Type);
+                                    INT_Temptableforimport3.DocNo := gImpFOCHeader."No.";
+                                    INT_Temptableforimport3.Modify();
                                     Commit();
                                 end;
                             end
@@ -417,6 +418,7 @@ xmlport 60005 "INT_ImportPromotionTemp_SNY"
                                 //gImpFOCLine."Storage Location" := gStorageLocation;
                                 gImpFOCLine."Free Gift ID" := gImpFOCHeader."Free Gift ID";
                                 if gImpFOCLine."SRP Price" < gImpFOCLine."Promotional Price" then begin
+                                    INT_Temptableforimport3.gSRPPriece := format(gImpFOCLine."SRP Price");
                                     INT_Temptableforimport3.error := true;
                                     INT_Temptableforimport3.ErrorDes := 'SRP Price should be greater then Promotion Price !!';
                                 end;
@@ -584,7 +586,7 @@ xmlport 60005 "INT_ImportPromotionTemp_SNY"
         DuplicateHeaderErr: Label 'Duplicate Package find for overlapping period. \Package No. %1 \ Starting Date: %2 \Ending Date: %3', Comment = '%1 = Package No. %2-Starting Date, %3 - Ending Date';
         DuplicateLineErr: Label 'Duplicate Item Found in Lines. \Item No.: %1', Comment = '%1 = Item No.';
         BackupateDummyMsg: Label 'Package default dummy delivery fee is not configured!\Do you want to continue?';
-        NoPackageLineErr: Label 'There is no package line with "Realted Item Type" as "Package"';
+        NoPackageLineErr: Label 'There is no package line with "Related Item Type" as "Package"';
         MultipleDummyDeliveryErr: Label 'More than two default dummy delivery fee is configured! Please make only one line item as default';
     begin
         cloststatus := false;
@@ -593,8 +595,8 @@ xmlport 60005 "INT_ImportPromotionTemp_SNY"
         BundleLine.SetRange("No.", BundleHeader."No.");
         BundleLine.SetRange("Related Item Type", BundleLine."Related Item Type"::"Package");
         if BundleLine.IsEmpty() then begin
-            cloststatus := true;
-            checkerrortex := NoPackageLineErr;
+            //cloststatus := true;
+            //checkerrortex := NoPackageLineErr;
         end;
         //Error(NoPackageLineErr);
 
@@ -622,12 +624,14 @@ xmlport 60005 "INT_ImportPromotionTemp_SNY"
         BundleHeader2.Reset();
         BundleHeader2.SetRange(Type, BundleHeader2.Type::Package);
         BundleHeader2.SetRange("Item No.", BundleHeader."Item No.");
+        //BundleHeader2.SetRange("Promotion Type", BundleHeader2."Promotion Type"::NONE);
         //Added by Sri Filter only within Marketplace
         BundleHeader2.SetRange(BundleHeader2.Marketplace, BundleHeader.Marketplace);
         BundleHeader2.SetRange(Status, BundleHeader2.Status::Certified);
         if BundleHeader2.FindSet() then
             repeat
-                checkerrortex := '';
+                //if checkerrortex = '' then
+                //    checkerrortex := '';
                 if (BundleHeader."Starting Date" in [BundleHeader2."Starting Date", BundleHeader2."Ending Date"])
                  or (BundleHeader."Ending Date" in [BundleHeader2."Starting Date", BundleHeader2."Ending Date"]) then begin
                     cloststatus := true;

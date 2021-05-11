@@ -139,6 +139,7 @@ xmlport 60004 "INT_ImportFOCTemp_SNY"
                             INT_Temptableforimport.error := true;
                             INT_Temptableforimport.ErrorDes := 'Quantity must be integer not Decimal.';
                         end;
+
                         Evaluate(qty, gQty);
                         if qty < 0 then begin
                             INT_Temptableforimport.error := true;
@@ -471,6 +472,14 @@ xmlport 60004 "INT_ImportFOCTemp_SNY"
                     FOCExt.reset;
                     FOCExt.SetRange("No.", INT_Temptableforimport6.DocNo);
                     if FOCExt.Find('-') then begin
+
+                        if FOCExt."Item No." = '' then begin
+                            INT_Temptableforimport6.error := true;
+                            INT_Temptableforimport6.ErrorDes := 'Item must have value in Header.';
+                            INT_Temptableforimport6.Modify();
+                            Commit();
+                        end;
+
                         INT_BundleLine_SNY.reset;
                         INT_BundleLine_SNY.SetRange("No.", FOCExt."No.");
                         if INT_BundleLine_SNY.Find('-') then begin
@@ -481,8 +490,10 @@ xmlport 60004 "INT_ImportFOCTemp_SNY"
                                 checkPromotionPrice += INT_BundleLine_SNY."Promotional Price";
                             until INT_BundleLine_SNY.Next = 0;
                             if (checksrpprice <> 0) or (checkPromotionPrice <> 0) then begin
-                                INT_Temptableforimport6.ErrorDes := 'SRP or Promotional Sum Amount Should equal to zero';
+                                INT_Temptableforimport6.error := true;
+                                INT_Temptableforimport6.ErrorDes := 'SRP or Promotional Sum Amount Should equal to zero.';
                                 INT_Temptableforimport6.Modify();
+                                Commit();
                             end else begin
                                 FOCExt."Is Active" := true;
                                 FOCExt."Activated By" := UserId;
@@ -490,14 +501,31 @@ xmlport 60004 "INT_ImportFOCTemp_SNY"
                                 FOCExt.Modify();
                                 Commit();
                             end;
-
                         end;
+
                     end;
                 end;
                 OldNo2 := INT_Temptableforimport6.DocNo;
             until INT_Temptableforimport6.Next() = 0;
         end;
-
+        INT_Temptableforimport10.reset;
+        INT_Temptableforimport10.SetRange(error, true);
+        INT_Temptableforimport10.SetRange(Foc, true);
+        INT_Temptableforimport10.SetFilter(DocNo, '<>%1', '');
+        if INT_Temptableforimport10.Find('-') then begin
+            repeat
+                FOCExtLine.reset;
+                FOCExtLine.SetRange("No.", INT_Temptableforimport10.DocNo);
+                if FOCExtLine.Find('-') then begin
+                    FOCExtLine.DeleteAll();
+                    FOCExt.reset;
+                    FOCExt.SetRange("No.", INT_Temptableforimport10.DocNo);
+                    if FOCExt.Find('-') then begin
+                        FOCExt.Delete();
+                    end;
+                end;
+            until INT_Temptableforimport10.Next() = 0;
+        end;
     end;
 
     var
@@ -538,6 +566,7 @@ xmlport 60004 "INT_ImportFOCTemp_SNY"
         INT_Temptableforimport6: Record INT_Temptableforimport;
         INT_Temptableforimport7: Record INT_Temptableforimport;
         INT_Temptableforimport8: Record INT_Temptableforimport;
+        INT_Temptableforimport10: Record INT_Temptableforimport;
         StartDate: date;
         EndDate: date;
         oldMarketplace: text[50];

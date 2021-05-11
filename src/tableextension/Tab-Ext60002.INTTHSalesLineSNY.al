@@ -9,6 +9,11 @@ tableextension 60002 "INT_TH_Sales_Line_SNY" extends "Sales Line"
             CalcFormula = lookup(item.INT_Inclusive_Discount_SNY where("No." = FIELD("No.")));
 
         }
+        //field(60002; "INT_Companant Line_SNY"; Boolean)
+        //{
+        //    Caption = 'Companant Line.';
+        //    DataClassification = ToBeClassified;
+        //}
     }
 
     var
