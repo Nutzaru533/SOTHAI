@@ -1,3 +1,4 @@
+#pragma implicitwith disable
 pageextension 60003 "INT_TH_Sales_Order" extends "Sales Order"
 {
     layout
@@ -59,33 +60,47 @@ pageextension 60003 "INT_TH_Sales_Order" extends "Sales Order"
             Visible = false;
         }
 
+        modify(INT_Remarks1_SNY)
+        {
+            Caption = 'Remarks(Print)';
+        }
+        modify("VAT Registration No.")
+        {
+            Visible = false;
+        }
+        modify("Branch No.")
+        {
+            Editable = true;
+        }
+
         addafter("Sell-to Address")
         {
             group(MaskSell)
             {
                 Visible = MaskText;
-                field("MSell-to Address"; "Sell-to Address")
+                field("MSell-to Address"; Rec."Sell-to Address")
                 {
                     ApplicationArea = all;
                     ExtendedDatatype = Masked;
                 }
-                field("MSell-to Address2"; "Sell-to Address 2")
+                field("MSell-to Address2"; Rec."Sell-to Address 2")
                 {
                     ApplicationArea = all;
                     ExtendedDatatype = Masked;
                 }
-                field("MSell-to City"; "Sell-to City")
+                field("MSell-to City"; Rec."Sell-to City")
                 {
                     ApplicationArea = all;
                     ExtendedDatatype = Masked;
                 }
-                field("MSell-to Country/Region Code"; "Sell-to Country/Region Code")
+                field("MSell-to Country/Region Code"; Rec."Sell-to Country/Region Code")
                 {
                     ApplicationArea = all;
                     ExtendedDatatype = Masked;
                 }
-                field("MSell-to County"; "Sell-to County")
+                field("MSell-to County"; Rec."Sell-to County")
                 {
+                    //Caption = 'Countries';
                     ApplicationArea = all;
                     ExtendedDatatype = Masked;
                 }
@@ -94,29 +109,29 @@ pageextension 60003 "INT_TH_Sales_Order" extends "Sales Order"
             group(UnMaskSell)
             {
                 Visible = not MaskText;
-                field("UMSell-to Address"; "Sell-to Address")
+                field("UMSell-to Address"; Rec."Sell-to Address")
                 {
 
                     ApplicationArea = all;
                 }
-                field("UMSell-to Address3"; "Sell-to Address 2")
+                field("UMSell-to Address3"; Rec."Sell-to Address 2")
                 {
 
                     ApplicationArea = all;
                 }
-                field("UMSell-to City"; "Sell-to City")
+                field("UMSell-to City"; Rec."Sell-to City")
                 {
 
                     ApplicationArea = all;
                 }
-                field("UMSell-to Country/Region Code"; "Sell-to Country/Region Code")
+                field("UMSell-to Country/Region Code"; Rec."Sell-to Country/Region Code")
                 {
 
                     ApplicationArea = all;
                 }
-                field("UMSell-to County"; "Sell-to County")
+                field("UMSell-to County"; Rec."Sell-to County")
                 {
-
+                    //Caption = 'Countries';
                     ApplicationArea = all;
                 }
             }
@@ -126,27 +141,27 @@ pageextension 60003 "INT_TH_Sales_Order" extends "Sales Order"
             group(MaskShip)
             {
                 Visible = MaskText;
-                field("Mship-to Address"; "ship-to Address")
+                field("Mship-to Address"; Rec."ship-to Address")
                 {
                     ApplicationArea = all;
                     ExtendedDatatype = Masked;
                 }
-                field("Mship-to Address2"; "ship-to Address 2")
+                field("Mship-to Address2"; Rec."ship-to Address 2")
                 {
                     ApplicationArea = all;
                     ExtendedDatatype = Masked;
                 }
-                field("Mship-to City"; "ship-to City")
+                field("Mship-to City"; Rec."ship-to City")
                 {
                     ApplicationArea = all;
                     ExtendedDatatype = Masked;
                 }
-                field("Mship-to Country/Region Code"; "ship-to Country/Region Code")
+                field("Mship-to Country/Region Code"; Rec."ship-to Country/Region Code")
                 {
                     ApplicationArea = all;
                     ExtendedDatatype = Masked;
                 }
-                field("Mship-to County"; "ship-to County")
+                field("Mship-to County"; Rec."ship-to County")
                 {
                     ApplicationArea = all;
                     ExtendedDatatype = Masked;
@@ -156,27 +171,27 @@ pageextension 60003 "INT_TH_Sales_Order" extends "Sales Order"
             group(UnMaskShip)
             {
                 Visible = not MaskText;
-                field("UMship-to Address"; "ship-to Address")
+                field("UMship-to Address"; Rec."ship-to Address")
                 {
 
                     ApplicationArea = all;
                 }
-                field("UMship-to Address3"; "ship-to Address 2")
+                field("UMship-to Address3"; Rec."ship-to Address 2")
                 {
 
                     ApplicationArea = all;
                 }
-                field("UMship-to City"; "ship-to City")
+                field("UMship-to City"; Rec."ship-to City")
                 {
 
                     ApplicationArea = all;
                 }
-                field("UMship-to Country/Region Code"; "ship-to Country/Region Code")
+                field("UMship-to Country/Region Code"; Rec."ship-to Country/Region Code")
                 {
 
                     ApplicationArea = all;
                 }
-                field("UMship-to County"; "ship-to County")
+                field("UMship-to County"; Rec."ship-to County")
                 {
 
                     ApplicationArea = all;
@@ -189,27 +204,27 @@ pageextension 60003 "INT_TH_Sales_Order" extends "Sales Order"
             group(MaskBill)
             {
                 Visible = MaskText;
-                field("MBill-to Address"; "Bill-to Address")
+                field("MBill-to Address"; Rec."Bill-to Address")
                 {
                     ApplicationArea = all;
                     ExtendedDatatype = Masked;
                 }
-                field("MBill-to Address2"; "Bill-to Address 2")
+                field("MBill-to Address2"; Rec."Bill-to Address 2")
                 {
                     ApplicationArea = all;
                     ExtendedDatatype = Masked;
                 }
-                field("MBill-to City"; "Bill-to City")
+                field("MBill-to City"; Rec."Bill-to City")
                 {
                     ApplicationArea = all;
                     ExtendedDatatype = Masked;
                 }
-                field("MBill-to Country/Region Code"; "Bill-to Country/Region Code")
+                field("MBill-to Country/Region Code"; Rec."Bill-to Country/Region Code")
                 {
                     ApplicationArea = all;
                     ExtendedDatatype = Masked;
                 }
-                field("MBill-to County"; "Bill-to County")
+                field("MBill-to County"; Rec."Bill-to County")
                 {
                     ApplicationArea = all;
                     ExtendedDatatype = Masked;
@@ -218,27 +233,27 @@ pageextension 60003 "INT_TH_Sales_Order" extends "Sales Order"
             group(UnMaskBill)
             {
                 Visible = not MaskText;
-                field("UMBill-to Address"; "Bill-to Address")
+                field("UMBill-to Address"; Rec."Bill-to Address")
                 {
 
                     ApplicationArea = all;
                 }
-                field("UMBill-to Address3"; "Bill-to Address 2")
+                field("UMBill-to Address3"; Rec."Bill-to Address 2")
                 {
 
                     ApplicationArea = all;
                 }
-                field("UMBill-to City"; "Bill-to City")
+                field("UMBill-to City"; Rec."Bill-to City")
                 {
 
                     ApplicationArea = all;
                 }
-                field("UMBill-to Country/Region Code"; "Bill-to Country/Region Code")
+                field("UMBill-to Country/Region Code"; Rec."Bill-to Country/Region Code")
                 {
 
                     ApplicationArea = all;
                 }
-                field("UMBill-to County"; "Bill-to County")
+                field("UMBill-to County"; Rec."Bill-to County")
                 {
 
                     ApplicationArea = all;
@@ -252,7 +267,7 @@ pageextension 60003 "INT_TH_Sales_Order" extends "Sales Order"
         {
 
 
-            field("Posting No.2"; "Posting No.")
+            field("Posting No.2"; Rec."Posting No.")
             {
                 ApplicationArea = all;
                 //Visible = not MaskText;
@@ -260,11 +275,44 @@ pageextension 60003 "INT_TH_Sales_Order" extends "Sales Order"
             //}
 
         }
+        addafter("VAT Registration No.")
+        {
+            field("Vat Registration No.2"; Rec."Vat Registration No.2")
+            {
+                ApplicationArea = all;
+            }
+        }
+        addafter("Work Description")
+        {
+            field(INT_PrintAWB_Date_Time_SNY; Rec.INT_PrintAWB_Date_Time_SNY)
+            {
+                ApplicationArea = all;
+                Editable = false;
+                Caption = 'AWB Printed Date Time';
+            }
+            field(INT_Print_Date_Time_SNY; Rec.INT_Print_Date_Time_SNY)
+            {
+                ApplicationArea = all;
+                Editable = false;
+                Caption = 'Receipt/Tax Invoice Printed Date Time';
+            }
+        }
 
 
     }
     actions
     {
+        modify(INT_SetReadytoShip_SNY)
+        {
+            trigger OnBeforeAction()
+            var
+                myInt: Integer;
+            begin
+                if Rec.INT_InternalProcessing_SNY <= 6 then begin
+                    error('Inventory Not  Available so cannot do RTS ');
+                end;
+            end;
+        }
         // Add changes to page actions here
         addafter(INT_PrintDocument_SNY)
         {
@@ -281,11 +329,11 @@ pageextension 60003 "INT_TH_Sales_Order" extends "Sales Order"
                 var
                     SalesHeaderReport: Record "Sales Header";
                 begin
-                    if not (INT_DeliveryType_SNY = INT_DeliveryType_SNY::"DBS Home") then
+                    if not (Rec.INT_DeliveryType_SNY = Rec.INT_DeliveryType_SNY::"DBS Home") then
                         Error('Only Print on Delivery Type is DBS Home');
                     SalesHeaderReport.reset;
-                    SalesHeaderReport.SetRange("Document Type", "Document Type");
-                    SalesHeaderReport.SetRange("No.", "No.");
+                    SalesHeaderReport.SetRange("Document Type", Rec."Document Type");
+                    SalesHeaderReport.SetRange("No.", Rec."No.");
                     if SalesHeaderReport.findfirst() then
                         Report.RunModal(60003, true, false, SalesHeaderReport);
                 end;
@@ -305,14 +353,20 @@ pageextension 60003 "INT_TH_Sales_Order" extends "Sales Order"
                     SalesInvoiceReport: Report "INT_Sales Invoice_SNY";
 
                 begin
-
+                    Rec.TestField("Posting No.");
+                    //if INT_MktOrdStatus_SNY = 'canceled' then
+                    //    error('Cancel Order Cannot Print AWB');
                     CurrPage.Update(false);
                     if rec.INT_MarketPlace_SNY = 'SONY STORE ONLINE' then begin
                         SalesHeaderReport.reset;
-                        SalesHeaderReport.SetRange("Document Type", "Document Type");
-                        SalesHeaderReport.SetRange("No.", "No.");
-                        if SalesHeaderReport.findfirst() then
+                        SalesHeaderReport.SetRange("Document Type", Rec."Document Type");
+                        SalesHeaderReport.SetRange("No.", Rec."No.");
+                        if SalesHeaderReport.findfirst() then begin
                             Report.RunModal(70003, true, false, SalesHeaderReport);
+                            SalesHeaderReport.INT_PrintAWB_Count_SNY := SalesHeaderReport.INT_PrintAWB_Count_SNY + 1;
+                            SalesHeaderReport.INT_PrintAWB_Date_Time_SNY := CurrentDateTime;
+                            SalesHeaderReport.Modify();
+                        end;
                     end
                     else
                         EcomInterface.PrintDocument(Rec);
@@ -344,14 +398,16 @@ pageextension 60003 "INT_TH_Sales_Order" extends "Sales Order"
                     TempBlob: Codeunit "Temp Blob";
                 begin
 
-                    TestField("Posting No.");
+                    Rec.TestField("Posting No.");
+                    //if INT_MktOrdStatus_SNY = 'canceled' then
+                    //    error('Cancel Order Cannot Print Invoice');
                     SalesHeaderReport.reset;
-                    SalesHeaderReport.SetRange("Document Type", "Document Type");
-                    SalesHeaderReport.SetRange("No.", "No.");
+                    SalesHeaderReport.SetRange("Document Type", Rec."Document Type");
+                    SalesHeaderReport.SetRange("No.", Rec."No.");
                     if SalesHeaderReport.findfirst() then begin
 
                         //REPORT.run(REPORT::INT_TH_Sales_Invoice, true, false, SalesHeaderReport);
-                        REPORT.run(REPORT::INT_TH_Sales_Invoice, true, true, SalesHeaderReport);
+                        REPORT.run(REPORT::INT_TH_Sales_Invoice2, true, true, SalesHeaderReport);
                         CurrPage.Update(false);
                         Commit();
                     end;
@@ -560,6 +616,7 @@ pageextension 60003 "INT_TH_Sales_Order" extends "Sales Order"
                 end;
             }
         }
+
     }
 
 
@@ -626,3 +683,4 @@ pageextension 60003 "INT_TH_Sales_Order" extends "Sales Order"
 
 
 }
+#pragma implicitwith restore

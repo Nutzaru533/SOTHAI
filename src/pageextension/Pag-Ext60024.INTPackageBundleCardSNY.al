@@ -63,6 +63,7 @@ pageextension 60024 INT_PackageBundleCard_SNY extends "INT_PackageBundleCard_SNY
         BundleHeader."Certified Date" := Today();
         BundleHeader.Status := BundleHeader.Status::Certified;
         BundleHeader.UpdateStatus();
+        BundleHeader."Is Active" := true;
         BundleHeader.Modify();
     end;
 
@@ -92,21 +93,21 @@ pageextension 60024 INT_PackageBundleCard_SNY extends "INT_PackageBundleCard_SNY
         NoPackageLineErr: Label 'There is no package line with "Realted Item Type" as "Package"';
         MultipleDummyDeliveryErr: Label 'More than two default dummy delivery fee is configured! Please make only one line item as default';
     begin
-        /*
-                BundleLine.Reset();
-                BundleLine.SetRange(Type, BundleHeader.Type);
-                BundleLine.SetRange("No.", BundleHeader."No.");
-                BundleLine.SetRange("Related Item Type", BundleLine."Related Item Type"::"Package");
-                if BundleLine.IsEmpty() then
-                    Error(NoPackageLineErr);
-        */
+
+        BundleLine.Reset();
+        BundleLine.SetRange(Type, BundleHeader.Type);
+        BundleLine.SetRange("No.", BundleHeader."No.");
+        BundleLine.SetRange("Related Item Type", BundleLine."Related Item Type"::"Package");
+        //if BundleLine.IsEmpty() then
+        //    Error(NoPackageLineErr);
+
         BundleLine.SetRange("Main Item for Delivery", true);
         if BundleLine.Count() > 1 then
             Error(MultipleDummyDeliveryErr);
 
-        if BundleLine.IsEmpty() then
-            if not confirm(BackupateDummyMsg, false) then
-                Error('');
+        //if BundleLine.IsEmpty() then
+        //    if not confirm(BackupateDummyMsg, false) then
+        //        Error('');
 
         //if BundleLine.FindFirst() then
         //repeat

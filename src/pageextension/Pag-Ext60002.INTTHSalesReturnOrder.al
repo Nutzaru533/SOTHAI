@@ -1,3 +1,4 @@
+#pragma implicitwith disable
 pageextension 60002 "INT_TH_Sales_Return_Order" extends "Sales Return Order"
 {
     layout
@@ -5,12 +6,12 @@ pageextension 60002 "INT_TH_Sales_Return_Order" extends "Sales Return Order"
         // Add changes to page layout here
         addafter(Status)
         {
-            field("Order Confirm"; INT_Order_Confirm_SNY)
+            field("Order Confirm"; Rec.INT_Order_Confirm_SNY)
             {
                 Caption = 'Goods Received';
                 ApplicationArea = All;
             }
-            field("Posting No."; "Posting No.")
+            field("Posting No."; Rec."Posting No.")
             {
                 Caption = 'Posting No.';
                 ApplicationArea = all;
@@ -18,7 +19,7 @@ pageextension 60002 "INT_TH_Sales_Return_Order" extends "Sales Return Order"
         }
         addafter(INT_BCOrderNo_SNY)
         {
-            field("INT_BC Order Invoice No_SYN"; "INT_BC Order Invoice No_SYN")
+            field("INT_BC Order Invoice No_SYN"; Rec."INT_BC Order Invoice No_SYN")
             {
                 ApplicationArea = all;
             }
@@ -79,34 +80,40 @@ pageextension 60002 "INT_TH_Sales_Return_Order" extends "Sales Return Order"
         {
             Visible = false;
         }
+        modify(INT_Remarks1_SNY)
+        {
+            Caption = 'Remasks(Report)';
+        }
+
 
         addafter("Sell-to Address")
         {
             group(MaskSell)
             {
                 Visible = MaskText;
-                field("MSell-to Address"; "Sell-to Address")
+                field("MSell-to Address"; Rec."Sell-to Address")
                 {
                     ApplicationArea = all;
                     ExtendedDatatype = Masked;
                 }
-                field("MSell-to Address2"; "Sell-to Address 2")
+                field("MSell-to Address2"; Rec."Sell-to Address 2")
                 {
                     ApplicationArea = all;
                     ExtendedDatatype = Masked;
                 }
-                field("MSell-to City"; "Sell-to City")
+                field("MSell-to City"; Rec."Sell-to City")
                 {
                     ApplicationArea = all;
                     ExtendedDatatype = Masked;
                 }
-                field("MSell-to Country/Region Code"; "Sell-to Country/Region Code")
+                field("MSell-to Country/Region Code"; Rec."Sell-to Country/Region Code")
                 {
                     ApplicationArea = all;
                     ExtendedDatatype = Masked;
                 }
-                field("MSell-to County"; "Sell-to County")
+                field("MSell-to County"; Rec."Sell-to County")
                 {
+                    //Caption = 'Countries';
                     ApplicationArea = all;
                     ExtendedDatatype = Masked;
                 }
@@ -115,29 +122,29 @@ pageextension 60002 "INT_TH_Sales_Return_Order" extends "Sales Return Order"
             group(UnMaskSell)
             {
                 Visible = not MaskText;
-                field("UMSell-to Address"; "Sell-to Address")
+                field("UMSell-to Address"; Rec."Sell-to Address")
                 {
 
                     ApplicationArea = all;
                 }
-                field("UMSell-to Address3"; "Sell-to Address 2")
+                field("UMSell-to Address3"; Rec."Sell-to Address 2")
                 {
 
                     ApplicationArea = all;
                 }
-                field("UMSell-to City"; "Sell-to City")
+                field("UMSell-to City"; Rec."Sell-to City")
                 {
 
                     ApplicationArea = all;
                 }
-                field("UMSell-to Country/Region Code"; "Sell-to Country/Region Code")
+                field("UMSell-to Country/Region Code"; Rec."Sell-to Country/Region Code")
                 {
 
                     ApplicationArea = all;
                 }
-                field("UMSell-to County"; "Sell-to County")
+                field("UMSell-to County"; Rec."Sell-to County")
                 {
-
+                    //Caption = 'Countries';
                     ApplicationArea = all;
                 }
             }
@@ -147,27 +154,27 @@ pageextension 60002 "INT_TH_Sales_Return_Order" extends "Sales Return Order"
             group(MaskShip)
             {
                 Visible = MaskText;
-                field("Mship-to Address"; "ship-to Address")
+                field("Mship-to Address"; Rec."ship-to Address")
                 {
                     ApplicationArea = all;
                     ExtendedDatatype = Masked;
                 }
-                field("Mship-to Address2"; "ship-to Address 2")
+                field("Mship-to Address2"; Rec."ship-to Address 2")
                 {
                     ApplicationArea = all;
                     ExtendedDatatype = Masked;
                 }
-                field("Mship-to City"; "ship-to City")
+                field("Mship-to City"; Rec."ship-to City")
                 {
                     ApplicationArea = all;
                     ExtendedDatatype = Masked;
                 }
-                field("Mship-to Country/Region Code"; "ship-to Country/Region Code")
+                field("Mship-to Country/Region Code"; Rec."ship-to Country/Region Code")
                 {
                     ApplicationArea = all;
                     ExtendedDatatype = Masked;
                 }
-                field("Mship-to County"; "ship-to County")
+                field("Mship-to County"; Rec."ship-to County")
                 {
                     ApplicationArea = all;
                     ExtendedDatatype = Masked;
@@ -177,27 +184,27 @@ pageextension 60002 "INT_TH_Sales_Return_Order" extends "Sales Return Order"
             group(UnMaskShip)
             {
                 Visible = not MaskText;
-                field("UMship-to Address"; "ship-to Address")
+                field("UMship-to Address"; Rec."ship-to Address")
                 {
 
                     ApplicationArea = all;
                 }
-                field("UMship-to Address3"; "ship-to Address 2")
+                field("UMship-to Address3"; Rec."ship-to Address 2")
                 {
 
                     ApplicationArea = all;
                 }
-                field("UMship-to City"; "ship-to City")
+                field("UMship-to City"; Rec."ship-to City")
                 {
 
                     ApplicationArea = all;
                 }
-                field("UMship-to Country/Region Code"; "ship-to Country/Region Code")
+                field("UMship-to Country/Region Code"; Rec."ship-to Country/Region Code")
                 {
 
                     ApplicationArea = all;
                 }
-                field("UMship-to County"; "ship-to County")
+                field("UMship-to County"; Rec."ship-to County")
                 {
 
                     ApplicationArea = all;
@@ -210,27 +217,27 @@ pageextension 60002 "INT_TH_Sales_Return_Order" extends "Sales Return Order"
             group(MaskBill)
             {
                 Visible = MaskText;
-                field("MBill-to Address"; "Bill-to Address")
+                field("MBill-to Address"; Rec."Bill-to Address")
                 {
                     ApplicationArea = all;
                     ExtendedDatatype = Masked;
                 }
-                field("MBill-to Address2"; "Bill-to Address 2")
+                field("MBill-to Address2"; Rec."Bill-to Address 2")
                 {
                     ApplicationArea = all;
                     ExtendedDatatype = Masked;
                 }
-                field("MBill-to City"; "Bill-to City")
+                field("MBill-to City"; Rec."Bill-to City")
                 {
                     ApplicationArea = all;
                     ExtendedDatatype = Masked;
                 }
-                field("MBill-to Country/Region Code"; "Bill-to Country/Region Code")
+                field("MBill-to Country/Region Code"; Rec."Bill-to Country/Region Code")
                 {
                     ApplicationArea = all;
                     ExtendedDatatype = Masked;
                 }
-                field("MBill-to County"; "Bill-to County")
+                field("MBill-to County"; Rec."Bill-to County")
                 {
                     ApplicationArea = all;
                     ExtendedDatatype = Masked;
@@ -239,27 +246,27 @@ pageextension 60002 "INT_TH_Sales_Return_Order" extends "Sales Return Order"
             group(UnMaskBill)
             {
                 Visible = not MaskText;
-                field("UMBill-to Address"; "Bill-to Address")
+                field("UMBill-to Address"; Rec."Bill-to Address")
                 {
 
                     ApplicationArea = all;
                 }
-                field("UMBill-to Address3"; "Bill-to Address 2")
+                field("UMBill-to Address3"; Rec."Bill-to Address 2")
                 {
 
                     ApplicationArea = all;
                 }
-                field("UMBill-to City"; "Bill-to City")
+                field("UMBill-to City"; Rec."Bill-to City")
                 {
 
                     ApplicationArea = all;
                 }
-                field("UMBill-to Country/Region Code"; "Bill-to Country/Region Code")
+                field("UMBill-to Country/Region Code"; Rec."Bill-to Country/Region Code")
                 {
 
                     ApplicationArea = all;
                 }
-                field("UMBill-to County"; "Bill-to County")
+                field("UMBill-to County"; Rec."Bill-to County")
                 {
 
                     ApplicationArea = all;
@@ -267,6 +274,14 @@ pageextension 60002 "INT_TH_Sales_Return_Order" extends "Sales Return Order"
             }
 
         }
+        addbefore("Posting No.")
+        {
+            field("Vat Registration No.2"; Rec."Vat Registration No.2")
+            {
+                ApplicationArea = all;
+            }
+        }
+
     }
 
     actions
@@ -310,8 +325,8 @@ pageextension 60002 "INT_TH_Sales_Return_Order" extends "Sales Return Order"
                     trigger OnAction()
                     begin
                         CurrPage.Update(false);
-                        "INT_Order_Confirm_SNY" := true;
-                        Modify;
+                        Rec."INT_Order_Confirm_SNY" := true;
+                        Rec.Modify;
                         CurrPage.Update(false);
                     end;
                 }
@@ -329,7 +344,7 @@ pageextension 60002 "INT_TH_Sales_Return_Order" extends "Sales Return Order"
                         NotifySAP: Codeunit INT_SAPAPI_SNY;
                     begin
                         CurrPage.Update(false);
-                        TestField("INT_Order_Confirm_SNY");
+                        Rec.TestField("INT_Order_Confirm_SNY");
                         NotifySAP.ManualNotify(Rec);
                         CurrPage.Update(false);
                     end;
@@ -356,9 +371,10 @@ pageextension 60002 "INT_TH_Sales_Return_Order" extends "Sales Return Order"
                 begin
 
                     CurrPage.Update(false);
+                    Rec.TestField("Posting No.");
                     SalesHeaderReport.reset;
-                    SalesHeaderReport.SetRange("Document Type", "Document Type");
-                    SalesHeaderReport.SetRange("No.", "No.");
+                    SalesHeaderReport.SetRange("Document Type", Rec."Document Type");
+                    SalesHeaderReport.SetRange("No.", Rec."No.");
                     if SalesHeaderReport.findfirst() then
                         Report.RunModal(60002, true, false, SalesHeaderReport);
 
@@ -433,3 +449,4 @@ pageextension 60002 "INT_TH_Sales_Return_Order" extends "Sales Return Order"
 
 
 }
+#pragma implicitwith restore

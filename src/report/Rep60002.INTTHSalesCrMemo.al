@@ -17,9 +17,9 @@ report 60002 "INT_TH_SalesCr.Memo"
             column(HeaderDocType; "Document Type")
             {
             }
-            column(DocNo; "No.") { }
+            column(DocNo; "Posting No.") { }
             column(MarketPlace; INT_MarketPlace_SNY) { }
-            column(marketSignature_SNY; marketplace.INT_Signature_SNY) { }
+            column(marketSignature_SNY; marketplace.INT_Singatrue2_SNY) { }
             column(HeaderDocNo; "External Document No.")
             {
             }
@@ -64,7 +64,7 @@ report 60002 "INT_TH_SalesCr.Memo"
             column(CompNameTH; CompanyInfo.INT_Name_TH_SNY)
             {
             }
-            column(CompName2; CompanyInfo."Contact Person")
+            column(CompName2; CompanyInfo."Name 2")
             {
             }
             column(CompAddress; CompanyInfo.Address)
@@ -111,7 +111,7 @@ report 60002 "INT_TH_SalesCr.Memo"
             column(shipCountry; shipCountry) { }
             column(shipContry; shipContry) { }
             column(shippostcode; shippostcode) { }
-            column(VAT_Registration_No_; "VAT Registration No.") { }
+            column(VAT_Registration_No_; "VAT Registration No.2") { }
             column(TotalSalesValue; TotalSalesValue)
             {
                 DecimalPlaces = 2 : 2;
@@ -144,6 +144,7 @@ report 60002 "INT_TH_SalesCr.Memo"
             column(difamt; difamt) { }
             column(vatdif; vatdif) { }
             column(totalcramt; totalcramt) { }
+            column(INT_Remarks1_SNY; INT_Remarks1_SNY) { }
             dataitem(Line; "Sales Line")
             {
                 DataItemLink = "Document Type" = FIELD("Document Type"), "Document No." = FIELD("No.");
@@ -160,7 +161,7 @@ report 60002 "INT_TH_SalesCr.Memo"
                 column(ItemNo; "No.")
                 {
                 }
-                column(Description; SKU)
+                column(Description; Description)
                 {
                 }
                 column(QtytoInvoice; RepQuantity)
@@ -306,10 +307,17 @@ report 60002 "INT_TH_SalesCr.Memo"
                     //fixline := 13;
                     //countLine := fixline - LineNo;
                     //SetRange(Number, countLine);
+                    /*
                     IF countLine > 8 THEN
                         countLine := (27 - countLine)
                     ELSE
                         countLine := 8 - countLine;
+                    SETRANGE(Number, 1, countLine);
+*/
+                    IF countLine > 4 THEN
+                        countLine := (8 - countLine)
+                    ELSE
+                        countLine := 4 - countLine;
                     SETRANGE(Number, 1, countLine);
                 end;
             }
@@ -333,12 +341,14 @@ report 60002 "INT_TH_SalesCr.Memo"
                 TotalSalesLine.Reset();
                 TotalSalesLine.SetRange("Document Type", Header."Document Type");
                 TotalSalesLine.setrange("Document No.", Header."No.");
+                TotalSalesLine.SetFilter(INT_MKTOrdStatus_SNY, '<>%1', 'canceled');
                 if TotalSalesLine.FindFirst() then
                     TotalDiscountCode := TotalSalesLine."INT_Discount Code_SNY";
 
                 TotalSalesLine.Reset();
                 TotalSalesLine.SetRange("Document Type", Header."Document Type");
                 TotalSalesLine.setrange("Document No.", Header."No.");
+                TotalSalesLine.SetFilter(INT_MKTOrdStatus_SNY, '<>%1', 'canceled');
                 if TotalSalesLine.FindSet() then
                     repeat
                         TotalSalesValue += (TotalSalesLine."Line Amount");
@@ -400,18 +410,31 @@ report 60002 "INT_TH_SalesCr.Memo"
                         difamt := abs(TotalSalesValue - originnalinvamt);
                         vatdif := round((difamt * 7) / 100);
                         totalcramt := difamt + vatdif;
+                        if difamt = 0 then begin
+                            currectamt := TotalSalesValue;
+                            //difamt := GSTValue;
+                            vatdif := GSTValue;
+                            totalcramt := TotalSalesValue;
+                        end;
                     end;
+                end else begin
+                    //originnalinvamt := salesH3."Amount Including VAT";
+                    currectamt := TotalSalesValue;
+                    //difamt := GSTValue;
+                    vatdif := GSTValue;
+                    totalcramt := TotalSalesValue;
                 end;
                 //Calculate CREDIT MEMO
+
+                if not contact.get("Bill-to Contact No.") then
+                    contact.init;
+
 
                 marketplace.reset;
                 marketplace.SetRange(marketplace, INT_MarketPlace_SNY);
                 if marketplace.Find('-') then begin
-                    marketplace.CalcFields(INT_Signature_SNY);
+                    marketplace.CalcFields(INT_Singatrue2_SNY);
                 end;
-                if not contact.get("Bill-to Contact No.") then
-                    contact.init;
-
                 IF "Location Code" <> '' then
                     locationcode := "Location Code";
             end;

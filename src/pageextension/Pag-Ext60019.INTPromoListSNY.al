@@ -45,7 +45,7 @@ pageextension 60019 "INT_PromoList_SNY" extends INT_PromoList_SNY
             action(ImportPackage3)
             {
                 ApplicationArea = All;
-                Caption = 'Error Page';
+                Caption = 'Check Error';
                 Image = Import;
                 Visible = true;
                 //Promoted = true;
@@ -71,6 +71,19 @@ pageextension 60019 "INT_PromoList_SNY" extends INT_PromoList_SNY
         }
 
     }
+    trigger OnDeleteRecord(): boolean
+    var
+        myInt: Integer;
+        iNT_PromoMkt_SNY: Record iNT_PromoMkt_SNY;
+    begin
+        iNT_PromoMkt_SNY.reset;
+        iNT_PromoMkt_SNY.SetRange("Promotion No.", "No.");
+        iNT_PromoMkt_SNY.SetRange(Marketplace, Marketplace);
+        iNT_PromoMkt_SNY.SetRange(Published, true);
+        if iNT_PromoMkt_SNY.Find('-') then begin
+            error('Promotion Published can not delete');
+        end;
+    end;
 
 
 

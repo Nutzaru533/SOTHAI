@@ -618,7 +618,7 @@
         <Height>1.56774in</Height>
         <Style />
       </Body>
-      <Width>8.09748in</Width>
+      <Width>8.07664in</Width>
       <Page>
         <PageHeader>
           <Height>5.16014in</Height>
@@ -879,7 +879,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=First(Fields!shipContact.Value, "DataSet_Result")</Value>
+                      <Value>=First(Fields!Sell_to_Contact.Value, "DataSet_Result")</Value>
                       <Style>
                         <FontFamily>AngsanaUPC</FontFamily>
                         <FontSize>16pt</FontSize>
@@ -936,7 +936,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=First(Fields!shipaddress2.Value, "DataSet_Result")+First(Fields!Sell_to_County.Value, "DataSet_Result")</Value>
+                      <Value>=First(Fields!Sell_to_Address_2.Value, "DataSet_Result")+First(Fields!Sell_to_County.Value, "DataSet_Result")</Value>
                       <Style>
                         <FontFamily>AngsanaUPC</FontFamily>
                         <FontSize>14pt</FontSize>
@@ -1176,6 +1176,68 @@
                 </Border>
               </Style>
             </Textbox>
+            <Textbox Name="Textbox53">
+              <KeepTogether>true</KeepTogether>
+              <Paragraphs>
+                <Paragraph>
+                  <TextRuns>
+                    <TextRun>
+                      <Value>=First(Fields!INT_Remarks1_SNY.Value, "DataSet_Result")</Value>
+                      <Style>
+                        <FontFamily>AngsanaUPC</FontFamily>
+                        <FontSize>16pt</FontSize>
+                        <FontWeight>Normal</FontWeight>
+                      </Style>
+                    </TextRun>
+                  </TextRuns>
+                  <Style>
+                    <TextAlign>Left</TextAlign>
+                  </Style>
+                </Paragraph>
+              </Paragraphs>
+              <rd:DefaultName>Textbox1</rd:DefaultName>
+              <Top>1.27288in</Top>
+              <Left>4.97433in</Left>
+              <Height>0.24861in</Height>
+              <Width>2.70001in</Width>
+              <ZIndex>21</ZIndex>
+              <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
+              </Style>
+            </Textbox>
+            <Textbox Name="Textbox55">
+              <KeepTogether>true</KeepTogether>
+              <Paragraphs>
+                <Paragraph>
+                  <TextRuns>
+                    <TextRun>
+                      <Value EvaluationMode="Constant">Remarks :</Value>
+                      <Style>
+                        <FontFamily>AngsanaUPC</FontFamily>
+                        <FontSize>16pt</FontSize>
+                        <FontWeight>Bold</FontWeight>
+                      </Style>
+                    </TextRun>
+                  </TextRuns>
+                  <Style>
+                    <TextAlign>Left</TextAlign>
+                  </Style>
+                </Paragraph>
+              </Paragraphs>
+              <rd:DefaultName>Textbox1</rd:DefaultName>
+              <Top>1.25941in</Top>
+              <Left>4.20996in</Left>
+              <Height>0.24861in</Height>
+              <Width>1.4in</Width>
+              <ZIndex>22</ZIndex>
+              <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
+              </Style>
+            </Textbox>
           </ReportItems>
           <Style>
             <Border>
@@ -1317,6 +1379,9 @@ End Function
         </Field>
         <Field Name="BarCodePicture">
           <DataField>BarCodePicture</DataField>
+        </Field>
+        <Field Name="INT_Remarks1_SNY">
+          <DataField>INT_Remarks1_SNY</DataField>
         </Field>
         <Field Name="No_">
           <DataField>No_</DataField>

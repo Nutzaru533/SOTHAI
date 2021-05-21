@@ -1,3 +1,4 @@
+#pragma implicitwith disable
 pageextension 60014 "INT_Sales_retunr_OrderLine_SNY" extends "Sales Return Order Subform"
 {
     layout
@@ -7,6 +8,8 @@ pageextension 60014 "INT_Sales_retunr_OrderLine_SNY" extends "Sales Return Order
         {
             Editable = confirmreturn;
         }
+
+
     }
 
     actions
@@ -46,10 +49,11 @@ pageextension 60014 "INT_Sales_retunr_OrderLine_SNY" extends "Sales Return Order
         myInt: Integer;
     begin
         salesheader.reset;
-        salesheader.SetRange("Document Type", "Document Type");
-        salesheader.SetRange("No.", "Document No.");
+        salesheader.SetRange("Document Type", Rec."Document Type");
+        salesheader.SetRange("No.", Rec."Document No.");
         if salesheader.find('-') then begin
             confirmreturn := not salesheader.INT_Order_Confirm_SNY;
         end;
     end;
 }
+#pragma implicitwith restore

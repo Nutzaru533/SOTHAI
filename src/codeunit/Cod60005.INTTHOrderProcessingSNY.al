@@ -169,6 +169,28 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
                                 if SalesOrder.Find('-') then begin
                                     SalesHeader."INT_BC Order Invoice No_SYN" := SalesOrder."Posting No.";
                                     SalesHeader.INT_BCOrderNo_SNY := SalesOrder."No.";
+                                    SalesHeader."Sell-to Address" := SalesOrder."Sell-to Address";
+                                    SalesHeader."Sell-to Address 2" := SalesOrder."Sell-to Address 2";
+                                    SalesHeader."Sell-to Contact" := SalesOrder."Sell-to Contact";
+                                    SalesHeader."Sell-to City" := SalesOrder."Sell-to City";
+                                    SalesHeader."Sell-to County" := SalesOrder."Sell-to County";
+                                    SalesHeader."Sell-to Country/Region Code" := SalesOrder."Sell-to Country/Region Code";
+                                    SalesHeader."Sell-to Phone No." := SalesOrder."Sell-to Phone No.";
+
+                                    SalesHeader."bill-to Address" := SalesOrder."bill-to Address";
+                                    SalesHeader."bill-to Address 2" := SalesOrder."bill-to Address 2";
+                                    SalesHeader."bill-to Contact" := SalesOrder."bill-to Contact";
+                                    SalesHeader."bill-to City" := SalesOrder."bill-to City";
+                                    SalesHeader."bill-to County" := SalesOrder."bill-to County";
+                                    SalesHeader."bill-to Country/Region Code" := SalesOrder."bill-to Country/Region Code";
+
+                                    SalesHeader."ship-to Address" := SalesOrder."ship-to Address";
+                                    SalesHeader."ship-to Address 2" := SalesOrder."ship-to Address 2";
+                                    SalesHeader."ship-to Contact" := SalesOrder."ship-to Contact";
+                                    SalesHeader."ship-to City" := SalesOrder."ship-to City";
+                                    SalesHeader."ship-to County" := SalesOrder."ship-to County";
+                                    SalesHeader."ship-to Country/Region Code" := SalesOrder."ship-to Country/Region Code";
+                                    //SalesHeader."bill-to Phone No." := SalesOrder."bill-to Phone No.";
                                     SalesHeader.Modify();
                                     Commit();
                                 end;
@@ -495,6 +517,27 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
                     if SalesOrder.Find('-') then begin
                         SalesHeader."INT_BC Order Invoice No_SYN" := SalesOrder."Posting No.";
                         SalesHeader.INT_BCOrderNo_SNY := SalesOrder."No.";
+                        SalesHeader."Sell-to Address" := SalesOrder."Sell-to Address";
+                        SalesHeader."Sell-to Address 2" := SalesOrder."Sell-to Address 2";
+                        SalesHeader."Sell-to Contact" := SalesOrder."Sell-to Contact";
+                        SalesHeader."Sell-to City" := SalesOrder."Sell-to City";
+                        SalesHeader."Sell-to County" := SalesOrder."Sell-to County";
+                        SalesHeader."Sell-to Country/Region Code" := SalesOrder."Sell-to Country/Region Code";
+                        SalesHeader."Sell-to Phone No." := SalesOrder."Sell-to Phone No.";
+
+                        SalesHeader."bill-to Address" := SalesOrder."bill-to Address";
+                        SalesHeader."bill-to Address 2" := SalesOrder."bill-to Address 2";
+                        SalesHeader."bill-to Contact" := SalesOrder."bill-to Contact";
+                        SalesHeader."bill-to City" := SalesOrder."bill-to City";
+                        SalesHeader."bill-to County" := SalesOrder."bill-to County";
+                        SalesHeader."bill-to Country/Region Code" := SalesOrder."bill-to Country/Region Code";
+
+                        SalesHeader."ship-to Address" := SalesOrder."ship-to Address";
+                        SalesHeader."ship-to Address 2" := SalesOrder."ship-to Address 2";
+                        SalesHeader."ship-to Contact" := SalesOrder."ship-to Contact";
+                        SalesHeader."ship-to City" := SalesOrder."ship-to City";
+                        SalesHeader."ship-to County" := SalesOrder."ship-to County";
+                        SalesHeader."ship-to Country/Region Code" := SalesOrder."ship-to Country/Region Code";
                         SalesHeader.Modify();
                         Commit();
                     end;
@@ -990,7 +1033,13 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
         HaveBundleHeader: Boolean;
         HaveFocBundleHeader: Boolean;
         BundlePackageDetailsErr: Label 'Bundle Details could not found package no. %1';
+
+        checkexplodeFOCandPromo: Boolean; //addnew12052021
+        BundleHeadercheck: Record INT_BundleHeader_SNY; //addnew12052021
+        ApplyMarketplaces: Record INT_PromoMkt_SNY;//addnew12052021
     begin
+
+
         //Explode Bundle
         SalesLine.reset();
         SalesLine.SetRange("Document Type", SalesHeader."Document Type");
@@ -1022,10 +1071,16 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
                                 if SalesHeader."Order Date" in [BundleHeader."Starting Date" .. BundleHeader."Ending Date"] then
                                     HaveBundleHeader := true;
                             until (BundleHeader.Next() = 0) or HaveBundleHeader = true;
+                        //add 180521
+                        BundleHeader.CalcFields("SRP Price", "Promotion Price");
+                        if SalesLine."Unit Price" <> BundleHeader."Promotion Price" then
+                            Error('Unit Price should be same sales Promo price');
+                        //add 180521
                     end else
                         HaveBundleHeader := true;
                     if not HaveBundleHeader then
                         Error(BundlePackageDetailsErr, SalesLine."No.");
+
                     BundleLine.Reset();
                     BundleLine.SetRange(Type, BundleHeader.Type);
                     BundleLine.SetRange("No.", BundleHeader."No.");
@@ -1069,6 +1124,27 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
                                 SalesLine.INT_RelatedItemNo_SNY := BundleLine."Item No.";
                                 SalesLine.Modify();
                             end;
+
+                            //addnew12052021 start
+                            /*
+                            checkexplodeFOCandPromo := false;
+                            BundleHeadercheck.reset;
+                            BundleHeadercheck.SetRange("No.", BundleLine."No.");
+                            BundleHeadercheck.SetRange(Marketplace, SalesHeader.INT_MarketPlace_SNY);
+                            BundleHeadercheck.SetRange("Promotion Type", BundleHeadercheck."Promotion Type"::FOC);
+                            if BundleHeadercheck.Find('-') then begin
+                                ApplyMarketplaces.reset;
+                                ApplyMarketplaces.SetRange(type, ApplyMarketplaces.Type::FOC);
+                                ApplyMarketplaces.SetRange("Promotion No.", BundleHeadercheck."No.");
+                                ApplyMarketplaces.SetRange(Marketplace, BundleHeadercheck.Marketplace);
+                                ApplyMarketplaces.SetRange(Published, true);
+                                if ApplyMarketplaces.Find('-') then
+                                    checkexplodeFOCandPromo := true;
+                            end;
+                            */
+                            //addnew12052021 end
+
+                            //if checkexplodeFOCandPromo = false then begin //addnew12052021
                             if BundleLine."Explode FOC Item" then begin
                                 HaveFocBundleHeader := false;
                                 FocBundleHeader.Reset();
@@ -1080,42 +1156,43 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
                                     repeat
 
                                         HaveFocBundleHeader := (SalesHeader."Order Date" in [FocBundleHeader."Starting Date" .. FocBundleHeader."Ending Date"]) and (BundleHeader."Is Active" = true);
-
                                         if HaveFocBundleHeader then begin
-                                            FocBundleLine.Reset();
-                                            FocBundleLine.SetRange(Type, FocBundleHeader.Type);
-                                            FocBundleLine.SetRange("No.", FocBundleHeader."No.");
-                                            if FocBundleLine.FindSet() then
-                                                repeat
-                                                    newsalesline := SalesLine;
-                                                    NewSalesLine.INT_RelatedItemType_SNY := FocBundleLine."Related Item Type";
-                                                    NewSalesLine.INT_RelatedItemNo_SNY := FocBundleLine."Related Item No.";
-                                                    NewSalesLine."Line No." := NewLineNo;
-                                                    NewLineNo += 10000;
-                                                    NewSalesLine.insert(true);
-                                                    NewSalesLine.validate("No.", FocBundleLine."Item No.");
-                                                    NewSalesLine.validate(Quantity, FocBundleLine.Quantity);
-                                                    if FocBundleLine."Promotional Price" <> 0 then
-                                                        NewSalesLine.validate("Unit Price", FocBundleLine."Promotional Price" / FocBundleLine.Quantity)
-                                                    else
-                                                        NewSalesLine.validate("Unit Price", FocBundleLine."SRP Price" / FocBundleLine.Quantity);
+                                            if FocBundleHeader."Is Active" then begin
+                                                FocBundleLine.Reset();
+                                                FocBundleLine.SetRange(Type, FocBundleHeader.Type);
+                                                FocBundleLine.SetRange("No.", FocBundleHeader."No.");
+                                                if FocBundleLine.FindSet() then
+                                                    repeat
+                                                        newsalesline := SalesLine;
+                                                        NewSalesLine.INT_RelatedItemType_SNY := FocBundleLine."Related Item Type";
+                                                        NewSalesLine.INT_RelatedItemNo_SNY := FocBundleLine."Related Item No.";
+                                                        NewSalesLine."Line No." := NewLineNo;
+                                                        NewLineNo += 10000;
+                                                        NewSalesLine.insert(true);
+                                                        NewSalesLine.validate("No.", FocBundleLine."Item No.");
+                                                        NewSalesLine.validate(Quantity, FocBundleLine.Quantity);
+                                                        if FocBundleLine."Promotional Price" <> 0 then
+                                                            NewSalesLine.validate("Unit Price", FocBundleLine."Promotional Price" / FocBundleLine.Quantity)
+                                                        else
+                                                            NewSalesLine.validate("Unit Price", FocBundleLine."SRP Price" / FocBundleLine.Quantity);
 
-                                                    NewSalesLine."INT_Bundle Order No._SNY" := FocBundleLine."No.";
-                                                    NewSalesLine.INT_DeliveryType_SNY := SalesLine.INT_DeliveryType_SNY;
-                                                    NewSalesLine.INT_MktOrderLineID_SNY := SalesLine.INT_MktOrderLineID_SNY;
-                                                    NewSalesLine.INT_MktOrdStatus_SNY := SalesLine.INT_MktOrdStatus_SNY;
-                                                    NewSalesLine.INT_RelatedItemType_SNY := FocBundleLine."Related Item Type";
-                                                    NewSalesLine.INT_RelatedItemNo_SNY := FocBundleLine."Related Item No.";
-                                                    NewSalesLine.INT_RelOrderLineNo_SNY := SalesLine."Line No.";
-                                                    NewSalesLine.INT_OrderId_SNY := SalesLine.INT_OrderId_SNY;
-                                                    NewSalesLine.INT_MktOrderLineID_SNY := SalesLine.INT_MktOrderLineID_SNY;
-                                                    NewSalesLine.INT_DeliverFee_SNY := 0;
-                                                    NewSalesLine.Modify(true);
-                                                until FocBundleLine.Next() = 0;
+                                                        NewSalesLine."INT_Bundle Order No._SNY" := FocBundleLine."No.";
+                                                        NewSalesLine.INT_DeliveryType_SNY := SalesLine.INT_DeliveryType_SNY;
+                                                        NewSalesLine.INT_MktOrderLineID_SNY := SalesLine.INT_MktOrderLineID_SNY;
+                                                        NewSalesLine.INT_MktOrdStatus_SNY := SalesLine.INT_MktOrdStatus_SNY;
+                                                        NewSalesLine.INT_RelatedItemType_SNY := FocBundleLine."Related Item Type";
+                                                        NewSalesLine.INT_RelatedItemNo_SNY := FocBundleLine."Related Item No.";
+                                                        NewSalesLine.INT_RelOrderLineNo_SNY := SalesLine."Line No.";
+                                                        NewSalesLine.INT_OrderId_SNY := SalesLine.INT_OrderId_SNY;
+                                                        NewSalesLine.INT_MktOrderLineID_SNY := SalesLine.INT_MktOrderLineID_SNY;
+                                                        NewSalesLine.INT_DeliverFee_SNY := 0;
+                                                        NewSalesLine.Modify(true);
+                                                    until FocBundleLine.Next() = 0;
+                                            end;
                                         end;
                                     until (FocBundleHeader.Next() = 0);// or (HaveFocBundleHeader = true);
                             end;
-
+                        //end; //addnew12052021
                         until BundleLine.Next() = 0;
 
                     //if BundleAmount <> SalesLine."Line Amount" then begin //oldcode
@@ -1178,7 +1255,7 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
                                         NewSalesLine.INT_MktOrderLineID_SNY := SalesLine.INT_MktOrderLineID_SNY;
                                         NewSalesLine.INT_DeliverFee_SNY := 0;
                                         //add new 10.05.21
-                                        //NewSalesLine."INT_Companant Line_SNY" := true;
+                                        NewSalesLine."INT_Companant Line_SNY" := true;
                                         //add new 10.05.21
                                         NewSalesLine.Modify(true);
                                     until BundleLine.Next() = 0;
@@ -1377,7 +1454,7 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
         InventoryBuffer: Record "Inventory Buffer" temporary;
         QuantityAllocated: Decimal;
         InventoryNotAvaiable: Boolean;
-
+        saleslinecheck: Record "Sales Line";
     begin
         //Item No.,Variant Code,Dimension Entry No.,Location Code,Bin Code,Lot No.,Serial No.
         SalesLine.reset();
@@ -1418,7 +1495,6 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
                 OtherSalesLine.setrange("Location Code", InventoryBuffer."Location Code");
                 OtherSalesLine.SetFilter("Document No.", '<>%1', SalesHeader."No.");
                 OtherSalesLine.SetFilter(INT_MktOrdStatus_SNY, '<>%1', 'canceled');
-
                 if OtherSalesLine.FindSet() then
                     repeat
                         if OtherSalesHeader."No." <> OtherSalesLine."Document No." then
@@ -1438,14 +1514,13 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
                 if not InventoryNotAvaiable then
                     InventoryNotAvaiable := (item.Inventory - (QuantityAllocated + InventoryBuffer.Quantity)) < 0;
             until (InventoryBuffer.Next() = 0);
+
         if not InventoryNotAvaiable then begin
             SalesHeader.INT_InvCheck_SNY := true;
             SalesHeader.INT_InternalProcessing_SNY := SalesHeader.INT_InternalProcessing_SNY::"Inventory Checked";
             SalesHeader.INT_OrderStatus_SNY := SalesHeader.INT_OrderStatus_SNY::Processed;
             SalesHeader.Modify(true);
-            //posting no.
-            GeneratePostingNo();
-            //Potting no.
+
         end else begin
             /*
                 JobQueueEntry."Parameter String" := 'CHECK_INVENTORY';
@@ -1454,6 +1529,24 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
                     Message('Unable to Send Check Inventory alert:\Error:', GetLastErrorText);
             */
         end;
+        // check cancel order
+        saleslinecheck.reset;
+        saleslinecheck.SetRange("Document Type", SalesHeader."Document Type");
+        saleslinecheck.SetRange("Document No.", SalesHeader."No.");
+        SalesLine.SetFilter(Quantity, '>0');
+        SalesLine.SetFilter(INT_RelatedItemType_SNY, '%1|%2|%3', SalesLine.INT_RelatedItemType_SNY::Main, SalesLine.INT_RelatedItemType_SNY::"Package", SalesLine.INT_RelatedItemType_SNY::FOC);
+        saleslinecheck.SetFilter(INT_MktOrdStatus_SNY, '<>%1', 'canceled');
+        if not saleslinecheck.find('-') then begin
+            SalesHeader.INT_InvCheck_SNY := true;
+            SalesHeader.INT_InternalProcessing_SNY := SalesHeader.INT_InternalProcessing_SNY::"Inventory N/A";
+            SalesHeader.INT_OrderStatus_SNY := SalesHeader.INT_OrderStatus_SNY::Cancelled;
+            SalesHeader.Modify(true);
+            Commit();
+        end;
+        // check cancel order
+        //posting no.
+        GeneratePostingNo();
+        //Potting no.
     end;
 
     procedure DeliveryConfirm(Manual: Boolean)
@@ -1489,9 +1582,16 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
         ProcessConfig: Record INT_ProcessConfig_SNY;
         SyncToSapMsg: Label 'Do you want to notify SAP to pick this order?';
         EcomInterface: Codeunit INT_EcomInterface_SNY;
+        companyinfo: Record "Company Information";
+
+        salesline: Record "Sales Line";
+        Item: Record item;
     begin
-        if SalesHeader.INT_DeliveryType_SNY = SalesHeader.INT_DeliveryType_SNY::"DBS Home" then
-            Error('Delivery Type must be standard or dbs standard!');
+        // commant for thailand only.
+        companyinfo.get();
+        if companyinfo."Country/Region Code" = 'SG' then
+            if SalesHeader.INT_DeliveryType_SNY = SalesHeader.INT_DeliveryType_SNY::"DBS Home" then
+                Error('Delivery Type must be standard or dbs standard!');
         if SalesHeader.INT_DelConfirmed_SNY then
             Error('Collected already Confirmed!');
         if ShowConfirm then
@@ -1499,7 +1599,19 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
                 exit;
 
         SalesHeader.testfield(INT_InvCheck_SNY);
-
+        SalesHeader.testfield(INT_InvCheck_SNY);
+        if SalesHeader.INT_OrderType_SNY = SalesHeader.INT_OrderType_SNY::Presale then begin
+            SalesLine.SetRange("Document Type", SalesHeader."Document Type");
+            SalesLine.SetRange("Document No.", SalesHeader."No.");
+            SalesLine.SetRange("Type", SalesLine."Type"::Item);
+            if SalesLine.FindSet() then
+                repeat
+                    Item.Get(SalesLine."No.");
+                    if item.INT_OrderType_SNY = item.INT_OrderType_SNY::Presale then
+                        if Item.INT_PresaleCloseDate_SNY >= Today() then
+                            error('Presales Close Date is %1. you cannot Confirm Collect today', item.INT_PresaleCloseDate_SNY);
+                until (SalesLine.Next() = 0);
+        end;
         //Confirm Collect only for DBS Standard of Shopify Order
         EcomInterface.SetStatusToConfirmCollect(SalesHeader);
         SalesHeader.get(SalesHeader."Document Type", SalesHeader."No.");
@@ -1616,7 +1728,7 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
         SalesHeader.Modify();
         DeleteSystemCreatedSalesLine();
         //add new 10.05.21
-        //DeleteSystemCreatedSalesLine2();
+        DeleteSystemCreatedSalesLine2();
         //add new 10.05.21
         InterfaceSetup.Get();
         SetupPaidprice();
@@ -1710,7 +1822,7 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
         SalesHeader.Modify();
         DeleteSystemCreatedSalesLine();
         //add new 10.05.21
-        //DeleteSystemCreatedSalesLine2();
+        DeleteSystemCreatedSalesLine2();
         //add new 10.05.21
         InterfaceSetup.Get();
         SetupPaidprice();
@@ -1819,7 +1931,7 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
     begin
         SalesLine.SetRange("Document Type", SalesHeader."Document Type");
         SalesLine.SetRange("Document No.", SalesHeader."No.");
-        //SalesLine.SetRange("INT_Companant Line_SNY", true);
+        SalesLine.SetRange("INT_Companant Line_SNY", true);
         if SalesLine.FindSet() then
             SalesLine.DeleteAll();
         SalesLine.reset;
@@ -2408,37 +2520,39 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
                                         HaveFocBundleHeader := (SalesHeader."Order Date" in [FocBundleHeader."Starting Date" .. FocBundleHeader."Ending Date"]) and (BundleHeader."Is Active" = true);
 
                                         if HaveFocBundleHeader then begin
-                                            FocBundleLine.Reset();
-                                            FocBundleLine.SetRange(Type, FocBundleHeader.Type);
-                                            FocBundleLine.SetRange("No.", FocBundleHeader."No.");
-                                            if FocBundleLine.FindSet() then
-                                                repeat
-                                                    newsalesline := SalesLine;
-                                                    NewSalesLine.INT_RelatedItemType_SNY := FocBundleLine."Related Item Type";
-                                                    NewSalesLine.INT_RelatedItemNo_SNY := FocBundleLine."Related Item No.";
-                                                    NewSalesLine."Line No." := NewLineNo;
-                                                    NewLineNo += 10000;
-                                                    NewSalesLine.insert(true);
-                                                    NewSalesLine.validate("No.", FocBundleLine."Item No.");
-                                                    NewSalesLine.validate(Quantity, FocBundleLine.Quantity * SalesLine.Quantity);
-                                                    if FocBundleLine."Promotional Price" <> 0 then
-                                                        NewSalesLine.validate("Unit Price", FocBundleLine."Promotional Price" / FocBundleLine.Quantity)
-                                                    else
-                                                        NewSalesLine.validate("Unit Price", FocBundleLine."SRP Price" / FocBundleLine.Quantity);
-                                                    NewSalesLine."Location Code" := SalesLine."Location Code";
-                                                    NewSalesLine."INT_Bundle Order No._SNY" := FocBundleLine."No.";
-                                                    NewSalesLine.INT_DeliveryType_SNY := SalesLine.INT_DeliveryType_SNY;
-                                                    NewSalesLine.INT_MktOrderLineID_SNY := SalesLine.INT_MktOrderLineID_SNY;
-                                                    NewSalesLine.INT_MktOrdStatus_SNY := SalesLine.INT_MktOrdStatus_SNY;
-                                                    NewSalesLine.INT_RelatedItemType_SNY := FocBundleLine."Related Item Type";
-                                                    NewSalesLine.INT_RelatedItemNo_SNY := FocBundleLine."Related Item No.";
-                                                    NewSalesLine.INT_RelOrderLineNo_SNY := SalesLine."Line No.";
-                                                    NewSalesLine.INT_OrderId_SNY := SalesLine.INT_OrderId_SNY;
-                                                    NewSalesLine.INT_MktOrderLineID_SNY := SalesLine.INT_MktOrderLineID_SNY;
-                                                    NewSalesLine.INT_DeliverFee_SNY := 0;
-                                                    NewSalesLine.Modify(true);
-                                                until FocBundleLine.Next() = 0;
-                                        end;
+                                            if FocBundleHeader."Is Active" then begin
+                                                FocBundleLine.Reset();
+                                                FocBundleLine.SetRange(Type, FocBundleHeader.Type);
+                                                FocBundleLine.SetRange("No.", FocBundleHeader."No.");
+                                                if FocBundleLine.FindSet() then
+                                                    repeat
+                                                        newsalesline := SalesLine;
+                                                        NewSalesLine.INT_RelatedItemType_SNY := FocBundleLine."Related Item Type";
+                                                        NewSalesLine.INT_RelatedItemNo_SNY := FocBundleLine."Related Item No.";
+                                                        NewSalesLine."Line No." := NewLineNo;
+                                                        NewLineNo += 10000;
+                                                        NewSalesLine.insert(true);
+                                                        NewSalesLine.validate("No.", FocBundleLine."Item No.");
+                                                        NewSalesLine.validate(Quantity, FocBundleLine.Quantity * SalesLine.Quantity);
+                                                        if FocBundleLine."Promotional Price" <> 0 then
+                                                            NewSalesLine.validate("Unit Price", FocBundleLine."Promotional Price" / FocBundleLine.Quantity)
+                                                        else
+                                                            NewSalesLine.validate("Unit Price", FocBundleLine."SRP Price" / FocBundleLine.Quantity);
+                                                        NewSalesLine."Location Code" := SalesLine."Location Code";
+                                                        NewSalesLine."INT_Bundle Order No._SNY" := FocBundleLine."No.";
+                                                        NewSalesLine.INT_DeliveryType_SNY := SalesLine.INT_DeliveryType_SNY;
+                                                        NewSalesLine.INT_MktOrderLineID_SNY := SalesLine.INT_MktOrderLineID_SNY;
+                                                        NewSalesLine.INT_MktOrdStatus_SNY := SalesLine.INT_MktOrdStatus_SNY;
+                                                        NewSalesLine.INT_RelatedItemType_SNY := FocBundleLine."Related Item Type";
+                                                        NewSalesLine.INT_RelatedItemNo_SNY := FocBundleLine."Related Item No.";
+                                                        NewSalesLine.INT_RelOrderLineNo_SNY := SalesLine."Line No.";
+                                                        NewSalesLine.INT_OrderId_SNY := SalesLine.INT_OrderId_SNY;
+                                                        NewSalesLine.INT_MktOrderLineID_SNY := SalesLine.INT_MktOrderLineID_SNY;
+                                                        NewSalesLine.INT_DeliverFee_SNY := 0;
+                                                        NewSalesLine.Modify(true);
+                                                    until FocBundleLine.Next() = 0;
+                                            end;
+                                        end
                                     until (FocBundleHeader.Next() = 0);// or (HaveFocBundleHeader = true);
                             end;
 
@@ -2508,7 +2622,7 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
                                         NewSalesLine.INT_MktOrderLineID_SNY := SalesLine.INT_MktOrderLineID_SNY;
                                         NewSalesLine.INT_DeliverFee_SNY := 0;
                                         //add new 10.05.21
-                                        //NewSalesLine."INT_Companant Line_SNY" := true;
+                                        NewSalesLine."INT_Companant Line_SNY" := true;
                                         //add new 10.05.21
                                         NewSalesLine.Modify(true);
                                     until BundleLine.Next() = 0;
@@ -2630,7 +2744,7 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
         SalesHeader.Modify();
         DeleteSystemCreatedSalesLine();
         //add new 10.05.21
-        //DeleteSystemCreatedSalesLine2();
+        DeleteSystemCreatedSalesLine2();
         //add new 10.05.21
         InterfaceSetup.Get();
         if SalesHeader.INT_InternalProcessing_SNY = SalesHeader.INT_InternalProcessing_SNY::"PSG/BUN Split" then begin
@@ -3087,36 +3201,38 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
                                         HaveFocBundleHeader := (SalesHeader."Order Date" in [FocBundleHeader."Starting Date" .. FocBundleHeader."Ending Date"]) and (BundleHeader."Is Active" = true);
 
                                         if HaveFocBundleHeader then begin
-                                            FocBundleLine.Reset();
-                                            FocBundleLine.SetRange(Type, FocBundleHeader.Type);
-                                            FocBundleLine.SetRange("No.", FocBundleHeader."No.");
-                                            if FocBundleLine.FindSet() then
-                                                repeat
-                                                    newsalesline := SalesLine;
-                                                    NewSalesLine.INT_RelatedItemType_SNY := FocBundleLine."Related Item Type";
-                                                    NewSalesLine.INT_RelatedItemNo_SNY := FocBundleLine."Related Item No.";
-                                                    NewSalesLine."Line No." := NewLineNo;
-                                                    NewLineNo += 10000;
-                                                    NewSalesLine.insert(true);
-                                                    NewSalesLine.validate("No.", FocBundleLine."Item No.");
-                                                    NewSalesLine.validate(Quantity, FocBundleLine.Quantity * SalesLine.Quantity);
-                                                    if FocBundleLine."Promotional Price" <> 0 then
-                                                        NewSalesLine.validate("Unit Price", FocBundleLine."Promotional Price" / FocBundleLine.Quantity)
-                                                    else
-                                                        NewSalesLine.validate("Unit Price", FocBundleLine."SRP Price" / FocBundleLine.Quantity);
-                                                    NewSalesLine."Location Code" := SalesLine."Location Code";
-                                                    NewSalesLine."INT_Bundle Order No._SNY" := FocBundleLine."No.";
-                                                    NewSalesLine.INT_DeliveryType_SNY := SalesLine.INT_DeliveryType_SNY;
-                                                    NewSalesLine.INT_MktOrderLineID_SNY := SalesLine.INT_MktOrderLineID_SNY;
-                                                    NewSalesLine.INT_MktOrdStatus_SNY := SalesLine.INT_MktOrdStatus_SNY;
-                                                    NewSalesLine.INT_RelatedItemType_SNY := FocBundleLine."Related Item Type";
-                                                    NewSalesLine.INT_RelatedItemNo_SNY := FocBundleLine."Related Item No.";
-                                                    NewSalesLine.INT_RelOrderLineNo_SNY := SalesLine."Line No.";
-                                                    NewSalesLine.INT_OrderId_SNY := SalesLine.INT_OrderId_SNY;
-                                                    NewSalesLine.INT_MktOrderLineID_SNY := SalesLine.INT_MktOrderLineID_SNY;
-                                                    NewSalesLine.INT_DeliverFee_SNY := 0;
-                                                    NewSalesLine.Modify(true);
-                                                until FocBundleLine.Next() = 0;
+                                            if FocBundleHeader."Is Active" then begin
+                                                FocBundleLine.Reset();
+                                                FocBundleLine.SetRange(Type, FocBundleHeader.Type);
+                                                FocBundleLine.SetRange("No.", FocBundleHeader."No.");
+                                                if FocBundleLine.FindSet() then
+                                                    repeat
+                                                        newsalesline := SalesLine;
+                                                        NewSalesLine.INT_RelatedItemType_SNY := FocBundleLine."Related Item Type";
+                                                        NewSalesLine.INT_RelatedItemNo_SNY := FocBundleLine."Related Item No.";
+                                                        NewSalesLine."Line No." := NewLineNo;
+                                                        NewLineNo += 10000;
+                                                        NewSalesLine.insert(true);
+                                                        NewSalesLine.validate("No.", FocBundleLine."Item No.");
+                                                        NewSalesLine.validate(Quantity, FocBundleLine.Quantity * SalesLine.Quantity);
+                                                        if FocBundleLine."Promotional Price" <> 0 then
+                                                            NewSalesLine.validate("Unit Price", FocBundleLine."Promotional Price" / FocBundleLine.Quantity)
+                                                        else
+                                                            NewSalesLine.validate("Unit Price", FocBundleLine."SRP Price" / FocBundleLine.Quantity);
+                                                        NewSalesLine."Location Code" := SalesLine."Location Code";
+                                                        NewSalesLine."INT_Bundle Order No._SNY" := FocBundleLine."No.";
+                                                        NewSalesLine.INT_DeliveryType_SNY := SalesLine.INT_DeliveryType_SNY;
+                                                        NewSalesLine.INT_MktOrderLineID_SNY := SalesLine.INT_MktOrderLineID_SNY;
+                                                        NewSalesLine.INT_MktOrdStatus_SNY := SalesLine.INT_MktOrdStatus_SNY;
+                                                        NewSalesLine.INT_RelatedItemType_SNY := FocBundleLine."Related Item Type";
+                                                        NewSalesLine.INT_RelatedItemNo_SNY := FocBundleLine."Related Item No.";
+                                                        NewSalesLine.INT_RelOrderLineNo_SNY := SalesLine."Line No.";
+                                                        NewSalesLine.INT_OrderId_SNY := SalesLine.INT_OrderId_SNY;
+                                                        NewSalesLine.INT_MktOrderLineID_SNY := SalesLine.INT_MktOrderLineID_SNY;
+                                                        NewSalesLine.INT_DeliverFee_SNY := 0;
+                                                        NewSalesLine.Modify(true);
+                                                    until FocBundleLine.Next() = 0;
+                                            end;
                                         end;
                                     until (FocBundleHeader.Next() = 0);// or (HaveFocBundleHeader = true);
                             end;
@@ -3181,7 +3297,7 @@ codeunit 60005 "INT_TH_OrderProcessing_SNY"
                                         NewSalesLine.INT_MktOrderLineID_SNY := SalesLine.INT_MktOrderLineID_SNY;
                                         NewSalesLine.INT_DeliverFee_SNY := 0;
                                         //add new 10.05.21
-                                        //NewSalesLine."INT_Companant Line_SNY" := true;
+                                        NewSalesLine."INT_Companant Line_SNY" := true;
                                         //add new 10.05.21
                                         NewSalesLine.Modify(true);
                                     until BundleLine.Next() = 0;

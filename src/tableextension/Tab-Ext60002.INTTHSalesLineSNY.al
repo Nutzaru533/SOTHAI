@@ -9,6 +9,19 @@ tableextension 60002 "INT_TH_Sales_Line_SNY" extends "Sales Line"
             CalcFormula = lookup(item.INT_Inclusive_Discount_SNY where("No." = FIELD("No.")));
 
         }
+        modify("New Item No.")
+        {
+            trigger OnBeforeValidate()
+            var
+                myInt: Integer;
+                Salesheader: Record "Sales Header";
+            begin
+                if Salesheader.get("Document Type", "Document No.") then begin
+                    if Salesheader.INT_DelConfirmed_SNY then
+                        Error('Confirm Collect done already so cannot change Item');
+                end;
+            end;
+        }
         //field(60002; "INT_Companant Line_SNY"; Boolean)
         //{
         //    Caption = 'Companant Line.';

@@ -126,10 +126,18 @@ xmlport 60004 "INT_ImportFOCTemp_SNY"
 
                         StartDate := ConvertTextToDate(gStartingDate);
                         EndDate := ConvertTextToDate(gEndingDate);
+
+
                         if EndDate < Today then begin
                             INT_Temptableforimport.error := true;
                             INT_Temptableforimport.ErrorDes := 'Please check range Date !!';
                         end;
+
+                        if StartDate > EndDate then begin
+                            INT_Temptableforimport.error := true;
+                            INT_Temptableforimport.ErrorDes := 'Period start date should be less than Period End date';
+                        end;
+
                         if (gqty = '') or (gqty = '0') then begin
                             INT_Temptableforimport.error := true;
                             INT_Temptableforimport.ErrorDes := 'Quantity must have value.';
@@ -448,12 +456,21 @@ xmlport 60004 "INT_ImportFOCTemp_SNY"
     local procedure checkpageero()
     var
         myInt: Integer;
+        INT_Temptableforimport: Record INT_Temptableforimport;
+        Checkerrorimport: Page Checkerrorimport;
     begin
         INT_Temptableforimport7.reset;
         INT_Temptableforimport7.SetRange(error, true);
         INT_Temptableforimport7.SetRange(foc, true);
-        if INT_Temptableforimport7.Find('-') then
-            Message('Have some error please check in error page.')
+        if INT_Temptableforimport7.Find('-') then begin
+            Message('Have some error please check in error page.');
+            Clear(Checkerrorimport);
+            INT_Temptableforimport.reset;
+            INT_Temptableforimport.SetRange(foc, true);
+            INT_Temptableforimport.SetFilter(errordes, '<>%1', '');
+            Checkerrorimport.SetTableView(INT_Temptableforimport);
+            Checkerrorimport.run;
+        end
         else
             Message('Import Completed');
     end;

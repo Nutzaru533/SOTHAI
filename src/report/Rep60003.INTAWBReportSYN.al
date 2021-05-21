@@ -40,11 +40,12 @@ report 60003 "INT_AWB_Report_SYN"
             column(External_Document_No_; "External Document No.") { }
             column(Posting_Date; "Posting Date") { }
             column(BarCodePicture; BarCode.Picture) { }
+            column(INT_Remarks1_SNY; INT_Remarks1_SNY) { }
             dataitem(SalesLine; "Sales Line")
             {
                 DataItemLink = "Document Type" = FIELD("Document Type"), "Document No." = FIELD("No.");
                 DataItemLinkReference = SalesHeader;
-                DataItemTableView = SORTING("Document Type", "Document No.", "Line No.") where(Type = const(Item));
+                DataItemTableView = SORTING("Document Type", "Document No.", "Line No.") where(Type = const(Item), INT_MKTOrdStatus_SNY = filter(<> 'canceled'), INT_RelatedItemType_SNY = filter(<> 'Virtual'));
 
                 column(No_; "No.") { }
                 column(Description; Description) { }
@@ -74,10 +75,6 @@ report 60003 "INT_AWB_Report_SYN"
             var
 
             begin
-
-
-
-
                 companyinfor.get;
                 if not Customer.get("Sell-to Customer No.") then
                     Customer.init;
@@ -120,6 +117,7 @@ report 60003 "INT_AWB_Report_SYN"
                 //end;
             end;
         }
+
     }
 
     requestpage
@@ -150,8 +148,26 @@ report 60003 "INT_AWB_Report_SYN"
             }
         }
     }
+    trigger OnPreReport()
+    var
+    begin
+        //Print := Print OR NOT CurrReport.PREVIEW;
+    end;
+
+    trigger OnPostReport()
+    var
+        myInt: Integer;
+    begin
+        //if Print then begin
+        //    SalesHeader.INT_PrintAWB_Count_SNY := SalesHeader.INT_PrintAWB_Count_SNY + 1;
+        //    SalesHeader.INT_PrintAWB_Date_Time_SNY := CurrentDateTime;
+        //   SalesHeader.Modify();
+        //end;
+
+    end;
 
     var
+        Print: Boolean;
         companyinfor: Record "Company Information";
         BarCode: Record "INT_Barcode_SNY";
         GenerateBarcodeCode: Codeunit INT_GenerateBarcode_SNY;

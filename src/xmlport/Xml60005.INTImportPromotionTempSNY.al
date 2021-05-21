@@ -70,11 +70,16 @@ xmlport 60005 "INT_ImportPromotionTemp_SNY"
                 begin
                     InterfaceSetup.get;
                     if EntryNo > 1 then begin
+
                         INT_Temptableforimport.Init();
                         INT_Temptableforimport.entryno := EntryNo;
                         INT_Temptableforimport.gNo := gNo;
                         INT_Temptableforimport.Foc := false;
                         INT_Temptableforimport.gMarketplace := gMarketplace;
+
+                        Promotioncode := gPromotionType;
+                        INT_Temptableforimport.gPromotionType := Promotioncode;
+
                         addzaro := '';
                         if StrLen(gItemNo) < 8 then begin
                             for i := 1 to (8 - StrLen(gItemNo)) do begin
@@ -83,11 +88,13 @@ xmlport 60005 "INT_ImportPromotionTemp_SNY"
                             gItemNo := addzaro + gItemNo;
                         end;
                         INT_Temptableforimport.gItemNo := gItemNo;
-                        if not item.Get(INT_Temptableforimport.gItemNo) then begin
-                            INT_Temptableforimport.error := true;
-                            INT_Temptableforimport.ErrorDes := 'Item main does not exist';
-                        end else
-                            INT_Temptableforimport.gItemNo := gItemNo;
+                        if (INT_Temptableforimport.gPromotionType = 'FOC') then begin
+                            if not item.Get(INT_Temptableforimport.gItemNo) then begin
+                                INT_Temptableforimport.error := true;
+                                INT_Temptableforimport.ErrorDes := 'Item main does not exist';
+                            end else
+                                INT_Temptableforimport.gItemNo := gItemNo;
+                        end;
                         //check item
                         INT_Temptableforimport.gItemNo := gItemNo;
                         INT_Temptableforimport.gPromotionType := gPromotionType;
@@ -143,12 +150,23 @@ xmlport 60005 "INT_ImportPromotionTemp_SNY"
                             INT_Temptableforimport.error := true;
                             INT_Temptableforimport.ErrorDes := 'Please check range Date !!';
                         end;
+
+                        if startdate > enddate then begin
+                            INT_Temptableforimport.error := true;
+                            INT_Temptableforimport.ErrorDes := 'Period start date should be less than Period End date';
+                        end;
+
                         Promotioncode := gPromotionType;
                         INT_Temptableforimport.gPromotionType := Promotioncode;
                         INT_Temptableforimport.gInclude_FOC := gInclude_FOC;
                         INT_Temptableforimport.gMain_Item_For_Delivery := gMain_Item_For_Delivery;
-                        if (INT_Temptableforimport.gPromotionType = 'ITEM DISCOUNT') or (INT_Temptableforimport.gPromotionType = 'GROUP DISCOUNT') or (INT_Temptableforimport.gPromotionType = 'NONE') then
+                        if (INT_Temptableforimport.gPromotionType = 'ITEM DISCOUNT') or (INT_Temptableforimport.gPromotionType = 'GROUP DISCOUNT') or (INT_Temptableforimport.gPromotionType = 'NONE') then begin
                             INT_Temptableforimport.Type := format(DocType::Package);
+                            if (INT_Temptableforimport.gPromotionalPrice = '0') or (INT_Temptableforimport.gPromotionalPrice = '') then begin
+                                INT_Temptableforimport.error := true;
+                                INT_Temptableforimport.ErrorDes := 'Promotion price must be have value';
+                            end;
+                        end;
                         if (INT_Temptableforimport.gPromotionType = 'FOC') or (INT_Temptableforimport.gPromotionType = 'FOC WHIT DISCOUNT') then
                             INT_Temptableforimport.Type := format(DocType::FOC);
 
@@ -168,7 +186,7 @@ xmlport 60005 "INT_ImportPromotionTemp_SNY"
                                             INT_Temptableforimport.gPromotionType2 := INT_Temptableforimport.gPromotionType2::"ITEM DISCOUNT"
                                         else begin
                                             INT_Temptableforimport.error := true;
-                                            INT_Temptableforimport.ErrorDes := 'Promotion type not have in system %1';
+                                            INT_Temptableforimport.ErrorDes := 'Promotion type not have in system ';
                                         end;
 
                         if (INT_Temptableforimport.gPromotionType = 'ITEM DISCOUNT') then begin
@@ -302,8 +320,9 @@ xmlport 60005 "INT_ImportPromotionTemp_SNY"
                                 if marketplace.Find('-') then begin
                                     gImpFOCHeader.Channel := marketplace.Channel;
                                 end;
-                                if INT_Temptableforimport3.gItemNo <> '' then
-                                    gImpFOCHeader.Validate("Item No.", INT_Temptableforimport3.gItemNo);
+                                if INT_Temptableforimport3.gPromotionType = 'FOC' then
+                                    if INT_Temptableforimport3.gItemNo <> '' then
+                                        gImpFOCHeader.Validate("Item No.", INT_Temptableforimport3.gItemNo);
                                 if INT_Temptableforimport3.gDes <> '' then
                                     gImpFOCHeader.Description := gDes;
 
@@ -347,7 +366,7 @@ xmlport 60005 "INT_ImportPromotionTemp_SNY"
                                     if gImpFOCLine."SRP Price" < gImpFOCLine."Promotional Price" then begin
                                         INT_Temptableforimport3.gSRPPriece := format(gImpFOCLine."SRP Price");
                                         INT_Temptableforimport3.error := true;
-                                        INT_Temptableforimport3.ErrorDes := 'SRP Price should be greater then Promotion Price !!';
+                                        INT_Temptableforimport3.ErrorDes := 'Promo price should be less than SRP price';
                                     end;
 
                                     gImpFOCLine."Free Gift ID" := gImpFOCHeader."Free Gift ID";
@@ -375,8 +394,10 @@ xmlport 60005 "INT_ImportPromotionTemp_SNY"
                                 end;
                             end
                             else begin
-                                if (INT_Temptableforimport3.gPromotionType = 'ITEM DISCOUNT') or (INT_Temptableforimport3.gPromotionType = 'GROUP DISCOUNT') or (INT_Temptableforimport3.gPromotionType = 'NONE') then
-                                    DocType := DocType::Package
+                                if (INT_Temptableforimport3.gPromotionType = 'ITEM DISCOUNT') or (INT_Temptableforimport3.gPromotionType = 'GROUP DISCOUNT') or (INT_Temptableforimport3.gPromotionType = 'NONE') then begin
+                                    DocType := DocType::Package;
+
+                                end
                                 else
                                     if (INT_Temptableforimport3.gPromotionType = 'FOC') or (INT_Temptableforimport3.gPromotionType = 'FOC WHIT DISCOUNT') then
                                         DocType := DocType::FOC;
@@ -420,7 +441,7 @@ xmlport 60005 "INT_ImportPromotionTemp_SNY"
                                 if gImpFOCLine."SRP Price" < gImpFOCLine."Promotional Price" then begin
                                     INT_Temptableforimport3.gSRPPriece := format(gImpFOCLine."SRP Price");
                                     INT_Temptableforimport3.error := true;
-                                    INT_Temptableforimport3.ErrorDes := 'SRP Price should be greater then Promotion Price !!';
+                                    INT_Temptableforimport3.ErrorDes := 'Promo price should be less than SRP price';
                                 end;
 
                                 if (INT_Temptableforimport3.gInclude_FOC = 'Yes') or (INT_Temptableforimport3.gInclude_FOC = 'YES') then
@@ -479,13 +500,21 @@ xmlport 60005 "INT_ImportPromotionTemp_SNY"
     local procedure checkpageero()
     var
         myInt: Integer;
+        INT_Temptableforimport: Record INT_Temptableforimport;
+        Checkerrorimport: Page Checkerrorimport_Promotion;
     begin
         INT_Temptableforimport7.reset;
         INT_Temptableforimport7.SetRange(error, true);
         INT_Temptableforimport7.SetRange(foc, false);
-        if INT_Temptableforimport7.Find('-') then
-            Message('Have some error please check in error page.')
-        else
+        if INT_Temptableforimport7.Find('-') then begin
+            Message('Have some error please check in error page.');
+            Clear(Checkerrorimport);
+            INT_Temptableforimport.reset;
+            INT_Temptableforimport.SetRange(foc, false);
+            INT_Temptableforimport.SetFilter(errordes, '<>%1', '');
+            Checkerrorimport.SetTableView(INT_Temptableforimport);
+            Checkerrorimport.run;
+        end else
             Message('Import Completed');
     end;
 
@@ -607,10 +636,10 @@ xmlport 60005 "INT_ImportPromotionTemp_SNY"
         end;
         //Error(MultipleDummyDeliveryErr);
 
-        if BundleLine.IsEmpty() then begin
-            cloststatus := true;
-            checkerrortex := BackupateDummyMsg;
-        end;
+        //if BundleLine.IsEmpty() then begin
+        //   cloststatus := true;
+        //    checkerrortex := BackupateDummyMsg;
+        //end;
         //if not confirm(BackupateDummyMsg, false) then
         //    Error('');
 
@@ -660,7 +689,7 @@ xmlport 60005 "INT_ImportPromotionTemp_SNY"
                 BundleLine2.SetRange("Item No.", BundleLine."Item No.");
                 if not BundleLine2.IsEmpty() then begin
                     cloststatus := true;
-                    checkerrortex := StrSubstNo(DuplicateLineErr, BundleLine2."Item No.");
+                    checkerrortex := 'Duplicate Item Found in Lines. \Item No.:' + format(BundleLine2."Item No.") + ' ' + BundleLine2."No.";
                 end;
             //Er
 
@@ -705,6 +734,7 @@ xmlport 60005 "INT_ImportPromotionTemp_SNY"
         BundleHeader."Certified Date" := Today();
         BundleHeader.Status := BundleHeader.Status::Certified;
         BundleHeader.UpdateStatus();
+        BundleHeader."Is Active" := true;
         BundleHeader.Modify();
         commit;
     end;

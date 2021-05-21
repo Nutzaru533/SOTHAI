@@ -138,12 +138,14 @@ report 60001 "INT_TH_Sales_Invoice"
             column(TotalDeliveryCharges; TotalDeliveryCharges)
             { }
             column(texamtth; texamtth) { }
+            column(INT_Remarks1_SNY; INT_Remarks1_SNY) { }
 
             dataitem(Line; "Sales Line")
             {
                 DataItemLink = "Document Type" = FIELD("Document Type"), "Document No." = FIELD("No.");
                 DataItemLinkReference = Header;
-                DataItemTableView = SORTING("Document Type", "Document No.", "Line No.");
+                DataItemTableView = SORTING("Document Type", "Document No.", "Line No.") where(INT_MKTOrdStatus_SNY = filter(<> 'canceled'), INT_RelatedItemType_SNY = filter(<> 'Virtual'));
+
 
                 column(LineNo; Line."Line No.")
                 {
@@ -216,7 +218,7 @@ report 60001 "INT_TH_Sales_Invoice"
                     Clear(RepQuantity);
                     FOCexist := false;
                     LineDeliveryexist := false;
-
+                    //INT_RelatedItemType_SNY:=INT_RelatedItemType_SNY::Virtual
                     if Type = Type::" " then
                         LineInfo := ''
                     else begin
@@ -331,12 +333,14 @@ report 60001 "INT_TH_Sales_Invoice"
                 TotalSalesLine.Reset();
                 TotalSalesLine.SetRange("Document Type", Header."Document Type");
                 TotalSalesLine.setrange("Document No.", Header."No.");
+                TotalSalesLine.SetFilter(INT_MKTOrdStatus_SNY, '<>%1', 'canceled');
                 if TotalSalesLine.FindFirst() then
                     TotalDiscountCode := TotalSalesLine."INT_Discount Code_SNY";
 
                 TotalSalesLine.Reset();
                 TotalSalesLine.SetRange("Document Type", Header."Document Type");
                 TotalSalesLine.setrange("Document No.", Header."No.");
+                TotalSalesLine.SetFilter(INT_MKTOrdStatus_SNY, '<>%1', 'canceled');
                 if TotalSalesLine.FindSet() then
                     repeat
                         TotalSalesValue += (TotalSalesLine."Line Amount");

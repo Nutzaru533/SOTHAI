@@ -58,6 +58,7 @@ report 60004 "INT_VAT_REPORT"
                         tempsalesline.Amount := Amount;
                         tempsalesline."Amount Including VAT" := "Amount Including VAT";
                         tempsalesline."VAT Base Amount" := "Amount Including VAT" - Amount;
+                        CalcFields("Posting Date");
                         tempsalesline."Shipment Date" := "Posting Date";
                         tempsalesline.Insert();
                         //temp insert
@@ -128,6 +129,7 @@ report 60004 "INT_VAT_REPORT"
                         tempsalesline.Amount := Amount * -1;
                         tempsalesline."Amount Including VAT" := "Amount Including VAT" * -1;
                         tempsalesline."VAT Base Amount" := ("Amount Including VAT" - Amount) * -1;
+                        CalcFields("Posting Date");
                         tempsalesline."Shipment Date" := "Posting Date";
                         tempsalesline.Insert();
                         //temp insert

@@ -186,6 +186,10 @@ codeunit 60000 "INT_Even_Sub_SNY"
                     //    INT_EcomInterface_SNY.OnPrintDocument(SalesHeader, SalesLine, 'carrierManifest', Handled);
                     //End;
                     //OnPrintDocument(SalesHeader, SalesLine, 'shippingLabel', Handled);
+                    SalesHeader.INT_PrintAWB_Count_SNY := SalesHeader.INT_PrintAWB_Count_SNY + 1;
+                    SalesHeader.INT_PrintAWB_Date_Time_SNY := CurrentDateTime;
+                    SalesHeader.Modify();
+                    Commit();
                 end;
             'JD':
                 begin
@@ -209,6 +213,10 @@ codeunit 60000 "INT_Even_Sub_SNY"
                     //    INT_EcomInterface_SNY.OnPrintDocument(SalesHeader, SalesLine, 'carrierManifest', Handled);
                     //End;
                     //OnPrintDocument(SalesHeader, SalesLine, 'shippingLabel', Handled);
+                    SalesHeader.INT_PrintAWB_Count_SNY := SalesHeader.INT_PrintAWB_Count_SNY + 1;
+                    SalesHeader.INT_PrintAWB_Date_Time_SNY := CurrentDateTime;
+                    SalesHeader.Modify();
+                    Commit();
                 end;
             'SHOPEE':
                 begin
@@ -232,6 +240,10 @@ codeunit 60000 "INT_Even_Sub_SNY"
                     //    INT_EcomInterface_SNY.OnPrintDocument(SalesHeader, SalesLine, 'carrierManifest', Handled);
                     //End;
                     //OnPrintDocument(SalesHeader, SalesLine, 'shippingLabel', Handled);
+                    SalesHeader.INT_PrintAWB_Count_SNY := SalesHeader.INT_PrintAWB_Count_SNY + 1;
+                    SalesHeader.INT_PrintAWB_Date_Time_SNY := CurrentDateTime;
+                    SalesHeader.Modify();
+                    Commit();
                 end;
 
         /* 'SONY STORE ONLINE':

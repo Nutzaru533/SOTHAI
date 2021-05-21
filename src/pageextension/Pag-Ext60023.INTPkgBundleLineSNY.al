@@ -10,7 +10,7 @@ pageextension 60023 "INT_PkgBundleLine_SNY" extends INT_PkgBundleLine_SNY
                 myInt: Integer;
             begin
                 if "Promotional Price" > "SRP Price" then
-                    error('SRP Price should be greater then Promotion Price !!');
+                    error('Promo price should be less than SRP price');
             end;
         }
     }

@@ -13,6 +13,17 @@ tableextension 60012 "INT_SalesInvoice_Head_SNY" extends "Sales Invoice Header"
             Caption = 'Print Date&time';
             DataClassification = ToBeClassified;
         }
+        field(60006; INT_PrintAWB_Count_SNY; Integer)
+        {
+            Caption = 'Print AWB Count';
+            DataClassification = ToBeClassified;
+        }
+        field(60007; INT_PrintAWB_Date_Time_SNY; datetime)
+        {
+            Caption = 'Print AWB Date&time';
+            DataClassification = ToBeClassified;
+        }
+
     }
 
     var

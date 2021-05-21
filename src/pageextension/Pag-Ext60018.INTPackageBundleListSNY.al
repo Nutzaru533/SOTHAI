@@ -43,7 +43,7 @@ pageextension 60018 "INT_PackageBundleList_SNY" extends INT_PackageBundleList_SN
             action(ImportPackage3)
             {
                 ApplicationArea = All;
-                Caption = 'Error Page';
+                Caption = 'Check Error';
                 Image = Import;
                 Promoted = true;
                 PromotedOnly = true;

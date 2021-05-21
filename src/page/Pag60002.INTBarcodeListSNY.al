@@ -1,3 +1,4 @@
+#pragma implicitwith disable
 page 60002 "INT_BarcodeList_SNY"
 {
     PageType = List;
@@ -13,45 +14,45 @@ page 60002 "INT_BarcodeList_SNY"
         {
             repeater(Group)
             {
-                field(Value; Value)
+                field(Value; Rec.Value)
                 {
                     ApplicationArea = All;
                 }
-                field(Type; Type)
+                field(Type; Rec.Type)
                 {
                     ApplicationArea = All;
                 }
-                field(Width; Width)
+                field(Width; Rec.Width)
                 {
                     ApplicationArea = All;
                 }
-                field(Height; Height)
+                field(Height; Rec.Height)
                 {
                     ApplicationArea = All;
                 }
-                field(IncludeText; IncludeText)
+                field(IncludeText; Rec.IncludeText)
                 {
                     ApplicationArea = All;
                 }
-                field(Border; Border)
+                field(Border; Rec.Border)
                 {
                     ApplicationArea = All;
                 }
-                field(ReverseColors; ReverseColors)
+                field(ReverseColors; Rec.ReverseColors)
                 {
                     ApplicationArea = All;
                 }
-                field(ECCLevel; ECCLevel)
+                field(ECCLevel; Rec.ECCLevel)
                 {
                     ApplicationArea = All;
                 }
-                field(Size; Size)
+                field(Size; Rec.Size)
                 {
                     ApplicationArea = All;
                 }
-                field(PictureType; PictureType)
+                field(PictureType; Rec.PictureType)
                 { ApplicationArea = All; }
-                field(Picture; Picture)
+                field(Picture; Rec.Picture)
                 {
                     ApplicationArea = All;
                 }
@@ -60,3 +61,4 @@ page 60002 "INT_BarcodeList_SNY"
         }
     }
 }
+#pragma implicitwith restore

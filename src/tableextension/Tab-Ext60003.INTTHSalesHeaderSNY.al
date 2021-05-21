@@ -29,6 +29,16 @@ tableextension 60003 "INT_TH_Sales_Header_SNY" extends "Sales Header"
             caption = 'BC Order Invoice No.';
             DataClassification = ToBeClassified;
         }
+        field(60006; INT_PrintAWB_Count_SNY; Integer)
+        {
+            Caption = 'Print AWB Count';
+            DataClassification = ToBeClassified;
+        }
+        field(60007; INT_PrintAWB_Date_Time_SNY; datetime)
+        {
+            Caption = 'Print AWB Date&time';
+            DataClassification = ToBeClassified;
+        }
 
     }
 
